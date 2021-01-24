@@ -1,8 +1,5 @@
 <template>
-  <div id="app">
-    
-    <router-view/>
-  </div>
+<div>发布房子</div>  
 </template>
 
 <script>

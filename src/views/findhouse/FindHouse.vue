@@ -1,7 +1,6 @@
 <template>
-  <div id="app">
-    
-    <router-view/>
+  <div>
+    找房子
   </div>
 </template>
 
