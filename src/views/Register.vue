@@ -1,4 +1,6 @@
 <template>
+<div>
+  <div class="main"></div>
   <div class="materialContainer">
     <div class="box">
       <div class="title">注册</div>
@@ -25,6 +27,8 @@
       <a href="javascript:" class="pass-forgot" @click="login">已有账号</a>
     </div>
   </div>
+</div>
+  
 </template>
 
 <script>
@@ -32,7 +36,7 @@ import request from "../network/request";
 export default {
   data() {
     return {
-      regpass: "",
+      regname: "",
       regpass: "",
       reregpass: "",
     };
@@ -77,12 +81,22 @@ export default {
       request({
         url: "/user",
         method: "post",
-        data: {},
+        data: {
+          userAccount: this.regname,
+          userPassword: this.reregpass,
+        },
+      }).then((res) => {
+        if (res.data.code == "000") {
+          this.$message.success("注册成功!现在跳转到登录界面!");
+          etTimeout(() => {
+            this.login();
+          }, 1000);
+        } else {
+          this.$message.error(res.data.msg);
+        }
       });
       console.log("register");
-      setTimeout(() => {
-        this.login();
-      }, 1000);
+      s;
     },
     login() {
       this.$router.push("/login");
@@ -93,4 +107,9 @@ export default {
 
 <style>
 @import url("../assets/css/style.css");
+.main {
+  height: 730px;
+  background-image: url("../assets/img/3.jpg");
+  filter: blur(10px);
+}
 </style>

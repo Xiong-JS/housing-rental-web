@@ -25,7 +25,7 @@ export default {
   methods: {},
   created() {
     request({
-      url: "/carousel",
+      url: "/carousel/all",
     })
       .then((res) => {
         this.imgData = res.data.data;

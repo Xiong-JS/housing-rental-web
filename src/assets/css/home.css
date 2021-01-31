@@ -1,0 +1,156 @@
+.main1 {
+  padding: 5px;
+}
+
+.search {
+  text-align: center;
+}
+
+.pageLink-unit {
+  float: left;
+  margin-left: 5%;
+  width: 25%;
+  overflow: hidden;
+}
+
+.pageLink-unit-word {
+  color: black;
+  font-size: 28px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul,
+li {
+  list-style: none;
+  text-decoration: none;
+}
+
+.router-link-active {
+  text-decoration: none;
+}
+
+.list-index {
+  margin-top: 0px;
+  float: left;
+  background-color: #e6e6e6;
+  width: 1510px;
+}
+
+.more {
+  float: left;
+  font-size: 30px;
+  margin-top: 80px;
+  position: absolute;
+  right: 170px;
+}
+
+.list-index-red {
+  border-bottom: 5px solid rgb(235, 108, 108);
+}
+
+.list-index-green {
+  border-bottom: 5px solid rgb(57, 183, 175);
+}
+
+.list-index-blue {
+  border-bottom: 5px solid rgb(57, 142, 202);
+}
+
+.list-index-title .title-zhengzu {
+  color: rgb(57, 183, 175);
+}
+
+.list-index-title h2 {
+  margin-top: 26px;
+  font-size: 34px;
+  font-weight: bold;
+  color: rgb(235, 108, 108);
+  margin-bottom: 10px;
+}
+
+.list-index-title .title-gongyu {
+  color: rgb(57, 142, 202);
+}
+
+.list-index-title {
+  width: 1200px;
+  height: 158px;
+  float: left;
+  margin-top: 30px;
+  margin-left: 145px;
+}
+
+.list-index-title>div {
+  width: 360px;
+  margin: 0 auto;
+  margin-top: 28px;
+  margin-bottom: 28px;
+}
+
+.list-index-title>div>div {
+  float: left;
+  margin-left: 24px;
+}
+
+.title-desc {
+  font-size: 18px;
+  color: #5a5c5d;
+}
+
+.list-index-center {
+  margin-top: 32px;
+}
+
+.main-index {
+  /* margin-bottom: 60px; */
+  float: left;
+  /* background-color: #e6e6e6; */
+}
+
+.out {
+  width: 1190px;
+  margin: 0 auto;
+}
+
+.innerImg {
+  width: 114px;
+  height: 114px;
+  float: left;
+}
+
+.out {
+  width: 1190px;
+  margin: 0 auto;
+}
+
+.nav_tab .nav_title {
+  color: #aaacb3;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.nav_tab .city_nav {
+  overflow: hidden;
+  padding: 5px 0;
+  border-bottom: #595b5f solid 1px;
+}
+
+.foot {
+  padding: 20px 0 60px 0;
+  min-width: 1190px;
+  background: #3b3d42;
+  margin-top: 850px;
+}
+.router-font-color{
+  color: #aaacb3;
+}
+.nav_tab li {
+  float: left;
+  font-size: 16px;
+  margin-right: 10px;
+}

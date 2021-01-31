@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: white">
+  <div class="main1">
     <carousel></carousel>
     <div>
       <el-form
@@ -30,30 +30,156 @@
       </el-form>
     </div>
     <type-button>
-      <div class="pageLink-unit">
-        <router-link to="/housingRental/findHousing">
-          <img src="../../assets/img/icon1.png" alt="合租" />
-          <div class="pageLink-unit-word">合租</div>
-        </router-link>
-      </div>
-      <div class="pageLink-unit">
-        <router-link to="/housingRental/findHousing">
-          <img src="../../assets/img/icon2.png" alt="整租" />
-          <div class="pageLink-unit-word">整租</div>
-        </router-link>
-      </div>
-      <div class="pageLink-unit">
-        <router-link to="/housingRental/findHousing">
-          <img src="../../assets/img/icon3.png" alt="公寓" />
-          <div class="pageLink-unit-word">公寓</div>
-        </router-link>
+      <div>
+        <div class="pageLink-unit">
+          <router-link to="/houseRentalMain/findHouse">
+            <img src="../../assets/img/icon1.png" alt="合租" />
+            <div class="pageLink-unit-word">合租</div>
+          </router-link>
+        </div>
+        <div class="pageLink-unit">
+          <router-link to="/houseRentalMain/findHouse">
+            <img src="../../assets/img/icon2.png" alt="整租" />
+            <div class="pageLink-unit-word">整租</div>
+          </router-link>
+        </div>
+        <div class="pageLink-unit">
+          <router-link to="/houseRentalMain/findHouse">
+            <img src="../../assets/img/icon3.png" alt="公寓" />
+            <div class="pageLink-unit-word">公寓</div>
+          </router-link>
+        </div>
       </div>
     </type-button>
-    <type-show-panle>
-      <div>
-        
-      </div>
-    </type-show-panle>
+    <div>
+      <type-show-panle>
+        <div class="main-index out">
+          <div class="list-index">
+            <div class="list-index-title list-index-red">
+              <div>
+                <img src="../../assets/img/icon5.png" class="innerImg" />
+                <div>
+                  <h2>快乐合租</h2>
+                  <p class="title-desc">百万兔宝儿的快乐合租公寓</p>
+                </div>
+              </div>
+              <router-link to="/houseRentalMain/findHouse" class="more"
+                >More>></router-link
+              >
+            </div>
+          </div>
+          <div class="list-index">
+            <div class="list-index-title list-index-green">
+              <div>
+                <img src="../../assets/img/icon6.png" class="innerImg" />
+                <div>
+                  <h2 class="title-zhengzu">轻松整租</h2>
+                  <p class="title-desc">整套出租的单身公寓</p>
+                </div>
+              </div>
+              <router-link to="/houseRentalMain/findHouse" class="more"
+                >More>></router-link
+              >
+            </div>
+          </div>
+          <div class="list-index">
+            <div class="list-index-title list-index-blue">
+              <div>
+                <img src="../../assets/img/icon7.png" class="innerImg" />
+                <div>
+                  <h2 class="title-gongyu">品质公寓</h2>
+                  <p class="title-desc">高品质的独栋青年公寓</p>
+                </div>
+              </div>
+              <router-link to="/houseRentalMain/findHouse" class="more"
+                >More>></router-link
+              >
+            </div>
+          </div>
+        </div>
+      </type-show-panle>
+    </div>
+    <div class="foot">
+      <footer>
+        <div class="out nav_tab">
+          <div class="city_nav">
+            <div class="nav_title">推荐区域租房</div>
+            <ul>
+              <li>
+                <router-link
+                  to="/houseRentalMain/findHouse"
+                  class="router-font-color"
+                  >九龙坡</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  to="/houseRentalMain/findHouse"
+                  class="router-font-color"
+                  >北碚</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  to="/houseRentalMain/findHouse"
+                  class="router-font-color"
+                  >南岸</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  to="/houseRentalMain/findHouse"
+                  class="router-font-color"
+                  >大渡口</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  to="/houseRentalMain/findHouse"
+                  class="router-font-color"
+                  >巴南</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  to="/houseRentalMain/findHouse"
+                  class="router-font-color"
+                  >江北</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  to="/houseRentalMain/findHouse"
+                  class="router-font-color"
+                  >沙坪坝</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  to="/houseRentalMain/findHouse"
+                  class="router-font-color"
+                  >渝中</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  to="/houseRentalMain/findHouse"
+                  class="router-font-color"
+                  >渝北</router-link
+                >
+              </li>
+              <li>
+                <router-link
+                  to="/houseRentalMain/findHouse"
+                  class="router-font-color"
+                  >长寿区</router-link
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </footer>
+    </div>
   </div>
 </template>
 
@@ -61,15 +187,16 @@
 import Carousel from "../../components/Carousel ";
 import TypeButton from "./TypeButton.vue";
 import TypeShowPanle from "./TypeShowPanle.vue";
+import Footer from "./Footer.vue";
 
 export default {
   components: {
     Carousel,
     TypeButton,
     TypeShowPanle,
+    Footer,
   },
   data() {
-    TypeButton;
     return {
       searchForm: {
         content: "",
@@ -85,25 +212,5 @@ export default {
 </script>
 
 <style>
-.search {
-  text-align: center;
-}
-.pageLink-unit {
-  float: left;
-  margin-left: 5%;
-  width: 25%;
-  overflow: hidden;
-}
-.pageLink-unit-word {
-  color: black;
-  font-size: 28px;
-  margin-top: 20px;
-  margin-bottom: 30px;
-}
-a {
-  text-decoration: none;
-}
-.router-link-active {
-  text-decoration: none;
-}
+@import url("../../assets/css/home.css");
 </style>

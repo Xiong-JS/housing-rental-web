@@ -1,0 +1,26 @@
+a{
+  text-decoration: none;
+}
+.part-line{
+  height: 2px;
+  background-color: #e6e6e6;
+}
+.main{
+  margin: 0 auto;
+}
+.nav-classify{
+  border-bottom: #ED2553 2px solid;
+}
+.nav-classify li{
+  list-style: none;
+
+  /* float: left; */
+}
+.router-link-active {
+  color:  #ED2553;
+  
+}
+.zone{
+  /* height: 100px;
+  width: 150px; */
+}

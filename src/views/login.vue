@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="main"></div>
     <div class="materialContainer">
       <div class="box">
         <div class="title">登录</div>
@@ -26,7 +27,7 @@
 </template>
 <script>
 import request from "../network/request";
-import * as types from '../store/mutations-type-string'
+import * as types from "../store/mutations-type-string";
 export default {
   data() {
     return {
@@ -88,9 +89,9 @@ export default {
               message: res.data.result.msg,
               type: "success",
             });
-            this.$store.commit(types.SETUSER,res.data.result.data)
-            this.$store.commit(types.SETTOKEN,res.data.uToken)
-            localStorage.setItem("uToken",res.data.uToken)
+            this.$store.commit(types.SETUSER, res.data.result.data);
+            this.$store.commit(types.SETTOKEN, res.data.uToken);
+            localStorage.setItem("uToken", res.data.uToken);
             setTimeout(() => {
               this.$router.push("/housingRental");
             }, 1000);
@@ -113,4 +114,9 @@ export default {
 
 <style>
 @import url("../assets/css/style.css");
+.main {
+  height: 730px;
+  background-image: url("../assets/img/3.jpg");
+  filter: blur(10px);
+}
 </style>

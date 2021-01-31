@@ -1,10 +1,10 @@
 <template>
-  <div class="main">
+  <div>
     <navigation-bar>
       <el-menu-item index="/housingRental/home">首页</el-menu-item>
-      <el-menu-item index="/housingRental/findHouse">找房子</el-menu-item>
-      <el-menu-item index="/housingRental/releaseHouse">发布房源</el-menu-item>
-      <el-menu-item index="/housingRental/other">其他</el-menu-item>
+      <el-menu-item index="/houseRentalMain/findHouse">找房子</el-menu-item>
+      <el-menu-item index="/houseRentalMain/releaseHouse">发布房源</el-menu-item>
+      <el-menu-item index="/houseRentalMain/other">其他</el-menu-item>
       <div
         v-if="isLoginRegisterShow"
         style="margin-left: 1300px; margin-top: 10px"
@@ -35,14 +35,5 @@ export default {
 </script>
 
 <style>
-.main {
-  background-color: white;
-  height: 100%;
-  /* height: 900px; */
-}
-.login_register {
-  position: relative;
-  margin-right: 20px;
-  display: inline;
-}
+
 </style>
