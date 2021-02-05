@@ -44,8 +44,13 @@ export default new Router({
         component: FindHouse,
         children:[
           {
+            path:'/',
+            redirect:'findHouseByZone'
+          },
+          {
             path:'findHouseByZone',
-            component:FindHouseByZone
+            component:FindHouseByZone,
+            meta: {keepAlive: true, parentPath: '/houseRentalMain/findHouse'}
           }
         ]
       }, {

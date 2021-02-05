@@ -18,7 +18,7 @@
 export default {
   data() {
     return {
-      activePath: this.$route.path,
+      activePath: this.$route.meta.parentPath,
       isRouter: true,
     };
   },
@@ -27,6 +27,9 @@ export default {
       console.log(key, keyPath);
     },
   },
+  created(){
+    console.log(this.$route.meta.parentPath,this.$route.path);
+  }
 };
 </script>
 

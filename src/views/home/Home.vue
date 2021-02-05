@@ -32,19 +32,25 @@
     <type-button>
       <div>
         <div class="pageLink-unit">
-          <router-link to="/houseRentalMain/findHouse">
+          <router-link
+            :to="{ path: '/houseRentalMain/findHouse', query: { type: 1 } }"
+          >
             <img src="../../assets/img/icon1.png" alt="合租" />
             <div class="pageLink-unit-word">合租</div>
           </router-link>
         </div>
         <div class="pageLink-unit">
-          <router-link to="/houseRentalMain/findHouse">
+          <router-link
+            :to="{ path: '/houseRentalMain/findHouse', query: { type: 2 } }"
+          >
             <img src="../../assets/img/icon2.png" alt="整租" />
             <div class="pageLink-unit-word">整租</div>
           </router-link>
         </div>
         <div class="pageLink-unit">
-          <router-link to="/houseRentalMain/findHouse">
+          <router-link
+            :to="{ path: '/houseRentalMain/findHouse', query: { type: 3 } }"
+          >
             <img src="../../assets/img/icon3.png" alt="公寓" />
             <div class="pageLink-unit-word">公寓</div>
           </router-link>
@@ -63,7 +69,9 @@
                   <p class="title-desc">百万兔宝儿的快乐合租公寓</p>
                 </div>
               </div>
-              <router-link to="/houseRentalMain/findHouse" class="more"
+              <router-link
+                :to="{ path: '/houseRentalMain/findHouse', query: { type: 1 } }"
+                class="more"
                 >More>></router-link
               >
             </div>
@@ -77,7 +85,9 @@
                   <p class="title-desc">整套出租的单身公寓</p>
                 </div>
               </div>
-              <router-link to="/houseRentalMain/findHouse" class="more"
+              <router-link
+                :to="{ path: '/houseRentalMain/findHouse', query: { type: 2 } }"
+                class="more"
                 >More>></router-link
               >
             </div>
@@ -91,7 +101,9 @@
                   <p class="title-desc">高品质的独栋青年公寓</p>
                 </div>
               </div>
-              <router-link to="/houseRentalMain/findHouse" class="more"
+              <router-link
+                :to="{ path: '/houseRentalMain/findHouse', query: { type: 3 } }"
+                class="more"
                 >More>></router-link
               >
             </div>
@@ -130,13 +142,6 @@
                 <router-link
                   to="/houseRentalMain/findHouse"
                   class="router-font-color"
-                  >大渡口</router-link
-                >
-              </li>
-              <li>
-                <router-link
-                  to="/houseRentalMain/findHouse"
-                  class="router-font-color"
                   >巴南</router-link
                 >
               </li>
@@ -144,35 +149,7 @@
                 <router-link
                   to="/houseRentalMain/findHouse"
                   class="router-font-color"
-                  >江北</router-link
-                >
-              </li>
-              <li>
-                <router-link
-                  to="/houseRentalMain/findHouse"
-                  class="router-font-color"
-                  >沙坪坝</router-link
-                >
-              </li>
-              <li>
-                <router-link
-                  to="/houseRentalMain/findHouse"
-                  class="router-font-color"
-                  >渝中</router-link
-                >
-              </li>
-              <li>
-                <router-link
-                  to="/houseRentalMain/findHouse"
-                  class="router-font-color"
                   >渝北</router-link
-                >
-              </li>
-              <li>
-                <router-link
-                  to="/houseRentalMain/findHouse"
-                  class="router-font-color"
-                  >长寿区</router-link
                 >
               </li>
             </ul>

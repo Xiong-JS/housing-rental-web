@@ -20,16 +20,15 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="part-line"></div>
+    <div class="part-line-2"></div>
     <div class="main">
       <div class="nav-classify">
-        <ul>
-          <li>
-            <router-link to="/HouseRentalMain/findHouse/findHouseByZone">
-              <span class="zone">区域找房</span>
-            </router-link>
-          </li>
-        </ul>
+        <div class="zone" :class="{'zone-active-bgcolor':isShow}">
+          <router-link to="/HouseRentalMain/findHouse/findHouseByZone" style="margin-top:10px;position:absolute;">
+          <span :class="{'zone-active-font':isShow}">区域找房</span>
+        </router-link>
+        </div>
+        
       </div>
       <keep-alive><router-view></router-view></keep-alive>
     </div>
@@ -43,14 +42,19 @@ export default {
       searchForm: {
         content: "",
       },
+      isShow:false
     };
   },
   methods: {
     search() {},
   },
+  created(){
+    this.isShow = true
+  }
 };
 </script>
 
 <style>
 @import url("../../assets/css/findHouse.css");
+@import url("../../assets/css/common.css");
 </style>
