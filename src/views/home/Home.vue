@@ -33,7 +33,7 @@
       <div>
         <div class="pageLink-unit">
           <router-link
-            :to="{ path: '/houseRentalMain/findHouse', query: { type: 1 } }"
+            :to="{ path: '/houseRentalMain/findHouse', query: { rentalType: 1 } }"
           >
             <img src="../../assets/img/icon1.png" alt="合租" />
             <div class="pageLink-unit-word">合租</div>
@@ -41,7 +41,7 @@
         </div>
         <div class="pageLink-unit">
           <router-link
-            :to="{ path: '/houseRentalMain/findHouse', query: { type: 2 } }"
+            :to="{ path: '/houseRentalMain/findHouse', query: { rentalType: 2 } }"
           >
             <img src="../../assets/img/icon2.png" alt="整租" />
             <div class="pageLink-unit-word">整租</div>
@@ -49,7 +49,7 @@
         </div>
         <div class="pageLink-unit">
           <router-link
-            :to="{ path: '/houseRentalMain/findHouse', query: { type: 3 } }"
+            :to="{ path: '/houseRentalMain/findHouse', query: { rentalType: 3 } }"
           >
             <img src="../../assets/img/icon3.png" alt="公寓" />
             <div class="pageLink-unit-word">公寓</div>
@@ -70,7 +70,7 @@
                 </div>
               </div>
               <router-link
-                :to="{ path: '/houseRentalMain/findHouse', query: { type: 1 } }"
+                :to="{ path: '/houseRentalMain/findHouse', query: { rentalType: 1 } }"
                 class="more"
                 >More>></router-link
               >
@@ -86,7 +86,7 @@
                 </div>
               </div>
               <router-link
-                :to="{ path: '/houseRentalMain/findHouse', query: { type: 2 } }"
+                :to="{ path: '/houseRentalMain/findHouse', query: { rentalType: 2 } }"
                 class="more"
                 >More>></router-link
               >
@@ -102,7 +102,7 @@
                 </div>
               </div>
               <router-link
-                :to="{ path: '/houseRentalMain/findHouse', query: { type: 3 } }"
+                :to="{ path: '/houseRentalMain/findHouse', query: { rentalType: 3 } }"
                 class="more"
                 >More>></router-link
               >

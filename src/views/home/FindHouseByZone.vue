@@ -24,7 +24,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="类型：">
-          <el-radio-group v-model="type" @change="typeChange">
+          <el-radio-group v-model="rentalType" @change="rentalTypeChange">
             <el-radio label="0">不限</el-radio>
             <el-radio label="1">合租</el-radio>
             <el-radio label="2">整租</el-radio>
@@ -32,7 +32,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="户型：">
-          <el-radio-group v-model="rentalType" @change="rentalTypeChange">
+          <el-radio-group v-model="room" @change="roomChange">
             <el-radio :label="0">不限</el-radio>
             <el-radio :label="1">一室</el-radio>
             <el-radio :label="2">二室</el-radio>
@@ -51,7 +51,6 @@
             <el-checkbox label="月付" name="chracter"></el-checkbox>
             <el-checkbox label="带阳台" name="chracter"></el-checkbox>
             <el-checkbox label="精装修" name="chracter"></el-checkbox>
-            <el-checkbox label="全网底价" name="chracter"></el-checkbox>
             <el-checkbox label="家电齐全" name="chracter"></el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -59,24 +58,29 @@
     </div>
     <div class="part-line-5"></div>
     <div>
-      <el-row >
-        <el-col
-          :span="18"
-          v-for="(o) in 3"
-          :key="o"
-          :offset="3"
-
-        >
-          <el-card :body-style="{ padding: '0px',height:'200px'}">
-
-            <!-- <img src="../../assets/img/1.jpg" class="image"/>
-            <div style="padding: 14px">
-              <span>好吃的汉堡</span>
-              <div>
-                <time class="time">{{ currentDate }}</time>
-                <el-button type="text" class="button">操作按钮</el-button>
+      <el-row>
+        <el-col :span="18" v-for="item in houseInfo" :key="item" :offset="3">
+          <el-card :body-style="{ padding: '0px', height: '200px' }">
+            <div class="padding-18">
+              <div style="float: left">
+                <router-link to="">
+                  <img :src="item.img" class="img-card" />
+                </router-link>
               </div>
-            </div> -->
+              <div style="float: left; padding-left: 20px">
+                <h3>{{item.community}} {{item.floor}}楼</h3>
+                <p>{{item.netherlands}}-{{item.detailNetherlands}} | {{rentalTypeConvert(item.rentalType)}} | {{item.room}}室{{item.hall}}厅{{item.toilet}}卫 | {{item.area}}M²</p>
+                <div>
+                  <el-tag type="info" v-show = "item.toilet == 1">独卫</el-tag>
+                  <el-tag type="info" v-show = "item.balcony == 1">带阳台</el-tag>
+                  <el-tag type="info" v-show = "item.houseType == 1">电梯房</el-tag>
+                  <el-tag type="info" v-show = "item.monthPay == 1">月付</el-tag>
+                  <el-tag type="info" v-show = "item.hardback == 1">精装修</el-tag>
+                  <el-tag type="info" v-show = "item.homeAppliances == 1">家电齐全</el-tag>
+                </div>
+              </div>
+              <div class="money-position">{{item.quote}}元</div>
+            </div>
           </el-card>
         </el-col>
       </el-row>
@@ -85,12 +89,17 @@
 </template>
 
 <script>
+import request from "../../network/request";
 export default {
   data() {
     return {
+      houseInfo:[],
       quote: 0,
-      type: this.$route.query.type,
-      rentalType: 0,
+      rentalType:
+        typeof this.$route.query.rentalType === "undefined"
+          ? "0"
+          : this.$route.query.rentalType,
+      room: 0,
       chracter: [],
       minCheck: 0,
       maxCheck: 4,
@@ -98,21 +107,57 @@ export default {
       currentDate: new Date(),
     };
   },
+  computed:{
+    
+  },
   methods: {
-    quoteChange(val) {
-      console.log(val);
+    rentalTypeConvert(val){
+      let type = "合租";
+      switch(val){
+        case 1:type = "合租";break;
+        case 2:type = "整租";break;
+        case 3:type = "公寓";break;
+      }
+      return type;
     },
-    typeChange(val) {
-      console.log(val);
+    quoteChange(val) {
+      this.quote = val;
+      this.getHouseInfoByConditions();
     },
     rentalTypeChange(val) {
-      console.log(val);
+      this.rentalType = val;
+      this.getHouseInfoByConditions();
+    },
+    roomChange(val) {
+      this.room = val;
+      this.getHouseInfoByConditions();
     },
     chracterChange(val) {
       console.log(this.chracter);
+      this.getHouseInfoByConditions();
     },
     areaChange(val) {
-      console.log(val);
+      this.area = val;
+      this.getHouseInfoByConditions();
+    },
+    getHouseInfoByConditions() {
+      request({
+        url: "/house",
+        params: {
+          netherlands: this.area,
+          quote: this.quote,
+          rentalType: this.rentalType,
+          room: this.room,
+          characters: this.chracter.toString(),
+          page: 1,
+          limit: 10,
+        },
+      }).then((res) => {
+        console.log(res.data);
+        this.houseInfo = res.data.data
+        console.log(this.houseInfo);
+
+      });
     },
   },
 };

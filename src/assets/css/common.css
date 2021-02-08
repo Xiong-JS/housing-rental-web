@@ -6,3 +6,9 @@
   height: 5px;
   background-color: #e6e6e6;
 }
+.div-line{
+  display: inline;
+}
+.padding-18{
+  padding: 18px;
+}
