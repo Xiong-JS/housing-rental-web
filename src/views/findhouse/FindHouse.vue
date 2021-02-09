@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import request from '../../network/request'
+import * as types from "../../store/mutations-type-string"
 export default {
   data() {
     return {
@@ -46,7 +48,23 @@ export default {
     };
   },
   methods: {
-    search() {},
+    search() {
+      this.getHouseInfoByContent(this.searchForm.content,0)
+    },
+    getHouseInfoByContent(content,type){
+      request({
+        url:'/house/content',
+        params:{
+          content,
+          type,
+          page:1,
+          limit:5
+        }
+      }).then(res=>{
+        this.$store.commit(types.SETHOUSEINFOS,res.data.data)
+        console.log(res);
+      })
+    },
   },
   created(){
     this.isShow = true

@@ -59,7 +59,7 @@
     <div class="part-line-5"></div>
     <div>
       <el-row>
-        <el-col :span="18" v-for="item in houseInfo" :key="item" :offset="3">
+        <el-col :span="18" v-for="item in $store.state.houseInfos" :key="item.HouseId" :offset="3">
           <el-card :body-style="{ padding: '0px', height: '200px' }">
             <div class="padding-18">
               <div style="float: left">
@@ -90,10 +90,10 @@
 
 <script>
 import request from "../../network/request";
+import * as types from '../../store/mutations-type-string'
 export default {
   data() {
     return {
-      houseInfo:[],
       quote: 0,
       rentalType:
         typeof this.$route.query.rentalType === "undefined"
@@ -150,16 +150,20 @@ export default {
           room: this.room,
           characters: this.chracter.toString(),
           page: 1,
-          limit: 10,
+          limit: 5,
         },
       }).then((res) => {
         console.log(res.data);
-        this.houseInfo = res.data.data
+        this.$store.commit(types.SETHOUSEINFOS,res.data.data) ;
         console.log(this.houseInfo);
 
       });
     },
   },
+  created(){
+    if(this.$store.state.routerType == 0)
+      this.getHouseInfoByConditions()
+  }
 };
 </script>
 

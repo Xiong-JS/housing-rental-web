@@ -33,7 +33,10 @@
       <div>
         <div class="pageLink-unit">
           <router-link
-            :to="{ path: '/houseRentalMain/findHouse', query: { rentalType: 1 } }"
+            :to="{
+              path: '/houseRentalMain/findHouse',
+              query: { rentalType: 1 },
+            }"
           >
             <img src="../../assets/img/icon1.png" alt="合租" />
             <div class="pageLink-unit-word">合租</div>
@@ -41,7 +44,10 @@
         </div>
         <div class="pageLink-unit">
           <router-link
-            :to="{ path: '/houseRentalMain/findHouse', query: { rentalType: 2 } }"
+            :to="{
+              path: '/houseRentalMain/findHouse',
+              query: { rentalType: 2 },
+            }"
           >
             <img src="../../assets/img/icon2.png" alt="整租" />
             <div class="pageLink-unit-word">整租</div>
@@ -49,7 +55,10 @@
         </div>
         <div class="pageLink-unit">
           <router-link
-            :to="{ path: '/houseRentalMain/findHouse', query: { rentalType: 3 } }"
+            :to="{
+              path: '/houseRentalMain/findHouse',
+              query: { rentalType: 3 },
+            }"
           >
             <img src="../../assets/img/icon3.png" alt="公寓" />
             <div class="pageLink-unit-word">公寓</div>
@@ -70,7 +79,10 @@
                 </div>
               </div>
               <router-link
-                :to="{ path: '/houseRentalMain/findHouse', query: { rentalType: 1 } }"
+                :to="{
+                  path: '/houseRentalMain/findHouse',
+                  query: { rentalType: 1 },
+                }"
                 class="more"
                 >More>></router-link
               >
@@ -86,7 +98,10 @@
                 </div>
               </div>
               <router-link
-                :to="{ path: '/houseRentalMain/findHouse', query: { rentalType: 2 } }"
+                :to="{
+                  path: '/houseRentalMain/findHouse',
+                  query: { rentalType: 2 },
+                }"
                 class="more"
                 >More>></router-link
               >
@@ -102,7 +117,10 @@
                 </div>
               </div>
               <router-link
-                :to="{ path: '/houseRentalMain/findHouse', query: { rentalType: 3 } }"
+                :to="{
+                  path: '/houseRentalMain/findHouse',
+                  query: { rentalType: 3 },
+                }"
                 class="more"
                 >More>></router-link
               >
@@ -165,6 +183,8 @@ import Carousel from "../../components/Carousel ";
 import TypeButton from "./TypeButton.vue";
 import TypeShowPanle from "./TypeShowPanle.vue";
 import Footer from "./Footer.vue";
+import * as types from '../../store/mutations-type-string'
+import request from '../../network/request'
 
 export default {
   components: {
@@ -182,7 +202,25 @@ export default {
     };
   },
   methods: {
-    search() {},
+    search() {
+      this.getHouseInfoByContent(this.searchForm.content, this.searchForm.type);
+      this.$store.commit(types.SETROUTERTYPE,1);
+      this.$router.push("/houseRentalMain/findHouse");
+    },
+    getHouseInfoByContent(content, type) {
+      request({
+        url: "/house/content",
+        params: {
+          content,
+          type,
+          page: 1,
+          limit: 5,
+        },
+      }).then((res) => {
+        this.$store.commit(types.SETHOUSEINFOS,res.data.data);
+        console.log(res);
+      });
+    },
   },
   activated() {},
 };

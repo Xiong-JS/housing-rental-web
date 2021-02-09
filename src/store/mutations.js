@@ -6,6 +6,12 @@ export default{
   },
   [types.SETTOKEN](state,payload){
     state.token = payload
+  },
+  [types.SETHOUSEINFOS](state,payload){
+    state.houseInfos = payload
+  },
+  [types.SETROUTERTYPE](state,payload){
+    state.routerType = payload
   }
 
 }
