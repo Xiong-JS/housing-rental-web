@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="main"></div>
+    <div class="login-main"></div>
     <div class="materialContainer">
       <div class="box">
         <div class="title">登录</div>
@@ -114,7 +114,7 @@ export default {
 
 <style>
 @import url("../assets/css/style.css");
-.main {
+.login-main {
   height: 730px;
   background-image: url("../assets/img/3.jpg");
   filter: blur(10px);

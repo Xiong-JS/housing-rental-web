@@ -47,6 +47,7 @@ li {
   margin-top: 80px;
   position: absolute;
   right: 170px;
+  color: black;
 }
 
 .list-index-red {
@@ -123,28 +124,21 @@ li {
   float: left;
 }
 
-.out {
-  width: 1190px;
-  margin: 0 auto;
-}
-
 .nav_tab .nav_title {
   color: #aaacb3;
   font-weight: bold;
   font-size: 16px;
 }
 
-.nav_tab .city_nav {
-  overflow: hidden;
-  padding: 5px 0;
-  border-bottom: #595b5f solid 1px;
-}
+/* .city_nav {
+  border-bottom: #494b4e solid 1px;
+} */
 
 .foot {
+  width: 100%;
   padding: 20px 0 60px 0;
-  min-width: 1190px;
   background: #3b3d42;
-  margin-top: 850px;
+  float: left;
 }
 .router-font-color{
   color: #aaacb3;
@@ -153,4 +147,10 @@ li {
   float: left;
   font-size: 16px;
   margin-right: 10px;
+}
+.home-img-card{
+  height: 186px;
+  width: 100%;
+  vertical-align: middle;
+  border-radius: 4px;
 }

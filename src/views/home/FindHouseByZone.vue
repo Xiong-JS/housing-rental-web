@@ -4,12 +4,12 @@
       <el-form ref="form" label-width="80px">
         <el-form-item label="区域：">
           <el-radio-group v-model="area" @change="areaChange">
-            <el-radio :label="0">不限</el-radio>
-            <el-radio :label="1">九龙坡</el-radio>
-            <el-radio :label="2">北碚</el-radio>
-            <el-radio :label="3">南岸</el-radio>
-            <el-radio :label="4">巴南</el-radio>
-            <el-radio :label="5">渝北</el-radio>
+            <el-radio label="0">不限</el-radio>
+            <el-radio label="1">九龙坡</el-radio>
+            <el-radio label="2">北碚</el-radio>
+            <el-radio label="3">南岸</el-radio>
+            <el-radio label="4">巴南</el-radio>
+            <el-radio label="5">渝北</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="租金：">
@@ -58,8 +58,13 @@
     </div>
     <div class="part-line-5"></div>
     <div>
-      <el-row>
-        <el-col :span="18" v-for="item in $store.state.houseInfos" :key="item.HouseId" :offset="3">
+      <el-row v-if="$store.state.houseInfos.length != 0">
+        <el-col
+          :span="18"
+          v-for="item in $store.state.houseInfos"
+          :key="item.HouseId"
+          :offset="3"
+        >
           <el-card :body-style="{ padding: '0px', height: '200px' }">
             <div class="padding-18">
               <div style="float: left">
@@ -68,22 +73,34 @@
                 </router-link>
               </div>
               <div style="float: left; padding-left: 20px">
-                <h3>{{item.community}} {{item.floor}}楼</h3>
-                <p>{{item.netherlands}}-{{item.detailNetherlands}} | {{rentalTypeConvert(item.rentalType)}} | {{item.room}}室{{item.hall}}厅{{item.toilet}}卫 | {{item.area}}M²</p>
+                <h3>{{ item.community }} {{ item.floor }}楼</h3>
+                <p>
+                  {{ item.netherlands }}-{{ item.detailNetherlands }} |
+                  {{ rentalTypeConvert(item.rentalType) }} | {{ item.room }}室{{
+                    item.hall
+                  }}厅{{ item.toilet }}卫 | {{ item.area }}M²
+                </p>
                 <div>
-                  <el-tag type="info" v-show = "item.toilet == 1">独卫</el-tag>
-                  <el-tag type="info" v-show = "item.balcony == 1">带阳台</el-tag>
-                  <el-tag type="info" v-show = "item.houseType == 1">电梯房</el-tag>
-                  <el-tag type="info" v-show = "item.monthPay == 1">月付</el-tag>
-                  <el-tag type="info" v-show = "item.hardback == 1">精装修</el-tag>
-                  <el-tag type="info" v-show = "item.homeAppliances == 1">家电齐全</el-tag>
+                  <el-tag type="info" v-show="item.toilet == 1">独卫</el-tag>
+                  <el-tag type="info" v-show="item.balcony == 1">带阳台</el-tag>
+                  <el-tag type="info" v-show="item.houseType == 1"
+                    >电梯房</el-tag
+                  >
+                  <el-tag type="info" v-show="item.monthPay == 1">月付</el-tag>
+                  <el-tag type="info" v-show="item.hardback == 1"
+                    >精装修</el-tag
+                  >
+                  <el-tag type="info" v-show="item.homeAppliances == 1"
+                    >家电齐全</el-tag
+                  >
                 </div>
               </div>
-              <div class="money-position">{{item.quote}}元</div>
+              <div class="money-position">{{ item.quote }}元</div>
             </div>
           </el-card>
         </el-col>
       </el-row>
+      <div v-else>暂无数据</div>
     </div>
   </div>
 </template>
@@ -103,8 +120,9 @@ export default {
       chracter: [],
       minCheck: 0,
       maxCheck: 4,
-      area: 0,
-      currentDate: new Date(),
+      area: typeof this.$route.query.area === "undefined"
+          ? "0"
+          : this.$route.query.area,
     };
   },
   computed:{
@@ -161,7 +179,7 @@ export default {
     },
   },
   created(){
-    if(this.$store.state.routerType == 0)
+    if(this.$store.state.routerType == 0 || this.$store.state.houseInfos.length == 0)
       this.getHouseInfoByConditions()
   }
 };
