@@ -9,6 +9,16 @@
         >发布房源</el-menu-item
       >
       <el-menu-item index="/houseRentalMain/other">其他</el-menu-item>
+      <div
+        v-if="isLoginRegisterShow"
+        style="margin-left: 1300px; margin-top: 10px"
+      >
+        <el-menu-item slot="login" index="/login">登录</el-menu-item>
+        <el-menu-item slot="register" index="/register">注册</el-menu-item>
+      </div>
+      <div v-else style="margin-left: 1300px; margin-top: 20px">
+        {{ $store.state.user[0].userName }}
+      </div>
     </navigation-bar-normal>
     <keep-alive><router-view></router-view></keep-alive>
   </div>
@@ -18,6 +28,11 @@
 import NavigationBarNormal from "../components/NavigationBarNormal";
 import * as types from '../store/mutations-type-string'
 export default {
+  data(){
+    return{
+      isLoginRegisterShow: this.$store.state.user.length == 0,
+    }
+  },
   components: {
     NavigationBarNormal,
   },

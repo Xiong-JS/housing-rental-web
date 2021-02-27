@@ -18,7 +18,7 @@
 export default {
   data() {
     return {
-      activePath: this.$route.meta.parentPath,
+      activePath: this.$route.meta.rootPath,
       isRouter: true,
     };
   },

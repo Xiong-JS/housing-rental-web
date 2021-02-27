@@ -50,15 +50,17 @@ export default new Router({
           {
             path:'findHouseByZone',
             component:FindHouseByZone,
-            meta: {keepAlive: true, parentPath: '/houseRentalMain/findHouse'}
+            meta: {keepAlive: true, rootPath: '/houseRentalMain/findHouse'}
           }
         ]
       }, {
         path: 'releaseHouse',
-        component: ReleaseHouse
+        component: ReleaseHouse,
+        meta: {keepAlive: true, rootPath: '/houseRentalMain/releaseHouse'}
       }, {
         path: 'other',
-        component: Other
+        component: Other,
+        meta: {keepAlive: true, rootPath: '/houseRentalMain/other'}
       }]
     }
   ]

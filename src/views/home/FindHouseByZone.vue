@@ -42,10 +42,10 @@
         </el-form-item>
         <el-form-item label="特色：">
           <el-checkbox-group
-            v-model="chracter"
+            v-model="character"
             :max="maxCheck"
             :min="minCheck"
-            @change="chracterChange"
+            @change="characterChange"
           >
             <el-checkbox label="独卫" name="chracter"></el-checkbox>
             <el-checkbox label="月付" name="chracter"></el-checkbox>
@@ -117,7 +117,7 @@ export default {
           ? "0"
           : this.$route.query.rentalType,
       room: 0,
-      chracter: [],
+      character: [],
       minCheck: 0,
       maxCheck: 4,
       area: typeof this.$route.query.area === "undefined"
@@ -150,8 +150,8 @@ export default {
       this.room = val;
       this.getHouseInfoByConditions();
     },
-    chracterChange(val) {
-      console.log(this.chracter);
+    characterChange(val) {
+      this.character = val;
       this.getHouseInfoByConditions();
     },
     areaChange(val) {
@@ -166,14 +166,13 @@ export default {
           quote: this.quote,
           rentalType: this.rentalType,
           room: this.room,
-          characters: this.chracter.toString(),
+          characters: this.character.toString(),
           page: 1,
           limit: 5,
         },
       }).then((res) => {
         console.log(res.data);
         this.$store.commit(types.SETHOUSEINFOS,res.data.data) ;
-        console.log(this.houseInfo);
 
       });
     },
