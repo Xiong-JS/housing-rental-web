@@ -5,11 +5,9 @@
         <el-form-item label="区域：">
           <el-radio-group v-model="area" @change="areaChange">
             <el-radio label="0">不限</el-radio>
-            <el-radio label="1">九龙坡</el-radio>
-            <el-radio label="2">北碚</el-radio>
-            <el-radio label="3">南岸</el-radio>
-            <el-radio label="4">巴南</el-radio>
-            <el-radio label="5">渝北</el-radio>
+            <el-radio v-for="item in netherlands" :key="item.netherlandsId">
+              {{ item.netherlandsName }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="租金：">
@@ -62,13 +60,18 @@
         <el-col
           :span="18"
           v-for="item in $store.state.houseInfos"
-          :key="item.HouseId"
+          :key="item.houseId"
           :offset="3"
         >
           <el-card :body-style="{ padding: '0px', height: '200px' }">
             <div class="padding-18">
               <div style="float: left">
-                <router-link to="">
+                <router-link
+                  :to="{
+                    path: '/houseRentalMain/detailHouse',
+                    query: { houseId: item.houseId },
+                  }"
+                >
                   <img :src="item.img" class="img-card" />
                 </router-link>
               </div>
@@ -102,12 +105,22 @@
       </el-row>
       <div v-else>暂无数据</div>
     </div>
+    <div class="block" style="text-align: center">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-size="pageSize"
+        layout="prev, pager, next, jumper"
+        :total="total"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
 import request from "../../network/request";
-import * as types from '../../store/mutations-type-string'
+import * as types from "../../store/mutations-type-string";
 export default {
   data() {
     return {
@@ -120,21 +133,33 @@ export default {
       character: [],
       minCheck: 0,
       maxCheck: 4,
-      area: typeof this.$route.query.area === "undefined"
+      currentPage: 1,
+      total: 1000,
+      pageSize: 10,
+      netherlands: [],
+      area:
+        typeof this.$route.query.area === "undefined"
           ? "0"
           : this.$route.query.area,
     };
   },
-  computed:{
-    
-  },
+  computed: {},
   methods: {
-    rentalTypeConvert(val){
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+    rentalTypeConvert(val) {
       let type = "合租";
-      switch(val){
-        case 1:type = "合租";break;
-        case 2:type = "整租";break;
-        case 3:type = "公寓";break;
+      switch (val) {
+        case 1:
+          type = "合租";
+          break;
+        case 2:
+          type = "整租";
+          break;
+        case 3:
+          type = "公寓";
+          break;
       }
       return type;
     },
@@ -168,19 +193,34 @@ export default {
           room: this.room,
           characters: this.character.toString(),
           page: 1,
-          limit: 5,
+          limit: 10,
         },
       }).then((res) => {
         console.log(res.data);
-        this.$store.commit(types.SETHOUSEINFOS,res.data.data) ;
-
+        this.$store.commit(types.SETHOUSEINFOS, res.data.data);
+        this.total = res.data.total;
+        this.currentPage = res.data.currentPage;
+      });
+    },
+    getNetherlands() {
+      request({
+        url: "/house/netherlands",
+        params: {
+          countryId: 1,
+        },
+      }).then((res) => {
+        this.netherlands = res.data.data;
       });
     },
   },
-  created(){
-    if(this.$store.state.routerType == 0 || this.$store.state.houseInfos.length == 0)
-      this.getHouseInfoByConditions()
-  }
+  created() {
+    this.getNetherlands();
+    if (
+      this.$store.state.routerType == 0 ||
+      this.$store.state.houseInfos.length == 0
+    )
+      this.getHouseInfoByConditions();
+  },
 };
 </script>
 

@@ -20,7 +20,7 @@
         {{ $store.state.user[0].userName }}
       </div>
     </navigation-bar-normal>
-    <keep-alive><router-view></router-view></keep-alive>
+    <router-view></router-view>
   </div>
 </template>
 

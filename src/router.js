@@ -9,7 +9,8 @@ const FindHouse = () => import('./views/findhouse/FindHouse.vue')
 const ReleaseHouse = () => import('./views/releasehouse/ReleaseHouse.vue')
 const Other = () => import('./views/other/Other.vue')
 const HouseRentalMain = () => import('./components/HouseRentalMain.vue')
-const FindHouseByZone = ()=>import('./views/home/FindHouseByZone.vue')
+const FindHouseByZone = ()=>import('./views/findhouse/FindHouseByZone.vue')
+const DetailHouse = ()=>import('./views/findhouse/DetailHouse.vue')
 
 Vue.use(Router)
 
@@ -61,6 +62,9 @@ export default new Router({
         path: 'other',
         component: Other,
         meta: {keepAlive: true, rootPath: '/houseRentalMain/other'}
+      },{
+        path:'detailHouse',
+        component:DetailHouse,
       }]
     }
   ]
