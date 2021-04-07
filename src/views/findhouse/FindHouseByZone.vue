@@ -5,7 +5,7 @@
         <el-form-item label="区域：">
           <el-radio-group v-model="area" @change="areaChange">
             <el-radio label="0">不限</el-radio>
-            <el-radio v-for="item in netherlands" :key="item.netherlandsId">
+            <el-radio v-for="item in netherlands" :key="item.netherlandsId" :label="item.netherlandsId">
               {{ item.netherlandsName }}
             </el-radio>
           </el-radio-group>
@@ -140,7 +140,7 @@ export default {
       area:
         typeof this.$route.query.area === "undefined"
           ? "0"
-          : this.$route.query.area,
+          : parseInt(this.$route.query.area) ,
     };
   },
   computed: {},
@@ -210,10 +210,12 @@ export default {
         },
       }).then((res) => {
         this.netherlands = res.data.data;
+        console.log(this.netherlands);
       });
     },
   },
   created() {
+    console.log(typeof this.$route.query.area);
     this.getNetherlands();
     if (
       this.$store.state.routerType == 0 ||

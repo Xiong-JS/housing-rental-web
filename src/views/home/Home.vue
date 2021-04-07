@@ -91,7 +91,7 @@
                 >More>></router-link
               >
             </div>
-            <div style="margin-left:100px">
+            <div style="margin-left: 100px">
               <el-col
                 :span="5"
                 v-for="item in $store.state.houseInfos"
@@ -196,59 +196,15 @@
           <div class="city_nav">
             <div class="nav_title">推荐区域租房</div>
             <ul>
-              <li>
+              <li v-for="item in netherlands" :key="item.netherlandsId">
                 <router-link
                   :to="{
                     path: '/houseRentalMain/findHouse',
-                    query: { area: 1 },
+                    query: { area: item.netherlandsId },
                   }"
-                  @click="getHouseInfoByConditions(0, '九龙坡')"
+                  @click="getHouseInfoByConditions(0, item.netherlandsName)"
                   class="router-font-color"
-                  >九龙坡</router-link
-                >
-              </li>
-              <li>
-                <router-link
-                  :to="{
-                    path: '/houseRentalMain/findHouse',
-                    query: { area: 2 },
-                  }"
-                  @click="getHouseInfoByConditions(0, '北碚')"
-                  class="router-font-color"
-                  >北碚</router-link
-                >
-              </li>
-              <li>
-                <router-link
-                  :to="{
-                    path: '/houseRentalMain/findHouse',
-                    query: { area: 3 },
-                  }"
-                  @click="getHouseInfoByConditions(0, '南岸')"
-                  class="router-font-color"
-                  >南岸</router-link
-                >
-              </li>
-              <li>
-                <router-link
-                  :to="{
-                    path: '/houseRentalMain/findHouse',
-                    query: { area: 4 },
-                  }"
-                  @click="getHouseInfoByConditions(0, '巴南')"
-                  class="router-font-color"
-                  >巴南</router-link
-                >
-              </li>
-              <li>
-                <router-link
-                  :to="{
-                    path: '/houseRentalMain/findHouse',
-                    query: { area: 5 },
-                  }"
-                  @click="getHouseInfoByConditions(0, '渝北')"
-                  class="router-font-color"
-                  >渝北</router-link
+                  >{{ item.netherlandsName }}</router-link
                 >
               </li>
             </ul>
@@ -276,6 +232,7 @@ export default {
   },
   data() {
     return {
+      netherlands: [],
       searchForm: {
         content: "",
         type: "0",
@@ -335,8 +292,19 @@ export default {
       }
       return type;
     },
+    getNetherlands() {
+      request({
+        url: "/house/netherlands",
+        params: {
+          countryId: 1,
+        },
+      }).then((res) => {
+        this.netherlands = res.data.data;
+      });
+    },
   },
   created() {
+    this.getNetherlands();
     this.getHouseInfoByConditions(0, 0);
   },
 };
