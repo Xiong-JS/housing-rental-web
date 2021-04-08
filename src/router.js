@@ -65,6 +65,7 @@ export default new Router({
       },{
         path:'detailHouse',
         component:DetailHouse,
+        meta:{keepAlive: true, rootPath: '/houseRentalMain/detailHouse'}
       }]
     }
   ]

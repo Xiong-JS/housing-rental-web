@@ -95,12 +95,17 @@
               <el-col
                 :span="5"
                 v-for="item in $store.state.houseInfos"
-                :key="item.HouseId"
+                :key="item.houseId"
                 style="margin-left: 40px; float: left; margin-top: 20px"
               >
                 <el-card :body-style="{ padding: '0px', height: '300px' }">
                   <div>
-                    <router-link to="">
+                    <router-link
+                      :to="{
+                        path: '/houseRentalMain/detailHouse',
+                        query: { houseId: item.houseId },
+                      }"
+                    >
                       <img :src="item.img" class="home-img-card" />
                     </router-link>
                     <div style="padding: 0px">
