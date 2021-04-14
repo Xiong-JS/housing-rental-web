@@ -98,7 +98,7 @@
                 :key="item.houseId"
                 style="margin-left: 40px; float: left; margin-top: 20px"
               >
-                <el-card :body-style="{ padding: '0px', height: '300px' }">
+                <el-card :body-style="{ padding: '0px', height: '330px' }">
                   <div>
                     <router-link
                       :to="{
@@ -110,11 +110,11 @@
                     </router-link>
                     <div style="padding: 0px">
                       <div>
-                        <h3 style="font-size: 18px" class="div-line">
+                        <h3 style="font-size: 18px" class="div-line txt">
                           {{ item.community }} {{ item.floor }}楼
                         </h3>
                         <span
-                          style="color: red; font-size: 20px; text-align: right"
+                          style="color: red; font-size: 20px;display: inline-block;"
                           class="div-line"
                           >{{ item.quote }}元</span
                         >

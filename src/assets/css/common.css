@@ -1,14 +1,25 @@
-.part-line-2{
+.part-line-2 {
   height: 2px;
   background-color: #e6e6e6;
 }
-.part-line-5{
+
+.part-line-5 {
   height: 5px;
   background-color: #e6e6e6;
 }
-.div-line{
+
+.div-line {
   display: inline;
 }
-.padding-18{
+
+.padding-18 {
   padding: 18px;
+}
+
+.txt {
+  display: inline-block;
+  width: 220px; 
+  overflow-x: hidden; 
+  white-space: nowrap; 
+  text-overflow: ellipsis; 
 }

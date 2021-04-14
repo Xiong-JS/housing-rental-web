@@ -1,0 +1,93 @@
+{
+  "id": "2370303",
+  "name": "house-rental",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "4950882",
+      "name": "冰箱",
+      "font_class": "bingxiang",
+      "unicode": "e652",
+      "unicode_decimal": 58962
+    },
+    {
+      "icon_id": "3670993",
+      "name": "床",
+      "font_class": "chuang",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "5403607",
+      "name": "马桶",
+      "font_class": "matong",
+      "unicode": "e729",
+      "unicode_decimal": 59177
+    },
+    {
+      "icon_id": "8648381",
+      "name": "热水器",
+      "font_class": "reshuiqi",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "11019774",
+      "name": "沙发",
+      "font_class": "shafa",
+      "unicode": "e643",
+      "unicode_decimal": 58947
+    },
+    {
+      "icon_id": "5995166",
+      "name": "阳台",
+      "font_class": "yangtai",
+      "unicode": "e64f",
+      "unicode_decimal": 58959
+    },
+    {
+      "icon_id": "17077073",
+      "name": "独卫",
+      "font_class": "duwei",
+      "unicode": "e654",
+      "unicode_decimal": 58964
+    },
+    {
+      "icon_id": "17551537",
+      "name": "家电",
+      "font_class": "jiadian",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "463897",
+      "name": "月付",
+      "font_class": "yuefu",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "1876333",
+      "name": "基础信息",
+      "font_class": "jichuxinxi",
+      "unicode": "e672",
+      "unicode_decimal": 58994
+    },
+    {
+      "icon_id": "11674755",
+      "name": "account-fill",
+      "font_class": "account-fill",
+      "unicode": "e7aa",
+      "unicode_decimal": 59306
+    },
+    {
+      "icon_id": "15383976",
+      "name": "住房",
+      "font_class": "zhufang",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    }
+  ]
+}
