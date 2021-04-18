@@ -7,7 +7,7 @@ const Rgister = () => import('./views/Register.vue')
 const HousingRental = () => import('./components/HousingRental.vue')
 const FindHouse = () => import('./views/findhouse/FindHouse.vue')
 const ReleaseHouse = () => import('./views/releasehouse/ReleaseHouse.vue')
-const Other = () => import('./views/other/Other.vue')
+const Collection = () => import('./views/collection/Collection.vue')
 const HouseRentalMain = () => import('./components/HouseRentalMain.vue')
 const FindHouseByZone = ()=>import('./views/findhouse/FindHouseByZone.vue')
 const DetailHouse = ()=>import('./views/findhouse/DetailHouse.vue')
@@ -59,9 +59,9 @@ export default new Router({
         component: ReleaseHouse,
         meta: {keepAlive: true, rootPath: '/houseRentalMain/releaseHouse'}
       }, {
-        path: 'other',
-        component: Other,
-        meta: {keepAlive: true, rootPath: '/houseRentalMain/other'}
+        path: 'collection',
+        component: Collection,
+        meta: {keepAlive: true, rootPath: '/houseRentalMain/collection'}
       },{
         path:'detailHouse',
         component:DetailHouse,

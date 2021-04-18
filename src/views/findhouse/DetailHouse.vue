@@ -49,7 +49,7 @@
         <div class="simple-infos">
           <h2>{{ houseInfos.community }}</h2>
           <p>{{ houseInfos.hall }}室户房型</p>
-          <div>
+          <div style="float:left">
             <el-tag type="success" v-show="houseInfos.toilet == 1">独卫</el-tag>
             <el-tag type="info" v-show="houseInfos.balcony == 1">带阳台</el-tag>
             <el-tag type="warning" v-show="houseInfos.houseType == 1"
@@ -60,6 +60,17 @@
               >精装修</el-tag
             >
             <el-tag v-show="houseInfos.homeAppliances == 1">家电齐全</el-tag>
+          </div>
+          <div style="margin-left:300px">
+            <el-rate
+              v-model="houseInfos.score"
+              score-template="{value}"
+              disabled
+              show-score
+              text-color="#ff9900"
+              style="line-height:0"
+            >
+            </el-rate>
           </div>
           <div class="house-text">
             <ul>
@@ -138,10 +149,10 @@
           <div style="margin-top: 30px">
             <el-row>
               <el-col :span="12" style="text-align: center">
-                <el-button type="danger" plain>预约支付</el-button>
+                <el-button type="danger" plain @click="pay">预约支付</el-button>
               </el-col>
               <el-col :span="12" style="text-align: center">
-                <el-button type="danger" plain>加入清单</el-button>
+                <el-button type="danger" plain @click="addInventory">收藏房源</el-button>
               </el-col>
             </el-row>
           </div>
@@ -149,13 +160,66 @@
       </div>
     </div>
     <div style="margin-top: 50px; float: left">
-      <div id="demo" style="width: 1200px; height: 400px"></div>
+      <el-tabs type="border-card">
+        <div style="width: 100%">
+          <div style="float: left">
+            当前位置：
+            <el-breadcrumb separator="/" style="margin-left: 65px">
+              <el-breadcrumb-item>{{ houseInfos.country }}</el-breadcrumb-item>
+              <el-breadcrumb-item>{{
+                houseInfos.netherlands
+              }}</el-breadcrumb-item>
+              <el-breadcrumb-item>{{
+                houseInfos.detailNetherlands
+              }}</el-breadcrumb-item>
+              <el-breadcrumb-item>{{
+                houseInfos.community
+              }}</el-breadcrumb-item>
+            </el-breadcrumb>
+          </div>
+          <div style="float: left; margin-left: 50px">
+            <span
+              >天气: <span id="city"></span> -
+              <span id="temperature">temperature</span>℃-
+              <span id="weather"></span
+            ></span>
+            湿度: <span id="humidity"> </span>%
+          </div>
+          <div
+            style="
+              float: right;
+              line-height: 30px;
+              border: 1px solid #dedfe0;
+              border-radius: 3px;
+              margin-right: 20px;
+              padding-right: 5px;
+              cursor: pointer;
+            "
+            @click="refresh()"
+          >
+            <i class="iconfont icon-weizhi" style="vertical-align: middle"></i>
+            <span style="vertical-align: middle">定位当前房源</span>
+          </div>
+        </div>
+        <el-tab-pane>
+          <span slot="label"><i class="el-icon-location"></i> 公寓地图</span>
+          <div
+            id="demo"
+            style="width: 1200px; height: 400px; margin-top: 10px"
+          ></div>
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
 
 <script>
 import request from "../../network/request";
+var city = "";
+var weather = "";
+var humidity = "";
+var temperature = "";
+var map = "";
 export default {
   data() {
     return {
@@ -185,6 +249,40 @@ export default {
       }
       return type;
     },
+    refresh() {
+      map.setZoomAndCenter(16, [106.53, 29.49]);
+    },
+    pay(){
+      console.log("支付");
+    },
+    //加入收藏
+    addInventory(){
+      if(this.$store.state.user.length == 0){
+        this.$message.error("未登录!现跳转到登录界面!");
+        setTimeout(() => {
+            this.$router.push("/login");
+          }, 3000);
+        return;
+      }
+      // if(localStorage.getItem("uToken") == null){
+      //   this.$message.error("未登录!现跳转到登录界面!");
+      //   setTimeout(() => {
+      //       this.$router.push("/login");
+      //     }, 3000);
+      //   return;
+      // }
+      request({
+        url:'/collection',
+        method:"post",
+        data:{
+          userId:localStorage.getItem("id"),
+          houseId:this.houseInfos.houseId
+        }
+      }).then(res=>{
+        this.$message.success(res.data.msg)
+        console.log(res.data);
+      })
+    }
   },
   created() {
     request({
@@ -195,11 +293,25 @@ export default {
     }).then((res) => {
       this.houseInfos = res.data.data;
     });
+    AMap.plugin("AMap.Weather", function () {
+      var Aweather = new AMap.Weather();
+      //执行实时天气信息查询
+      Aweather.getLive("重庆市", function (err, data) {
+        city = data.city;
+        humidity = data.humidity;
+        temperature = data.temperature;
+        weather = data.weather;
+        document.getElementById("city").innerHTML = city;
+        document.getElementById("humidity").innerHTML = humidity;
+        document.getElementById("temperature").innerHTML = temperature;
+        document.getElementById("weather").innerHTML = weather;
+      });
+    });
   },
   mounted() {
-    var map = new AMap.Map("demo", {
-      zoom: 12,
-      center: [106.53,29.49],
+    map = new AMap.Map("demo", {
+      zoom: 16,
+      center: [106.53, 29.49],
     });
     AMap.plugin(["AMap.ToolBar", "AMap.Scale"], function () {
       var toolbar = new AMap.ToolBar();
@@ -208,8 +320,8 @@ export default {
       map.addControl(scale);
     });
     var marker = new AMap.Marker({
-      position: new AMap.LngLat(106.53,29.49),
-      title: "北京",
+      position: new AMap.LngLat(106.53, 29.49),
+      title: "重庆",
       offset: new AMap.Pixel(-13, -30),
     });
     map.add(marker);
@@ -238,7 +350,7 @@ export default {
   padding: 5px 0;
   border: #ededed solid 1px;
   border-width: 1px 0;
-  margin-top: 10px;
+  margin-top: 20px;
   position: relative;
 }
 .house-text .cent {

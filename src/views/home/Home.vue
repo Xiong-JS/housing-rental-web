@@ -309,6 +309,7 @@ export default {
     },
   },
   created() {
+    console.log(console.log(localStorage.getItem("uToken")));
     this.getNetherlands();
     this.getHouseInfoByConditions(0, 0);
   },

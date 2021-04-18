@@ -72,7 +72,6 @@ export default {
         });
     },
     loginBtn() {
-      console.log("loginBtn");
       if (this.account != "" && this.password != "") {
         request({
           url: "/userLogin",
@@ -89,12 +88,16 @@ export default {
               message: res.data.result.msg,
               type: "success",
             });
+            localStorage.setItem("id",res.data.result.data[0].id)
+            localStorage.setItem("name",res.data.result.data[0].userName)
+            localStorage.setItem("img",res.data.result.data[0].userImg)
             this.$store.commit(types.SETUSER, res.data.result.data);
             this.$store.commit(types.SETTOKEN, res.data.uToken);
             localStorage.setItem("uToken", res.data.uToken);
             setTimeout(() => {
               this.$router.push("/housingRental");
             }, 1000);
+
           }
         });
       } else {
