@@ -5,7 +5,7 @@
       <div class="box">
         <div class="title">登录</div>
         <div class="input" @click="inputClick">
-          <label for="name">用户名</label>
+          <label for="name">账号</label>
           <input type="text" name="name" id="name" v-model="account" />
           <span class="spin"></span>
         </div>

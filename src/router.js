@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
 const Home = () => import('./views/home/Home.vue')
 const Login = () => import('./views/login.vue')
 const Rgister = () => import('./views/Register.vue')
@@ -9,8 +8,12 @@ const FindHouse = () => import('./views/findhouse/FindHouse.vue')
 const ReleaseHouse = () => import('./views/releasehouse/ReleaseHouse.vue')
 const Collection = () => import('./views/collection/Collection.vue')
 const HouseRentalMain = () => import('./components/HouseRentalMain.vue')
-const FindHouseByZone = ()=>import('./views/findhouse/FindHouseByZone.vue')
-const DetailHouse = ()=>import('./views/findhouse/DetailHouse.vue')
+const FindHouseByZone = () => import('./views/findhouse/FindHouseByZone.vue')
+const DetailHouse = () => import('./views/findhouse/DetailHouse.vue')
+const PersonCenter = () => import('./views/personal/EditPersonalInfo.vue')
+const Inventory = () => import('./views/inventory/Inventory.vue')
+const InventoryUnDone = () => import('./views/inventory/InventoryUndone.vue')
+const InventoryDone = () => import('./views/inventory/InventoryDone.vue')
 
 Vue.use(Router)
 
@@ -38,34 +41,59 @@ export default new Router({
       component: Rgister
     },
     {
+      path: '/personCenter',
+      component: PersonCenter
+    }, {
+      path: '/inventory',
+      component: Inventory
+    },
+    {
+      path: '/inventoryUnDone',
+      component: InventoryUnDone
+    }, {
+      path: '/inventoryDone',
+      component: InventoryDone
+    },
+    {
       path: '/houseRentalMain',
       component: HouseRentalMain,
       children: [{
         path: 'findHouse',
         component: FindHouse,
-        children:[
-          {
-            path:'/',
-            redirect:'findHouseByZone'
+        children: [{
+            path: '/',
+            redirect: 'findHouseByZone'
           },
           {
-            path:'findHouseByZone',
-            component:FindHouseByZone,
-            meta: {keepAlive: true, rootPath: '/houseRentalMain/findHouse'}
+            path: 'findHouseByZone',
+            component: FindHouseByZone,
+            meta: {
+              keepAlive: true,
+              rootPath: '/houseRentalMain/findHouse'
+            }
           }
         ]
       }, {
         path: 'releaseHouse',
         component: ReleaseHouse,
-        meta: {keepAlive: true, rootPath: '/houseRentalMain/releaseHouse'}
+        meta: {
+          keepAlive: true,
+          rootPath: '/houseRentalMain/releaseHouse'
+        }
       }, {
         path: 'collection',
         component: Collection,
-        meta: {keepAlive: true, rootPath: '/houseRentalMain/collection'}
-      },{
-        path:'detailHouse',
-        component:DetailHouse,
-        meta:{keepAlive: true, rootPath: '/houseRentalMain/detailHouse'}
+        meta: {
+          keepAlive: true,
+          rootPath: '/houseRentalMain/collection'
+        }
+      }, {
+        path: 'detailHouse',
+        component: DetailHouse,
+        meta: {
+          keepAlive: true,
+          rootPath: '/houseRentalMain/detailHouse'
+        }
       }]
     }
   ]

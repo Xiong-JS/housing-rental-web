@@ -43,13 +43,13 @@
             }}</span>
           </div>
           <div class="part-line-1" style="margin-top: 10px"></div>
-          <div class="personal-center">
+          <div class="personal-center" @click="personalCenter($store.state.user[0].id)">
             <i class="iconfont icon-people" style="margin-left: 10px"></i
             ><span style="margin-left: 10px">个人中心</span>
           </div>
-          <div class="inventory-center">
+          <div class="inventory-center" @click="inventoryInfo($store.state.user[0].id)">
             <i class="iconfont icon-inventory" style="margin-left: 10px"></i
-            ><span style="margin-left: 10px">订单中心</span>
+            ><span style="margin-left: 10px">订单信息</span>
           </div>
 
           <div class="part-line-1"></div>
@@ -95,6 +95,24 @@ export default {
       }).then((res) => {
         this.user = res.data.data;
         console.log(res.data.data);
+      });
+    },
+    personalCenter(val) {
+      this.$router.push({
+        path:'/personCenter',
+        query:{
+          id:val
+        }
+      });
+      console.log(val);
+    },
+    inventoryInfo(val) {
+      console.log('---------');
+      this.$router.push({
+        path:'/inventory',
+        query:{
+          id:val
+        }
       });
     },
   },
