@@ -107,7 +107,6 @@ export default {
       console.log(val);
     },
     inventoryInfo(val) {
-      console.log('---------');
       this.$router.push({
         path:'/inventory',
         query:{

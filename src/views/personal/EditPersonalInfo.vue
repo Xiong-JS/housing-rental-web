@@ -1,142 +1,148 @@
 <template>
   <div class="edit-mian">
-    <div class="person-info">
-      <div>
-        <i
-          class="iconfont icon-back"
-          style="cursor: pointer"
-          @click="$router.go(-1)"
-        ></i>
-      </div>
-      <div class="part-line-2" style="margin-top: 10px"></div>
-      <div>
-        <el-tabs tab-position="left" style="height: 100%">
-          <el-tab-pane label="账号信息">
-            <div class="account-info">
-              <div class="account-title">账号信息</div>
-              <div class="part-line-1"></div>
-              <div class="line-format">
-                <i class="iconfont icon-success"></i>
-                <span class="title-list">账号</span>
-                <strong>{{ user.userAccount }}</strong>
-              </div>
-              <div class="part-line-1"></div>
-              <div class="line-format">
-                <i class="iconfont icon-success"></i
-                ><span class="title-list">姓名</span>
-                <strong>{{ user.userName }}</strong>
-                <span class="edit" @click="editNameVisble = true">修改</span>
-                <div v-show="editNameVisble">
-                  <div style="margin-left: 150px">
-                    <div>
-                      <el-form
-                        :model="editUser"
-                        :rules="rules"
-                        ref="editUser"
-                        class="demo-ruleForm"
-                        label-width="100px"
-                      >
-                        <el-form-item
-                          prop="userName"
-                          label="姓名"
-                          style="width: 300px"
+    <div class="gray-back">
+      <div class="person-info">
+        <div>
+          <i
+            class="iconfont icon-back"
+            style="cursor: pointer"
+            @click="$router.go(-1)"
+          ></i>
+        </div>
+        <div class="part-line-2" style="margin-top: 10px"></div>
+        <div>
+          <el-tabs tab-position="left" style="height: 100%">
+            <el-tab-pane label="账号信息">
+              <div class="account-info">
+                <div class="account-title">账号信息</div>
+                <div class="part-line-1"></div>
+                <div class="line-format">
+                  <i class="iconfont icon-success"></i>
+                  <span class="title-list">账号</span>
+                  <strong>{{ user.userAccount }}</strong>
+                </div>
+                <div class="part-line-1"></div>
+                <div class="line-format">
+                  <i class="iconfont icon-success"></i
+                  ><span class="title-list">姓名</span>
+                  <strong>{{ user.userName }}</strong>
+                  <span class="edit" @click="editNameVisble = true">修改</span>
+                  <div v-show="editNameVisble">
+                    <div style="margin-left: 150px">
+                      <div>
+                        <el-form
+                          :model="editUser"
+                          :rules="rules"
+                          ref="editUser"
+                          class="demo-ruleForm"
+                          label-width="100px"
                         >
-                          <el-input v-model="editUser.userName"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                          <el-button
-                            type="primary"
-                            @click="confirmEditName('editUser')"
-                            >确定</el-button
+                          <el-form-item
+                            prop="userName"
+                            label="姓名"
+                            style="width: 300px"
                           >
-                          <el-button type="info" plain @click="quitName"
-                            >取消</el-button
-                          >
-                        </el-form-item>
-                      </el-form>
+                            <el-input v-model="editUser.userName"></el-input>
+                          </el-form-item>
+                          <el-form-item>
+                            <el-button
+                              type="primary"
+                              @click="confirmEditName('editUser')"
+                              >确定</el-button
+                            >
+                            <el-button type="info" plain @click="quitName"
+                              >取消</el-button
+                            >
+                          </el-form-item>
+                        </el-form>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="part-line-1"></div>
-              <div class="line-format">
-                <i class="iconfont icon-success"></i
-                ><span class="title-list">密码</span>
-                <strong>*********</strong>
-                <span class="edit" @click="editPasswordVisble = true"
-                  >修改</span
-                >
-                <div v-show="editPasswordVisble">
-                  <el-form
-                    :model="editUser"
-                    status-icon
-                    :rules="rules"
-                    ref="editUser"
-                    label-width="100px"
-                    class="demo-ruleForm"
-                    style="margin-left: 150px"
+                <div class="part-line-1"></div>
+                <div class="line-format">
+                  <i class="iconfont icon-success"></i
+                  ><span class="title-list">密码</span>
+                  <strong>*********</strong>
+                  <span class="edit" @click="editPasswordVisble = true"
+                    >修改</span
                   >
-                    <el-form-item label="密码" prop="userPassword">
-                      <el-input
-                        type="password"
-                        v-model="editUser.userPassword"
-                        auto-complete="off"
-                        style="width: 300px"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item label="确认密码" prop="checkPassword">
-                      <el-input
-                        type="password"
-                        v-model="editUser.checkPassword"
-                        auto-complete="off"
-                        style="width: 300px"
-                      ></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                      <el-button
-                        type="primary"
-                        @click="confirmEditPassword('editUser')"
-                        >提交</el-button
-                      >
-                      <el-button type="info" plain @click="quitPassword"
-                        >取消</el-button
-                      >
-                    </el-form-item>
-                  </el-form>
+                  <div v-show="editPasswordVisble">
+                    <el-form
+                      :model="editUser"
+                      status-icon
+                      :rules="rules"
+                      ref="editUser"
+                      label-width="100px"
+                      class="demo-ruleForm"
+                      style="margin-left: 150px"
+                    >
+                      <el-form-item label="密码" prop="userPassword">
+                        <el-input
+                          type="password"
+                          v-model="editUser.userPassword"
+                          auto-complete="off"
+                          style="width: 300px"
+                        ></el-input>
+                      </el-form-item>
+                      <el-form-item label="确认密码" prop="checkPassword">
+                        <el-input
+                          type="password"
+                          v-model="editUser.checkPassword"
+                          auto-complete="off"
+                          style="width: 300px"
+                        ></el-input>
+                      </el-form-item>
+                      <el-form-item>
+                        <el-button
+                          type="primary"
+                          @click="confirmEditPassword('editUser')"
+                          >提交</el-button
+                        >
+                        <el-button type="info" plain @click="quitPassword"
+                          >取消</el-button
+                        >
+                      </el-form-item>
+                    </el-form>
+                  </div>
+                </div>
+                <div class="part-line-1"></div>
+                <div class="line-format">
+                  <i class="iconfont icon-success"></i
+                  ><span class="title-list">头像</span>
+                  <el-upload
+                    class="avatar-uploader"
+                    :action="uploadUrl"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    style="display: inline"
+                  >
+                    <img
+                      v-if="user.userImg"
+                      :src="user.userImg"
+                      class="avatar"
+                    />
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                </div>
+                <div class="part-line-1"></div>
+                <div class="line-format">
+                  <i class="iconfont icon-success"></i
+                  ><span class="title-list">注册时间</span>
+                  <strong>{{ user.userRegisterTime }}</strong>
+                </div>
+                <div class="part-line-1"></div>
+                <div class="line-format">
+                  <i class="iconfont icon-success"></i
+                  ><span class="title-list">零钱</span>
+                  <strong>{{ user.userWallet }}</strong>
+                  <span class="edit">充值</span>
                 </div>
               </div>
-              <div class="part-line-1"></div>
-              <div class="line-format">
-                <i class="iconfont icon-success"></i
-                ><span class="title-list">头像</span>
-                <el-upload
-                  class="avatar-uploader"
-                  :action="uploadUrl"
-                  :show-file-list="false"
-                  :on-success="handleAvatarSuccess"
-                  :before-upload="beforeAvatarUpload"
-                  style="display: inline"
-                >
-                  <img v-if="user.userImg" :src="user.userImg" class="avatar" />
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-              </div>
-              <div class="part-line-1"></div>
-              <div class="line-format">
-                <i class="iconfont icon-success"></i
-                ><span class="title-list">注册时间</span>
-                <strong>{{ user.userRegisterTime }}</strong>
-              </div>
-              <div class="part-line-1"></div>
-              <div class="line-format">
-                <i class="iconfont icon-success"></i
-                ><span class="title-list">零钱</span>
-                <strong>{{ user.userWallet }}</strong>
-                <span class="edit">充值</span>
-              </div>
-            </div>
-          </el-tab-pane>
-        </el-tabs>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
       </div>
     </div>
   </div>
@@ -220,20 +226,20 @@ export default {
     },
     editUserInfo() {
       request({
-        url:'/user/userEdit',
-        method:'post',
-        params:{
-          id:this.user.id,
-          userAccount:this.user.userAccount,
-          userPassword:this.user.userPassword,
-          userName:this.user.userName,
-          userImg:this.user.userImg,
-          userRegisterTime:this.user.userRegisterTime,
-          userWallet:this.user.userWallet
-        }
-      }).then(res=>{
-        this.user = res.data.data
-      })
+        url: "/user/userEdit",
+        method: "post",
+        params: {
+          id: this.user.id,
+          userAccount: this.user.userAccount,
+          userPassword: this.user.userPassword,
+          userName: this.user.userName,
+          userImg: this.user.userImg,
+          userRegisterTime: this.user.userRegisterTime,
+          userWallet: this.user.userWallet,
+        },
+      }).then((res) => {
+        this.user = res.data.data;
+      });
     },
     quitName() {
       this.editUser.userName = "";
@@ -244,7 +250,7 @@ export default {
         if (valid) {
           this.user.userName = this.editUser.userName;
           this.editUserInfo();
-          this.editNameVisble = false
+          this.editNameVisble = false;
         } else {
           console.log("error submit!!");
           return false;
@@ -256,7 +262,7 @@ export default {
         if (valid) {
           this.user.userPassword = this.editUser.userPassword;
           this.editUserInfo();
-          this.editPasswordVisble = false
+          this.editPasswordVisble = false;
         } else {
           return false;
         }
@@ -280,7 +286,10 @@ export default {
   background-color: #f3f3f3;
   height: 100%;
   width: 100%;
-  /* position: absolute; */
+  position: absolute;
+}
+.gray-back {
+  background-color: #f3f3f3;
 }
 .person-info {
   margin: 0 auto;

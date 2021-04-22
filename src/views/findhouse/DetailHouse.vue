@@ -149,7 +149,7 @@
           <div style="margin-top: 30px">
             <el-row>
               <el-col :span="12" style="text-align: center">
-                <el-button type="danger" plain @click="pay">预约支付</el-button>
+                <el-button type="danger" plain @click="pay">支付房源</el-button>
               </el-col>
               <el-col :span="12" style="text-align: center">
                 <el-button type="danger" plain @click="addInventory">收藏房源</el-button>
@@ -253,7 +253,20 @@ export default {
       map.setZoomAndCenter(16, [106.53, 29.49]);
     },
     pay(){
-      console.log("支付");
+      if(this.$store.state.user.length == 0){
+        this.$message.error("未登录!现跳转到登录界面!");
+        setTimeout(() => {
+            this.$router.push("/login");
+          }, 3000);
+        return;
+      }
+      this.$router.push({
+        path:'/inventoryUnDone',
+        query:{
+          id:this.houseInfos.houseId
+        }
+      });
+
     },
     //加入收藏
     addInventory(){
