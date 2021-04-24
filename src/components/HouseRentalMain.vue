@@ -41,15 +41,28 @@
               >
             </div>
             <div class="part-line-1" style="margin-top: 10px"></div>
-            <div class="personal-center" @click="personalCenter1($store.state.user[0].id)">
+            <div
+              class="personal-center"
+              @click="personalCenter1($store.state.user[0].id)"
+            >
               <i class="iconfont icon-people" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">个人中心</span>
             </div>
-            <div class="inventory-center" @click="inventoryInfo1($store.state.user[0].id)">
+            <div
+              class="inventory-center"
+              @click="inventoryInfo1($store.state.user[0].id)"
+            >
               <i class="iconfont icon-inventory" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">订单信息</span>
             </div>
-
+            <div class="inventory-center">
+              <i class="iconfont icon-house" style="margin-left: 10px"></i
+              ><span style="margin-left: 10px">我的房源</span>
+            </div>
+            <div class="inventory-center">
+              <i class="iconfont icon-rental" style="margin-left: 10px"></i
+              ><span style="margin-left: 10px">租赁信息</span>
+            </div>
             <div class="part-line-1"></div>
             <div class="exit">
               <i class="iconfont icon-exit" style="margin-left: 10px"></i
@@ -99,19 +112,19 @@ export default {
     },
     personalCenter1(val) {
       this.$router.push({
-        path:'/personCenter',
-        query:{
-          id:val
-        }
+        path: "/personCenter",
+        query: {
+          id: val,
+        },
       });
       console.log(val);
     },
     inventoryInfo1(val) {
       this.$router.push({
-        path:'/inventory',
-        query:{
-          id:val
-        }
+        path: "/inventory",
+        query: {
+          id: val,
+        },
       });
     },
   },

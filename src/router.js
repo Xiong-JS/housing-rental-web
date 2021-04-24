@@ -14,6 +14,7 @@ const PersonCenter = () => import('./views/personal/EditPersonalInfo.vue')
 const Inventory = () => import('./views/inventory/Inventory.vue')
 const InventoryUnDone = () => import('./views/inventory/InventoryUndone.vue')
 const InventoryDone = () => import('./views/inventory/InventoryDone.vue')
+const InventoryPay = () => import('./views/inventory/InventoryPay.vue')
 
 Vue.use(Router)
 
@@ -46,6 +47,10 @@ export default new Router({
     }, {
       path: '/inventory',
       component: Inventory
+    },
+    {
+      path:'/inventoryPay',
+      component:InventoryPay
     },
     {
       path: '/inventoryUnDone',

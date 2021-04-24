@@ -51,17 +51,184 @@
             >在线支付</span
           >
         </div>
-        <div class="part-line-1" style="margin-top:20px"></div>
+        <div class="part-line-1" style="margin-top: 20px"></div>
         <h3>房源清单</h3>
         <div style="margin-left: 20px; padding: 10px 0 10px 0">
-          <div class="rental-time">
-
-          </div>
-          <div class="house-list div-line">
-
-          </div>
+          <el-row>
+            <el-col :span="8"
+              ><div class="rental-time">
+                <span style="color: #666; font-size: 13px; font-weight: bolder"
+                  >租赁天数(单位:月)</span
+                >
+                <el-radio-group
+                  v-model="inventory.rentalTime"
+                  fill="#ed2553"
+                  style="margin-top: 10px"
+                >
+                  <el-row :gutter="20">
+                    <el-col :span="6"
+                      ><el-radio-button label="1">一月</el-radio-button></el-col
+                    >
+                    <el-col :span="6"
+                      ><el-radio-button label="2">二月</el-radio-button></el-col
+                    >
+                    <el-col :span="6"
+                      ><el-radio-button label="3">三月</el-radio-button></el-col
+                    >
+                    <el-col :span="6"
+                      ><el-radio-button label="6">半年</el-radio-button></el-col
+                    >
+                    <el-col>
+                      <el-radio-button label="12">一年</el-radio-button>
+                    </el-col>
+                  </el-row>
+                </el-radio-group>
+                <div class="part-line-2" style="margin-top: 20px"></div>
+                <div style="margin-top: 10px">
+                  <span
+                    style="color: #666; font-size: 13px; font-weight: bolder"
+                    >天数:</span
+                  >
+                  <span
+                    style="
+                      margin-left: 20px;
+                      color: #666;
+                      font-size: 13px;
+                      font-weight: bolder;
+                    "
+                    >{{ inventory.rentalTime }}月</span
+                  >
+                </div>
+              </div></el-col
+            >
+            <el-col :span="16"
+              ><div class="house-list">
+                <span style="color: #666; font-size: 13px; font-weight: bolder"
+                  >房源信息</span
+                >
+                <div style="margin-top: 10px">
+                  <el-row>
+                    <el-col :span="6"
+                      ><div>
+                        <img
+                          style="height: 100px; width: 150px"
+                          :src="houseInfo.img"
+                          :alt="houseInfo.community"
+                        /></div
+                    ></el-col>
+                    <el-col :span="18">
+                      <el-row>
+                        <el-col :span="16">
+                          <div>
+                            <span
+                              style="font-size:13px;font-weight:boldercolor: #666"
+                              >{{ houseInfo.netherlands }}-{{
+                                houseInfo.detailNetherlands
+                              }}-{{ houseInfo.community }}</span
+                            >
+                          </div>
+                          <div
+                            style="font-size:13px;font-weight:boldercolor: #666;margin-top:20px"
+                          >
+                            特色:
+                            <span type="info" v-show="houseInfo.toilet == 1"
+                              >独卫,</span
+                            >
+                            <span type="info" v-show="houseInfo.balcony == 1"
+                              >带阳台,</span
+                            >
+                            <span type="info" v-show="houseInfo.houseType == 1"
+                              >电梯房,</span
+                            >
+                            <span type="info" v-show="houseInfo.monthPay == 1"
+                              >月付,</span
+                            >
+                            <span type="info" v-show="houseInfo.hardback == 1"
+                              >精装修,</span
+                            >
+                            <span
+                              type="info"
+                              v-show="houseInfo.homeAppliances == 1"
+                              >家电齐全</span
+                            >
+                          </div>
+                        </el-col>
+                        <el-col :span="4">
+                          <div>
+                            <span
+                              style="
+                                font-size: 13px;
+                                font-weight: bolder;
+                                color: #ed2553;
+                              "
+                              >￥{{ houseInfo.quote }}</span
+                            >
+                          </div>
+                        </el-col>
+                        <el-col :span="4">
+                          <div>
+                            <span
+                              style="
+                                font-size: 13px;
+                                font-weight: bolder;
+                                color: #666;
+                              "
+                              >1月</span
+                            >
+                          </div>
+                        </el-col>
+                      </el-row>
+                    </el-col>
+                  </el-row>
+                </div>
+              </div></el-col
+            >
+          </el-row>
         </div>
       </div>
+      <div style="margin-top: 20px; float: right">
+        <div>
+          <span style="color: #666; font-size: 13px"
+            >租赁<span style="color: #ed2553; margin-left: 10px">{{
+              inventory.rentalTime
+            }}</span
+            >月 ，总金额:
+            <span style="color: #ed2553; margin-left: 10px"
+              >￥{{ getQuoteMoney }}</span
+            >
+          </span>
+        </div>
+
+        <div style="font-size: 13px; margin-top: 10px; float: right">
+          <span style="color: #666">押金:</span>
+          <span style="color: #ed2553; margin-left: 10px"
+            >￥{{ this.houseInfo.cashPledge }}</span
+          >
+        </div>
+      </div>
+      <div class="pay-total-money">
+        <el-row>
+          <el-col :span="20">
+            <div style="height: 1px"></div>
+          </el-col>
+          <el-col :span="4">
+            <div style="font-size: 13px; margin-top: 10px">
+              <span style="color: #666">应付金额:</span>
+              <span
+                style="
+                  margin-left: 20px;
+                  color: #ed2553;
+                  font-weight: bolder;
+                  font-size: 20px;
+                "
+              >
+                ￥{{ getTotalMoney }}
+              </span>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <button class="submit-button" @click="submitInventory" >提交订单</button>
     </div>
   </div>
 </template>
@@ -83,14 +250,24 @@ export default {
         rentalMoney: "",
         cashPledge: "",
         totalMoney: "",
-        rentalPhone: "",
+        rentalPhone: '',
+        rentalTime: "1",
+        moneyType:''
       },
     };
   },
-  computed:{
-    getTotalMoney(){
-      return parseInt(this.houseInfo.quote)  + parseInt(this.houseInfo.cashPledge) 
-    }
+  computed: {
+    getTotalMoney() {
+      return (
+        parseInt(this.houseInfo.quote) * parseInt(this.inventory.rentalTime) +
+        parseInt(this.houseInfo.cashPledge)
+      );
+    },
+    getQuoteMoney() {
+      return (
+        parseInt(this.houseInfo.quote) * parseInt(this.inventory.rentalTime)
+      );
+    },
   },
   methods: {
     getHouseInfoById(val) {
@@ -101,6 +278,7 @@ export default {
         },
       }).then((res) => {
         this.houseInfo = res.data.data;
+        
       });
     },
     getUserInfo() {
@@ -111,8 +289,22 @@ export default {
         },
       }).then((res) => {
         this.user = res.data.data;
+        this.inventory.rentalPhone = this.user.userPhone
       });
     },
+    submitInventory(){
+      this.inventory.cashPledge = this.houseInfo.cashPledge
+      this.inventory.rentalMoney = this.houseInfo.quote
+      this.inventory.totalMoney =  parseInt(this.houseInfo.quote) * parseInt(this.inventory.rentalTime) +
+        parseInt(this.houseInfo.cashPledge)
+      this.$router.push({
+        path:'/inventoryPay',
+        query:{
+          "inventory":this.inventory,
+          "houseInfo":this.houseInfo
+        }
+      })
+    }
   },
   created() {
     this.getUserInfo();
@@ -174,14 +366,31 @@ export default {
 .edit:hover {
   color: #ed2553;
 }
-.rental-time{
-  width: 350px;
+.rental-time {
   padding: 10px;
   background-color: #f2f2f2;
 }
-.house-list{
-  width: 600px;
+.house-list {
   padding: 10px;
+  height: 183px;
   background-color: #f3fbfe;
 }
+.pay-total-money {
+  background-color: #f4f4f4;
+  margin-top: 100px;
+  padding: 10px 0 10px 0;
+  margin-bottom: 20px;
+}
+.submit-button {
+  width: 135px;
+  height: 36px;
+  cursor: pointer;
+  background-color: #ed2553;
+  color: #fff;
+  font-weight: bolder;
+  border: 1px solid #fff;
+  margin-bottom: 10px;
+  float: right;
+}
+
 </style>
