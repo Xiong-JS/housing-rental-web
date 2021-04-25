@@ -1,142 +1,190 @@
 <template>
   <div class="inventory-mian">
     <div class="inventory-list">
-      <div>
-        <el-row>
-          <el-col :span="12"
-            ><div>
-              <img
-                src="../../assets/logo2018.png"
-                alt=""
-                class="logo-img"
-              /></div
-          ></el-col>
-          <el-col :span="12">
-            <div class="nav-bar">
-              <span class="inventory-name">{{ userName }}</span
-              >| <span class="inventory-home" @click="homeClick">首页</span>|
-              <span class="inventory-mine" @click="myInventory">我的订单</span>
-            </div></el-col
-          >
-        </el-row>
-      </div>
+      <inventory-navgation-bar></inventory-navgation-bar>
       <div class="inventory-title">我的订单</div>
-      <div class="inventory-info-list">
-        <el-tabs type="border-card">
-          <el-tab-pane label="全部订单">
-            <div class="all-inventory-status-bar">
-              <el-row>
-                <el-col :span="4" 
-                  ><el-dropdown @command="allInventoryDateCommand" size="small" style="margin-left:20px">
-                    <span class="el-dropdown-link">
-                      {{ allDateCommandText
-                      }}<i class="el-icon-arrow-down el-icon--right"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item command="0">全部</el-dropdown-item>
-                      <el-dropdown-item command="1">近三个月</el-dropdown-item>
-                      <el-dropdown-item command="2">近一年</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown></el-col
-                >
-                <el-col :span="8" style="text-align: center;"
-                  ><span class="status-bar-text">订单详情</span></el-col
-                >
-                <el-col :span="3" style="text-align: center;"
-                  ><span class="status-bar-text">租赁人</span></el-col
-                >
-                <el-col :span="3" style="text-align: center;"
-                  ><span class="status-bar-text">金额</span></el-col
-                >
-                <el-col :span="3" style="text-align: center;"
-                  ><span class="status-bar-text"
+      <div style="background-color: #f5f5f5; height: 100%">
+        <div class="inventory-info-list">
+          <el-tabs type="border-card">
+            <el-tab-pane label="全部订单">
+              <div class="inventory-status-bar">
+                <el-row>
+                  <el-col :span="4"
                     ><el-dropdown
-                      @command="allInventoryStateCommand"
+                      @command="allInventoryDateCommand"
                       size="small"
+                      style="margin-left: 20px"
                     >
                       <span class="el-dropdown-link">
-                        {{ allStateCommandText
+                        {{ allDateCommandText
                         }}<i class="el-icon-arrow-down el-icon--right"></i>
                       </span>
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="0"
-                          >全部状态</el-dropdown-item
-                        >
+                        <el-dropdown-item command="0">全部</el-dropdown-item>
                         <el-dropdown-item command="1"
-                          >等待付款</el-dropdown-item
+                          >近三个月</el-dropdown-item
                         >
-                        <el-dropdown-item command="2">已完成</el-dropdown-item>
-                        <el-dropdown-item command="3">已取消</el-dropdown-item>
+                        <el-dropdown-item command="2">近一年</el-dropdown-item>
                       </el-dropdown-menu>
-                    </el-dropdown></span
-                  ></el-col
-                >
-                <el-col :span="3" style="text-align: center;"
-                  ><span class="status-bar-text">操作</span></el-col
-                >
-              </el-row>
-            </div>
-            <div v-for="item in 2" :key="item">
-              <div class="inventory-info-detail">
-                <div style="background-color: #f5f5f5;">
-                  <div style="padding: 10px 0 10px 10px">
-                    <span>2021-04-24 15:23:42</span>
-                    <span style="margin-left: 20px">订单号:</span>
-                    <span style="margin-left: 10px; color: black"
-                      >169825768332</span
-                    >
-                  </div>
-                </div>
-                <div style="border:2px solid #f5f5f5">
-                  <el-row>
-                    <el-col :span="12">
-                      <div style="border-right:2px solid #f5f5f5">11</div>
-                    </el-col>
-                    <el-col :span="3">
-                      <div style="border-right:2px solid #f5f5f5">1</div>
-                    </el-col>
-                    <el-col :span="3">
-                      <div style="border-right:2px solid #f5f5f5">1</div>
-                    </el-col>
-                    <el-col :span="3">
-                      <div style="border-right:2px solid #f5f5f5">1</div>
-                    </el-col>
-                    <el-col :span="3">
-                      <div>1</div>
-                    </el-col>
-                  </el-row>
-                </div>
+                    </el-dropdown></el-col
+                  >
+                  <el-col :span="8" style="text-align: center"
+                    ><span class="status-bar-text">订单详情</span></el-col
+                  >
+                  <el-col :span="3" style="text-align: center"
+                    ><span class="status-bar-text">租赁人</span></el-col
+                  >
+                  <el-col :span="3" style="text-align: center"
+                    ><span class="status-bar-text">金额</span></el-col
+                  >
+                  <el-col :span="3" style="text-align: center"
+                    ><span class="status-bar-text"
+                      ><el-dropdown
+                        @command="allInventoryStateCommand"
+                        size="small"
+                      >
+                        <span class="el-dropdown-link">
+                          {{ allStateCommandText
+                          }}<i class="el-icon-arrow-down el-icon--right"></i>
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                          <el-dropdown-item command="0"
+                            >全部状态</el-dropdown-item
+                          >
+                          <el-dropdown-item command="1"
+                            >等待付款</el-dropdown-item
+                          >
+                          <el-dropdown-item command="2"
+                            >已完成</el-dropdown-item
+                          >
+                          <el-dropdown-item command="3"
+                            >已取消</el-dropdown-item
+                          >
+                        </el-dropdown-menu>
+                      </el-dropdown></span
+                    ></el-col
+                  >
+                  <el-col :span="3" style="text-align: center"
+                    ><span class="status-bar-text">操作</span></el-col
+                  >
+                </el-row>
               </div>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="待付款">
-            <div class="unfinish-inventory-status-bar">待付款</div>
-          </el-tab-pane>
-          <el-tab-pane label="已完成">
-            <div class="finished-inventory-status-bar">已完成</div>
-          </el-tab-pane>
-        </el-tabs>
+              <inventory-card :datas="inventoryAllDatas"></inventory-card>
+            </el-tab-pane>
+            <el-tab-pane label="待付款">
+              <div class="inventory-status-bar">
+                <el-row>
+                  <el-col :span="4"
+                    ><span style="margin-left: 20px" class="status-bar-text">日期</span></el-col
+                  >
+                  <el-col :span="8" style="text-align: center"
+                    ><span class="status-bar-text">订单详情</span></el-col
+                  >
+                  <el-col :span="3" style="text-align: center"
+                    ><span class="status-bar-text">租赁人</span></el-col
+                  >
+                  <el-col :span="3" style="text-align: center"
+                    ><span class="status-bar-text">金额</span></el-col
+                  >
+                  <el-col :span="3" style="text-align: center"
+                    ><span class="status-bar-text"> 状态 </span></el-col
+                  >
+                  <el-col :span="3" style="text-align: center"
+                    ><span class="status-bar-text">操作</span></el-col
+                  >
+                </el-row>
+              </div>
+              <inventory-card
+                :datas="inventoryUnFinishedDatas"
+              ></inventory-card>
+            </el-tab-pane>
+            <el-tab-pane label="已完成">
+              <div class="inventory-status-bar">
+                <el-row>
+                  <el-col :span="4"
+                    ><el-dropdown
+                      @command="finishedInventoryDateCommand"
+                      size="small"
+                      style="margin-left: 20px"
+                    >
+                      <span class="el-dropdown-link">
+                        {{ finishedDateCommandText
+                        }}<i class="el-icon-arrow-down el-icon--right"></i>
+                      </span>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item command="0">全部</el-dropdown-item>
+                        <el-dropdown-item command="1"
+                          >近三个月</el-dropdown-item
+                        >
+                        <el-dropdown-item command="2">近一年</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown></el-col
+                  >
+                  <el-col :span="8" style="text-align: center"
+                    ><span class="status-bar-text">订单详情</span></el-col
+                  >
+                  <el-col :span="3" style="text-align: center"
+                    ><span class="status-bar-text">租赁人</span></el-col
+                  >
+                  <el-col :span="3" style="text-align: center"
+                    ><span class="status-bar-text">金额</span></el-col
+                  >
+                  <el-col :span="3" style="text-align: center"
+                    ><span class="status-bar-text"
+                      ><el-dropdown
+                        @command="finishedInventoryStateCommand"
+                        size="small"
+                      >
+                        <span class="el-dropdown-link">
+                          {{ finishedStateCommandText
+                          }}<i class="el-icon-arrow-down el-icon--right"></i>
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                          <el-dropdown-item command="0"
+                            >全部状态</el-dropdown-item
+                          >
+                          <el-dropdown-item command="1"
+                            >已完成</el-dropdown-item
+                          >
+                          <el-dropdown-item command="2"
+                            >已取消</el-dropdown-item
+                          >
+                        </el-dropdown-menu>
+                      </el-dropdown></span
+                    ></el-col
+                  >
+                  <el-col :span="3" style="text-align: center"
+                    ><span class="status-bar-text">操作</span></el-col
+                  >
+                </el-row>
+              </div>
+              <inventory-card :datas="invnetoryFinishedDatas"></inventory-card>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import InventoryNavgationBar from '../../components/InventoryNavgationBar.vue';
+import InventoryCard from "./InventoryCard.vue";
 export default {
   data() {
     return {
       userName: localStorage.getItem("name"),
       allDateCommandText: "全部",
+      finishedDateCommandText:'全部',
       allStateCommandText: "全部状态",
+      finishedStateCommandText:'全部状态',
+      deleteVisble: "",
+      inventoryAllDatas: [1, 2],
+      inventoryUnFinishedDatas: [1],
+      invnetoryFinishedDatas: [1],
     };
   },
   methods: {
-    homeClick() {
-      this.$router.push("/");
-    },
-    myInventory() {
-      this.$router.push("/inventory");
-    },
     allInventoryDateCommand(command) {
       if (command == 0) {
         this.allDateCommandText = "全部";
@@ -146,6 +194,16 @@ export default {
         this.allDateCommandText = "近一年";
       }
     },
+    finishedInventoryDateCommand(command){
+      if (command == 0) {
+        this.finishedDateCommandText = "全部";
+      } else if (command == 1) {
+        this.finishedDateCommandText = "近三个月";
+      } else if (command == 2) {
+        this.finishedDateCommandText = "近一年";
+      }
+    },
+
     allInventoryStateCommand(command) {
       if (command == 0) {
         this.allStateCommandText = "全部状态";
@@ -157,6 +215,19 @@ export default {
         this.allStateCommandText = "已取消";
       }
     },
+    finishedInventoryStateCommand(command){
+      if (command == 0) {
+        this.finishedStateCommandText = "全部状态";
+      } else if (command == 1) {
+        this.finishedStateCommandText = "已完成";
+      } else {
+        this.finishedStateCommandText = "已取消";
+      }
+    }
+  },
+  components: {
+    InventoryCard,
+    InventoryNavgationBar,
   },
 };
 </script>
@@ -174,33 +245,8 @@ export default {
   margin: 0 auto;
   width: 1200px;
 }
-.logo-img {
-  width: 120px;
-  height: 70px;
-  vertical-align: middle;
-}
-.nav-bar {
-  float: right;
-  font-size: 13px;
-  color: #666666;
-}
-.inventory-home {
-  margin: 0 10px 0 10px;
-  cursor: pointer;
-}
-.inventory-home:hover,
-.inventory-name:hover,
-.inventory-mine:hover {
-  color: #ed2553;
-}
-.inventory-name {
-  margin-right: 10px;
-  cursor: pointer;
-}
-.inventory-mine {
-  margin: 0 10px 0 10px;
-  cursor: pointer;
-}
+
+
 .inventory-title {
   margin-top: 20px;
   padding: 20px 0 20px 20px;
@@ -213,15 +259,7 @@ export default {
   padding: 20px 20px 20px 20px;
   margin-top: 20px;
 }
-.all-inventory-status-bar {
-  padding: 10px 10px 10px 20px;
-  background-color: #f5f5f5;
-}
-.unfinish-inventory-status-bar {
-  padding: 10px 10px 10px 20px;
-  background-color: #f5f5f5;
-}
-.finished-inventory-status-bar {
+.inventory-status-bar {
   padding: 10px 10px 10px 20px;
   background-color: #f5f5f5;
 }
@@ -239,5 +277,16 @@ export default {
   font-size: 13px;
   color: #aaaaaa;
 }
-
+.inventory-info-detail img {
+  width: 60px;
+  height: 60px;
+  padding: 10px 0 10px 30px;
+}
+.inventory-detail {
+  color: #666666;
+  cursor: pointer;
+}
+.inventory-detail:hover {
+  color: #ed2553;
+}
 </style>

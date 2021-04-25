@@ -9,22 +9,7 @@
   >
     <div class="inventory-pay-main">
       <div class="pay-head">
-        <el-row>
-          <el-col :span="12"
-            ><div>
-              <img src="../../assets/logo2018.png" alt="" class="logo-img" />
-              <span class="inventory-pay-title">收银台</span>
-            </div></el-col
-          >
-          <el-col :span="12">
-            <div class="nav-bar">
-              <span class="inventory-name">{{ userName }}</span
-              >|
-              <span class="inventory-home" @click="homeClick">首页</span>|
-              <span class="inventory-mine" @click="myInventory">我的订单</span>
-            </div></el-col
-          >
-        </el-row>
+        <inventory-navgation-bar></inventory-navgation-bar>
       </div>
       <div style="margin-top: 20px" v-if="inventoryDoingVisble">
         <el-row>
@@ -126,14 +111,15 @@
 </template>
 
 <script>
+import InventoryNavgationBar from '../../components/InventoryNavgationBar.vue';
 import request from "../../network/request";
 export default {
+  components: { InventoryNavgationBar },
   data() {
     return {
       user: {},
       houseInfo: {},
       inventory: {},
-      userName: localStorage.getItem("name"),
       countTimeL: "",
       minutes: "",
       seconds: "",
@@ -152,12 +138,6 @@ export default {
       }
       random_no = new Date().getTime() + random_no;
       return random_no;
-    },
-    homeClick() {
-      this.$router.push("/");
-    },
-    myInventory() {
-      this.$router.push("/inventory");
     },
     getCountTime() {},
     showInventory() {
@@ -227,33 +207,6 @@ export default {
   font-size: 22px;
   color: #666666;
   margin-left: 30px;
-}
-.nav-bar {
-  float: right;
-  font-size: 13px;
-  color: #666666;
-}
-.logo-img {
-  width: 100px;
-  height: 70px;
-  vertical-align: middle;
-}
-.inventory-home {
-  margin: 0 10px 0 10px;
-  cursor: pointer;
-}
-.inventory-home:hover,
-.inventory-name:hover,
-.inventory-mine:hover {
-  color: #ed2553;
-}
-.inventory-name {
-  margin-right: 10px;
-  cursor: pointer;
-}
-.inventory-mine {
-  margin: 0 10px 0 10px;
-  cursor: pointer;
 }
 .show-inventory {
   color: #005ea7;

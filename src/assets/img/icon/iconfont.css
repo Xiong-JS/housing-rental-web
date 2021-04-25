@@ -1,13 +1,12 @@
 @font-face {
   font-family: 'iconfont';  /* project id 2370303 */
-  src: url('//at.alicdn.com/t/font_2370303_18azvau20ygj.eot');
-  src: url('//at.alicdn.com/t/font_2370303_18azvau20ygj.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_2370303_18azvau20ygj.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_2370303_18azvau20ygj.woff') format('woff'),
-  url('//at.alicdn.com/t/font_2370303_18azvau20ygj.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_2370303_18azvau20ygj.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_2370303_e025nmub6sd.eot');
+  src: url('//at.alicdn.com/t/font_2370303_e025nmub6sd.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2370303_e025nmub6sd.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2370303_e025nmub6sd.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2370303_e025nmub6sd.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2370303_e025nmub6sd.svg#iconfont') format('svg');
 }
-
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
@@ -64,71 +63,109 @@
   content: "\e62e";
 }
 
-.icon-weizhi:before{
+.icon-weizhi:before {
   content: "\e604";
   color: #A9D0F5;
   font-size: 30px;
 }
-.icon-money:before{
+
+.icon-money:before {
   content: "\e62d";
   color: #73c9e5;
   font-size: 20px;
 }
-.icon-people:before{
+
+.icon-people:before {
   content: "\e614";
 }
-.icon-inventory:before{
+
+.icon-inventory:before {
   content: "\e600";
 }
 
-.icon-exit:before{
+.icon-exit:before {
   content: "\e66c";
 }
 
-.icon-back:before{
+.icon-back:before {
   content: "\e759";
   font-size: 30px;
   color: #585858;
 }
-.icon-success:before{
+
+.icon-success:before {
   content: "\e601";
   color: rgb(35, 173, 62);
 }
-.icon-done:before{
+
+.icon-done:before {
   content: "\e601";
   color: #ed2553;
 }
-.icon-back1:before{
+
+.icon-back1:before {
   content: "\e65d";
   font-size: 30px;
   color: #585858;
 }
-.icon-back2:before{
+
+.icon-back2:before {
   content: "\e602";
   font-size: 30px;
   color: #585858;
 }
-.icon-back3:before{
+
+.icon-back3:before {
   content: "\e61e";
   font-size: 30px;
   color: #585858;
 }
-.icon-back4:before{
+
+.icon-back4:before {
   content: "\e60a";
   font-size: 30px;
   color: #585858;
 }
 
-.icon-house:before{
+.icon-house:before {
   content: "\e669";
 }
 
-.icon-rental:before{
+.icon-rental:before {
   content: "\e6bc";
 }
 
-.icon-inventory-outtime:before{
+.icon-inventory-outtime:before {
   content: '\e668';
-  color:rgb(254, 167, 0);
+  color: rgb(254, 167, 0);
   font-size: 35px;
+}
+
+.icon-rightnow-buy:before {
+  content: '\e6c3';
+  color:#ed2553;
+  font-size:13px;
+}
+
+.icon-chancel:before {
+  content: '\e61c';
+  color: #666666;
+  font-size:13px;
+}
+
+.icon-inventory-apply:before{
+  content: '\e615';
+  font-size: 30px;
+  color:#71b247;
+}
+
+.icon-inventory-deal:before{
+  content: '\e649';
+  color:#71b247;
+  font-size: 28px;
+}
+.icon-inventory-finished:before{
+  content: '\e7ed';
+  color:#71b247;
+  font-size: 28px;
 }
