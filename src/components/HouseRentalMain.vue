@@ -55,11 +55,17 @@
               <i class="iconfont icon-inventory" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">订单信息</span>
             </div>
-            <div class="inventory-center">
+            <div
+              class="inventory-center"
+              @click="myHouseInfo1($store.state.user[0].id)"
+            >
               <i class="iconfont icon-house" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">我的房源</span>
             </div>
-            <div class="inventory-center">
+            <div
+              class="inventory-center"
+              @click="myRentalInfo1($store.state.user[0].id)"
+            >
               <i class="iconfont icon-rental" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">租赁信息</span>
             </div>
@@ -122,6 +128,22 @@ export default {
     inventoryInfo1(val) {
       this.$router.push({
         path: "/inventory",
+        query: {
+          id: val,
+        },
+      });
+    },
+    myHouseInfo1(val) {
+      this.$router.push({
+        path: "/myReleaseHouseInfo",
+        query: {
+          id: val,
+        },
+      });
+    },
+    myRentalInfo1(val) {
+      this.$router.push({
+        path: "/myRentalSituation",
         query: {
           id: val,
         },

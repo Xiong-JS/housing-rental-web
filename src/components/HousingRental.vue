@@ -59,12 +59,14 @@
           </div>
           <div
             class="inventory-center"
+            @click="myHouseInfo($store.state.user[0].id)"
           >
             <i class="iconfont icon-house" style="margin-left: 10px"></i
             ><span style="margin-left: 10px">我的房源</span>
           </div>
           <div
             class="inventory-center"
+            @click="myRentalInfo($store.state.user[0].id)"
           >
             <i class="iconfont icon-rental" style="margin-left: 10px"></i
             ><span style="margin-left: 10px">租赁信息</span>
@@ -126,6 +128,22 @@ export default {
     inventoryInfo(val) {
       this.$router.push({
         path: "/inventory",
+        query: {
+          id: val,
+        },
+      });
+    },
+    myHouseInfo(val) {
+      this.$router.push({
+        path: "/myReleaseHouseInfo",
+        query: {
+          id: val,
+        },
+      });
+    },
+    myRentalInfo(val) {
+      this.$router.push({
+        path: "/myRentalSituation",
         query: {
           id: val,
         },

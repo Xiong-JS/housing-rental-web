@@ -23,7 +23,7 @@
         <div style="border: 2px solid #f5f5f5">
           <el-row>
             <el-col :span="12">
-              <div style="border-right: 2px solid #f5f5f5">
+              <div style="border-right: 2px solid #f5f5f5;height: 83px">
                 <el-row>
                   <el-col :span="6">
                     <img src="../../assets/img/3.jpg" alt="" />

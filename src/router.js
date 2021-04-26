@@ -15,6 +15,8 @@ const Inventory = () => import('./views/inventory/Inventory.vue')
 const InventoryUnDone = () => import('./views/inventory/InventoryUndone.vue')
 const InventoryDone = () => import('./views/inventory/InventoryDone.vue')
 const InventoryPay = () => import('./views/inventory/InventoryPay.vue')
+const MyReleaseHouseInfo = () => import('./views/personal/MyReleaseHouseInfo.vue')
+const MyRentalSituation = () => import('./views/personal/MyRentalSituation.vue')
 
 Vue.use(Router)
 
@@ -49,8 +51,8 @@ export default new Router({
       component: Inventory
     },
     {
-      path:'/inventoryPay',
-      component:InventoryPay
+      path: '/inventoryPay',
+      component: InventoryPay
     },
     {
       path: '/inventoryUnDone',
@@ -58,6 +60,14 @@ export default new Router({
     }, {
       path: '/inventoryDone',
       component: InventoryDone
+    },
+    {
+      path:'/myReleaseHouseInfo',
+      component:MyReleaseHouseInfo
+    },
+    {
+      path:'/myRentalSituation',
+      component:MyRentalSituation
     },
     {
       path: '/houseRentalMain',
