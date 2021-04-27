@@ -23,12 +23,14 @@
     <div class="part-line-2"></div>
     <div class="main">
       <div class="nav-classify">
-        <div class="zone" :class="{'zone-active-bgcolor':isShow}">
-          <router-link to="/HouseRentalMain/findHouse/findHouseByZone" style="margin-top:10px;position:absolute;">
-          <span :class="{'zone-active-font':isShow}">区域找房</span>
-        </router-link>
+        <div class="zone" :class="{ 'zone-active-bgcolor': isShow }">
+          <router-link
+            to="/HouseRentalMain/findHouse/findHouseByZone"
+            style="margin-top: 10px; position: absolute"
+          >
+            <span :class="{ 'zone-active-font': isShow }">区域找房</span>
+          </router-link>
         </div>
-        
       </div>
       <keep-alive><router-view></router-view></keep-alive>
     </div>
@@ -36,39 +38,39 @@
 </template>
 
 <script>
-import request from '../../network/request'
-import * as types from "../../store/mutations-type-string"
+import request from "../../network/request";
+import * as types from "../../store/mutations-type-string";
 export default {
   data() {
     return {
       searchForm: {
         content: "",
       },
-      isShow:false
+      isShow: false,
     };
   },
   methods: {
     search() {
-      this.getHouseInfoByContent(this.searchForm.content,0)
+      this.getHouseInfoByContent(this.searchForm.content, 0);
     },
-    getHouseInfoByContent(content,type){
+    getHouseInfoByContent(content, type) {
       request({
-        url:'/house/content',
-        params:{
+        url: "/house/content",
+        params: {
           content,
           type,
-          page:1,
-          limit:5
-        }
-      }).then(res=>{
-        this.$store.commit(types.SETHOUSEINFOS,res.data.data)
+          page: 1,
+          limit: 5,
+        },
+      }).then((res) => {
+        this.$store.commit(types.SETHOUSEINFOS, res.data.data);
         console.log(res);
-      })
+      });
     },
   },
-  created(){
-    this.isShow = true
-  }
+  created() {
+    this.isShow = true;
+  },
 };
 </script>
 

@@ -11,7 +11,9 @@
           <div style="padding: 10px 0 10px 10px">
             <span>2021-04-24 15:23:42</span>
             <span style="margin-left: 20px">订单号:</span>
-            <span class="inventory-number" @click="inventoryDetail(item)">169825768332</span>
+            <span class="inventory-number" @click="inventoryDetail(item)"
+              >169825768332</span
+            >
             <span
               style="float: right; margin-right: 20px; cursor: pointer"
               v-show="deleteVisble == item"
@@ -23,7 +25,7 @@
         <div style="border: 2px solid #f5f5f5">
           <el-row>
             <el-col :span="12">
-              <div style="border-right: 2px solid #f5f5f5;height: 83px">
+              <div style="border-right: 2px solid #f5f5f5; height: 83px">
                 <el-row>
                   <el-col :span="6">
                     <img src="../../assets/img/3.jpg" alt="" />
@@ -78,16 +80,20 @@
             <el-col :span="3">
               <div style="text-align: center">
                 <div
-                  style="color: #ed2553; cursor: pointer; margin-top: 15px"
-                  @click="rightNowBuy"
+                  style="color: #ed2553; margin-top: 15px"
+                  @click="rightNowRental"
                 >
-                  <i class="iconfont icon-rightnow-buy"></i> 立即购买
+                  <span style="cursor: pointer"
+                    ><i class="iconfont icon-rightnow-buy"></i> 立即租赁</span
+                  >
                 </div>
                 <div
-                  style="color: #666666; cursor: pointer; margin-top: 10px"
+                  style="color: #666666; margin-top: 10px"
                   @click="chancelInventory"
                 >
-                  <i class="iconfont icon-chancel"></i> 点击取消
+                  <span style="cursor: pointer"
+                    ><i class="iconfont icon-chancel"></i> 点击取消</span
+                  >
                 </div>
               </div>
             </el-col>
@@ -130,7 +136,7 @@ export default {
     deleteInventory(val) {
       console.log(val);
     },
-    rightNowBuy() {
+    rightNowRental() {
       window.alert("立即购买");
     },
     chancelInventory() {
