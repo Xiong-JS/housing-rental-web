@@ -228,7 +228,7 @@
           </el-col>
         </el-row>
       </div>
-      <button class="submit-button" @click="submitInventory" >提交订单</button>
+      <button class="submit-button" @click="submitInventory">提交订单</button>
     </div>
   </div>
 </template>
@@ -250,9 +250,8 @@ export default {
         rentalMoney: "",
         cashPledge: "",
         totalMoney: "",
-        rentalPhone: '',
+        rentalPhone: "",
         rentalTime: "1",
-        moneyType:''
       },
     };
   },
@@ -278,7 +277,6 @@ export default {
         },
       }).then((res) => {
         this.houseInfo = res.data.data;
-        
       });
     },
     getUserInfo() {
@@ -289,22 +287,48 @@ export default {
         },
       }).then((res) => {
         this.user = res.data.data;
-        this.inventory.rentalPhone = this.user.userPhone
+        this.inventory.rentalPhone = this.user.userPhone;
       });
     },
-    submitInventory(){
-      this.inventory.cashPledge = this.houseInfo.cashPledge
-      this.inventory.rentalMoney = this.houseInfo.quote
-      this.inventory.totalMoney =  parseInt(this.houseInfo.quote) * parseInt(this.inventory.rentalTime) +
-        parseInt(this.houseInfo.cashPledge)
-      this.$router.push({
-        path:'/inventoryPay',
-        query:{
-          "inventory":this.inventory,
-          "houseInfo":this.houseInfo
-        }
-      })
-    }
+    submitInventory() {
+      this.inventory.cashPledge = this.houseInfo.cashPledge;
+      this.inventory.rentalMoney = this.houseInfo.quote;
+      this.inventory.totalMoney =
+        parseInt(this.houseInfo.quote) * parseInt(this.inventory.rentalTime) +
+        parseInt(this.houseInfo.cashPledge);
+      this.inventory.inventoryId = this.random_No(5);
+      request({
+        url: "/indent",
+        method: "post",
+        data: {
+          inventoryId: this.inventory.inventoryId,
+          rentalName: this.inventory.rentalName,
+          userId: this.inventory.userId,
+          payType: this.inventory.payType,
+          houseId: this.inventory.houseId,
+          rentalMoney: this.inventory.rentalMoney,
+          cashPledge: this.inventory.cashPledge,
+          totalMoney: this.inventory.totalMoney,
+          rentalPhone: this.inventory.rentalPhone,
+          rentalTime: this.inventory.rentalTime,
+        },
+      }).then((res) => {
+        this.$router.push({
+          path: "/inventoryPay",
+          query: {
+            inventoryId: this.inventory.inventoryId,
+          },
+        });
+      });
+    },
+    random_No(randomLen) {
+      var random_no = "";
+      for (var i = 0; i < randomLen; i++) {
+        random_no += Math.floor(Math.random() * 10);
+      }
+      random_no = new Date().getTime() + random_no;
+      return random_no;
+    },
   },
   created() {
     this.getUserInfo();
@@ -392,5 +416,4 @@ export default {
   margin-bottom: 10px;
   float: right;
 }
-
 </style>

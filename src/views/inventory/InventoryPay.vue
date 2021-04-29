@@ -15,7 +15,7 @@
         <el-row>
           <el-col :span="16">
             <div>
-              订单提交成功，请尽早支付！订单号：{{ inventory.inventoryId }}
+              订单提交成功，请尽早支付！订单号：{{ inventoryVo.inventoryId }}
             </div>
             <div style="font-size: 13px">
               请您在
@@ -29,7 +29,7 @@
                 应付金额:
                 <span
                   style="color: #ed2553; font-size: 20px; font-weight: bolder"
-                  >{{ inventory.totalMoney }}</span
+                  >{{ inventoryVo.totalMoney }}</span
                 >元
               </div>
               <div style="font-size: 13px">
@@ -47,12 +47,12 @@
           v-show="inventoryDetailVisble"
         >
           <div>
-            租赁人: <span>{{ inventory.rentalName }}</span>
-            <span style="margin-left: 20px">{{ inventory.rentalPhone }}</span>
+            租赁人: <span>{{ inventoryVo.rentalName }}</span>
+            <span style="margin-left: 20px">{{ inventoryVo.rentalPhone }}</span>
           </div>
           <div style="margin-top: 10px; padding-bottom: 20px">
-            房源信息:{{ houseInfo.country }}-{{ houseInfo.netherlands }} -
-            {{ houseInfo.detailNetherlands }} - {{ houseInfo.community }}
+            房源信息:{{ inventoryVo.country }}-{{ inventoryVo.netherlands }} -
+            {{ inventoryVo.detailNetherlands }} - {{ inventoryVo.community }}
           </div>
         </div>
         <div class="pay-money">
@@ -71,24 +71,25 @@
             剩余零钱:
             <span
               style="font-size: 25px; font-weight: bolder; color: #ed2553"
-              >{{ user.userWallet }}</span
+              >{{ inventoryVo.userWallet }}</span
             >元
           </div>
           <div class="part-line-2" style="margin-top: 100px"></div>
           <div style="margin-top: 20px">
             <div>
-              房源信息:{{ houseInfo.country }}-{{ houseInfo.netherlands }} -
-              {{ houseInfo.detailNetherlands }} - {{ houseInfo.community }}
+              房源信息:{{ inventoryVo.country }}-{{ inventoryVo.netherlands }} -
+              {{ inventoryVo.detailNetherlands }} - {{ inventoryVo.community }}
               <span
                 style="margin-left: 100px; color: #ed2553; font-weight: bolder"
-                >{{ inventory.rentalTime }}个月</span
+                >{{ inventoryVo.rentalTime }}个月</span
               >
               <span style="float: right"
                 >应付:
                 <span
                   style="color: #ed2553; font-size: 25px; font-weight: bolder"
-                  >{{ inventory.totalMoney }}</span
-                > 元</span
+                  >{{ inventoryVo.totalMoney }}</span
+                >
+                元</span
               >
             </div>
             <div>
@@ -97,13 +98,23 @@
           </div>
         </div>
       </div>
-      <div v-else>
+      <div v-else-if="inventoryOutTimeVisble">
         <div class="inventory-chancel">
           <div>
             <i class="iconfont icon-inventory-outtime"></i>
-          <div style="margin-top:20px">该订单因超时已取消</div>
+            <div style="margin-top: 20px">该订单因超时已取消</div>
           </div>
-          
+        </div>
+      </div>
+      <div v-else>
+        <div class="inventory-chancel">
+          <div>
+            <i class="iconfont icon-inventory-success"></i>
+            <div style="margin-top: 20px">订单支付成功！</div>
+            <div style="margin-top: 10px">
+              <span class="rental-info" @click="rentalInfo">租赁信息</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -111,35 +122,23 @@
 </template>
 
 <script>
-import InventoryNavgationBar from '../../components/InventoryNavgationBar.vue';
+import InventoryNavgationBar from "../../components/InventoryNavgationBar.vue";
 import request from "../../network/request";
 export default {
   components: { InventoryNavgationBar },
   data() {
     return {
-      user: {},
-      houseInfo: {},
-      inventory: {},
-      countTimeL: "",
+      inventoryVo: {},
       minutes: "",
       seconds: "",
       radioType: "1",
-      inventoryDoingVisble: true,
+      inventoryDoingVisble: false,
       isShow: "展开",
       inventoryDetailVisble: false,
+      inventoryOutTimeVisble: false,
     };
   },
   methods: {
-    //randomLen订单号长度
-    random_No(randomLen) {
-      var random_no = "";
-      for (var i = 0; i < randomLen; i++) {
-        random_no += Math.floor(Math.random() * 10);
-      }
-      random_no = new Date().getTime() + random_no;
-      return random_no;
-    },
-    getCountTime() {},
     showInventory() {
       if (this.isShow == "收起") {
         this.isShow = "展开";
@@ -152,50 +151,73 @@ export default {
         this.inventoryDetailVisble = true;
       }
     },
-    getUserInfo() {
+    payInventory() {
+      if (
+        parseFloat(this.inventoryVo.userWallet) <
+        parseFloat(this.inventoryVo.totalMoney)
+      ) {
+        this.$message.error("余额不足!请前往个人中心充值");
+        return;
+      }
       request({
-        url: "/user/user-id",
-        params: {
-          id: localStorage.getItem("id"),
+        url: "/indent/payment",
+        method: "post",
+        data: {
+          inventoryId: this.inventoryVo.inventoryId,
         },
       }).then((res) => {
-        this.user = res.data.data;
+        this.$message.success("支付成功!");
+        this.inventoryDoingVisble = false;
+        this.inventoryOutTimeVisble = false;
       });
     },
-    payInventory() {},
+    rentalInfo(){
+       this.$router.push({
+        path: "/myRentalSituation",
+        query: {
+          id: localStorage.getItem('id'),
+        },
+      });
+    }
   },
   created() {
-    this.getUserInfo();
-    this.inventory = this.$route.query.inventory;
-    this.houseInfo = this.$route.query.houseInfo;
-    this.inventory.inventoryId = this.random_No(6);
-    let times = 3600;
-    setInterval(() => {
-      times -= 1;
-      this.minutes = parseInt(times / 60);
-      this.seconds = parseInt(times % 60);
-      //倒计时结束
-      if (this.minutes == 0 && this.seconds == 0) {
-        this.inventoryDoingVisble = false;
-      } else if (this.seconds == 0) {
-        this.seconds == "00";
-      } else if (this.minutes == 0) {
-        this.minutes = "00";
-      }
-      if (this.minutes < 10 && this.minutes != 0) {
-        this.minutes = "0" + this.minutes;
-      }
-      if (this.seconds < 10 && this.seconds != 0) {
-        this.seconds = "0" + this.seconds;
-      }
-    }, 1000);
+    console.log(this.$route.query.inventoryId);
+    request({
+      url: "/indent",
+      params: {
+        inventoryId: this.$route.query.inventoryId,
+      },
+    }).then((res) => {
+      this.inventoryVo = res.data.data;
+      let times = this.inventoryVo.countTime;
+      setInterval(() => {
+        times -= 1;
+        this.minutes = parseInt(times / 60);
+        this.seconds = parseInt(times % 60);
+        //倒计时结束
+        if (this.minutes == 0 && this.seconds == 0) {
+          this.inventoryDoingVisble = false;
+          this.inventoryOutTimeVisble = true;
+        } else if (this.seconds == 0) {
+          this.seconds == "00";
+        } else if (this.minutes == 0) {
+          this.minutes = "00";
+        }
+        if (this.minutes < 10 && this.minutes != 0) {
+          this.minutes = "0" + this.minutes;
+        }
+        if (this.seconds < 10 && this.seconds != 0) {
+          this.seconds = "0" + this.seconds;
+        }
+      }, 1000);
+    });
   },
 };
 </script>
 
 <style>
 @import url("../../assets/css/common.css");
-@import url('../../assets/img/icon/iconfont.css');
+@import url("../../assets/img/icon/iconfont.css");
 .inventory-pay-main {
   margin: 0 auto;
   width: 1200px;
@@ -245,5 +267,10 @@ export default {
   height: 200px;
   text-align: center;
   padding-top: 100px;
+}
+.rental-info {
+  cursor: pointer;
+  border-bottom: 1px solid #ed2553;
+  color: #ed2553;
 }
 </style>

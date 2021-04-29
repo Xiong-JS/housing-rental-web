@@ -95,7 +95,7 @@ export default {
             this.$store.commit(types.SETTOKEN, res.data.uToken);
             localStorage.setItem("uToken", res.data.uToken);
             setTimeout(() => {
-              this.$router.push("/housingRental");
+              this.$router.go(-1);
             }, 1000);
 
           }

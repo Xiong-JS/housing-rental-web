@@ -30,7 +30,7 @@
       </el-breadcrumb>
       <el-tabs type="border-card">
         <el-tab-pane label="进行中">
-          <div v-for="item in 2" :key="item" style="margin-top:20px">
+          <div v-for="item in 2" :key="item" style="margin-top: 20px">
             <el-row class="rental-situation-status">
               <el-col :span="20">
                 <div>房源信息</div>
@@ -91,7 +91,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="已完成">
-          <div v-for="item in 2" :key="item" style="margin-top:20px">
+          <div v-for="item in 2" :key="item" style="margin-top: 20px">
             <el-row class="rental-situation-status">
               <el-col :span="20">
                 <div>房源信息</div>
@@ -130,11 +130,19 @@
                   </div>
                 </el-col>
                 <el-col :span="4" style="text-align: center">
-                  <div style="color: #ed2553;  margin-top: 20px">
-                    <span style="cursor: pointer;"><i class="iconfont icon-rightnow-buy"></i> 立即租赁</span>
+                  <div style="color: #ed2553; margin-top: 30px">
+                    <span style="cursor: pointer"
+                      ><i class="iconfont icon-rightnow-buy"></i> 立即租赁</span
+                    >
                   </div>
-                  <div>
-                    <button class="continue-rental">续租</button>
+                  <div style="margin-top: 10px">
+                    <span
+                      style="cursor: pointer; color: rgb(253, 168, 30)"
+                      @click="comment"
+                    >
+                      <i class="iconfont icon-comment"></i>
+                      评价</span
+                    >
                   </div>
                 </el-col>
               </el-row>
@@ -150,6 +158,53 @@
             >
             </el-pagination>
           </div>
+          <el-dialog
+            title="评价"
+            :visible.sync="commentVisible"
+            width="30%"
+            center
+          >
+            <div>
+              <el-row>
+                <el-col :span="6"><span>体验分数:</span></el-col>
+                <el-col :span="18"
+                  ><el-rate
+                    v-model="experienceScore"
+                    :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+                    show-text
+                  >
+                  </el-rate
+                ></el-col>
+              </el-row>
+            </div>
+            <div style="margin-top: 10px">
+              <el-row>
+                <el-col :span="6"><span>服务分数:</span></el-col>
+                <el-col :span="18"
+                  ><el-rate
+                    v-model="serviceScore"
+                    :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+                    show-text
+                  >
+                  </el-rate
+                ></el-col>
+              </el-row>
+            </div>
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4 }"
+              placeholder="可从多角度评论，方便给想租赁的用户更好的帮助"
+              v-model="commentText"
+              style="margin-top:10px"
+            >
+            </el-input>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="commentVisible = false">取 消</el-button>
+              <el-button type="primary" @click="commentVisible = false"
+                >确 定</el-button
+              >
+            </span>
+          </el-dialog>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -161,6 +216,10 @@ export default {
   data() {
     return {
       userName: localStorage.getItem("name"),
+      commentVisible: false,
+      experienceScore: null,
+      serviceScore: null,
+      commentText:''
     };
   },
   methods: {
@@ -174,6 +233,9 @@ export default {
           houseId: val,
         },
       });
+    },
+    comment() {
+      this.commentVisible = true;
     },
   },
 };

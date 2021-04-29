@@ -139,6 +139,17 @@
             <template slot="append">元/月</template></el-input
           >
         </el-form-item>
+        <el-form-item label="押金" prop="cashPledge">
+          <el-input
+            controls-position="right"
+            v-model="houseInfo.cashPledge"
+            auto-complete="off"
+            style="width: 400px"
+            :min="0"
+          >
+            <template slot="append">元</template></el-input
+          >
+        </el-form-item>
         <el-form-item label="整租面积" prop="area">
           <el-input v-model="houseInfo.area" auto-complete="off" :min="0"
             ><template slot="append">M²</template></el-input
@@ -203,7 +214,7 @@
             class="avatar-uploader"
             :action="uploadUrl"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess"
+            :on-success="handleImgAvatarSuccess"
             :before-upload="beforeAvatarUpload"
             :headers="headers"
             :data="imgData"
@@ -252,14 +263,47 @@
     </div>
     <div v-show="active === 2">
       <h1 class="title-release">提交成功,等待审核!</h1>
-       <el-form>
-         <el-form-item>
-           <div style="text-align: center">
-           <el-button type="primary" style="width: 200px; margin-top: 50px" @click="quit('baseHouseInfo', 'houseInfo')">继续填写</el-button>
-           </div>
-         </el-form-item>
-       </el-form>
+      <el-form>
+        <el-form-item>
+          <div style="text-align: center">
+            <el-button
+              type="primary"
+              style="width: 200px; margin-top: 50px"
+              @click="quit('baseHouseInfo', 'houseInfo')"
+              >继续填写</el-button
+            >
+          </div>
+        </el-form-item>
+      </el-form>
     </div>
+    <el-dialog
+      title="上传房产证"
+      :visible.sync="certificateVisble"
+      width="30%"
+      center
+    >
+      <el-upload
+        class="avatar-uploader"
+        :action="uploadUrl"
+        :show-file-list="false"
+        :on-success="handleCertificateAvatarSuccess"
+        :before-upload="beforeAvatarUpload"
+        :headers="headers"
+        :data="imgData"
+      >
+        <img
+          v-if="houseInfo.certificateImg"
+          :src="houseInfo.certificateImg"
+          class="avatar"
+          style="width: 100px; height: 100px"
+        />
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="certificateVisble = false">取 消</el-button>
+        <el-button type="primary" @click="upHouseInfos('houseInfo')">上 传</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -278,15 +322,13 @@ export default {
     };
     return {
       active: 0,
-      writeBaseHouseInfo: this.active === 0,
-      writeDetailHouseInfo: this.active === 1,
-      checkHouseInfo: this.active === 2,
       countries: [],
       netherlands: [],
       detailNetherlands: [],
       communities: [],
       uploadUrl: "http://localhost:8080/imgUpload",
       headers: { "u-token": localStorage.getItem("uToken") },
+      certificateVisble: false,
       imgData: {
         path: "bishe/house",
       },
@@ -322,6 +364,8 @@ export default {
         description: "",
         characters: [],
         img: "",
+        certificateImg: "",
+        cashPledge: "",
       },
       rules1: {
         releaseName: [
@@ -348,6 +392,9 @@ export default {
       },
       rules2: {
         quote: [{ required: true, message: "请输入报价", trigger: "blur" }],
+        cashPledge: [
+          { required: true, message: "请输入押金", trigger: "blur" },
+        ],
         area: [{ required: true, message: "请输入整租面积", trigger: "blur" }],
         room: [{ required: true, message: "请输入室", trigger: "blur" }],
         hall: [{ required: true, message: "请输入厅", trigger: "blur" }],
@@ -382,11 +429,19 @@ export default {
       }
       return isJPG && isLt2M;
     },
-    handleAvatarSuccess(res, file) {
+    handleImgAvatarSuccess(res, file) {
       if (res.msg == "NoUser" || res.code == "000004") {
         this.$message.error("未登录,请登录!");
       } else {
         this.houseInfo.img = res.data;
+        this.$message.success("上传成功");
+      }
+    },
+    handleCertificateAvatarSuccess(res, file) {
+      if (res.msg == "NoUser" || res.code == "000004") {
+        this.$message.error("未登录,请登录!");
+      } else {
+        this.houseInfo.certificateImg = res.data;
         this.$message.success("上传成功");
       }
     },
@@ -405,7 +460,12 @@ export default {
         }
       });
     },
-    submit(formName) {
+    submit() {
+      this.certificateVisble = true;
+      this.imgData.path = "bishe/certificate";
+    },
+    upHouseInfos(formName) {
+      this.certificateVisble = false;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           request({
@@ -431,7 +491,9 @@ export default {
               description: this.houseInfo.description,
               characters: this.houseInfo.characters.toString(),
               img: this.houseInfo.img,
-              userId:this.$store.state.user[0].id
+              userId: this.$store.state.user[0].id,
+              cashPledge:this.houseInfo.cashPledge,
+              certificateImg: this.houseInfo.certificateImg,
             },
           }).then((res) => {
             this.active++;
@@ -494,9 +556,7 @@ export default {
         this.communities = res.data.data;
       });
     },
-    
   },
-   
 };
 </script>
 

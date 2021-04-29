@@ -1,165 +1,183 @@
 <template>
   <div class="detail">
     <div>
-      <div style="float: left">
-        <img :src="houseInfos.img" alt="" class="houseImg" />
-        <div>
-          <p style="border-left: 5px solid #ed2553">&nbsp;独立设施</p>
-          <el-row>
-            <el-col :span="4">
-              <div style="float: left; text-align: center">
-                <p class="iconfont icon-chuang"></p>
-                <span>床</span>
-              </div>
-            </el-col>
-            <el-col :span="4">
-              <div style="float: left; text-align: center">
-                <p class="iconfont icon-duwei"></p>
-                <span>卫生间</span>
-              </div>
-            </el-col>
-            <el-col :span="4">
-              <div style="float: left; text-align: center">
-                <p class="iconfont icon-matong"></p>
-                <span>坐式马桶</span>
-              </div>
-            </el-col>
-            <el-col :span="4">
-              <div style="float: left; text-align: center">
-                <p class="iconfont icon-reshuiqi"></p>
-                <span>热水器</span>
-              </div>
-            </el-col>
-            <el-col :span="4">
-              <div style="float: left; text-align: center">
-                <p class="iconfont icon-shafa"></p>
-                <span>沙发</span>
-              </div>
-            </el-col>
-            <el-col :span="4">
-              <div style="float: left; text-align: center">
-                <p class="iconfont icon-bingxiang"></p>
-                <span>冰箱</span>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-      </div>
-      <div style="float: left">
-        <div class="simple-infos">
-          <h2>{{ houseInfos.community }}</h2>
-          <p>{{ houseInfos.hall }}室户房型</p>
-          <div style="float:left">
-            <el-tag type="success" v-show="houseInfos.toilet == 1">独卫</el-tag>
-            <el-tag type="info" v-show="houseInfos.balcony == 1">带阳台</el-tag>
-            <el-tag type="warning" v-show="houseInfos.houseType == 1"
-              >电梯房</el-tag
-            >
-            <el-tag type="info" v-show="houseInfos.monthPay == 1">月付</el-tag>
-            <el-tag type="danger" v-show="houseInfos.hardback == 1"
-              >精装修</el-tag
-            >
-            <el-tag v-show="houseInfos.homeAppliances == 1">家电齐全</el-tag>
-          </div>
-          <div style="margin-left:300px">
-            <el-rate
-              v-model="houseInfos.score"
-              score-template="{value}"
-              disabled
-              show-score
-              text-color="#ff9900"
-              style="line-height:0"
-            >
-            </el-rate>
-          </div>
-          <div class="house-text">
-            <ul>
-              <li>
-                <span style="color: red; font-size: 25px">{{
-                  houseInfos.quote
-                }}</span>
-                <span>元起/月</span>
-              </li>
-              <li class="cent">
-                <span style="font-size: 25px">{{ houseInfos.area }}</span>
-                <span>M²</span>
-              </li>
-            </ul>
-          </div>
-          <div class="house-text-detail">
-            <el-form label-position="left" inline>
-              <el-form-item label="门牌号:">
-                <input
-                  :value="houseInfos.houseNumber"
-                  readonly
-                  style="border: 0px; width: 100px; font-size: 15px"
-                />
-              </el-form-item>
-              <el-form-item label="住房类型:" style="margin-left: 60px">
-                <span>{{ rentalTypeConvert(houseInfos.rentalType) }}</span>
-              </el-form-item>
-            </el-form>
-            <el-form label-position="left" inline>
-              <el-form-item label="联系电话:">
-                <input
-                  :value="houseInfos.releasePhone"
-                  readonly
-                  style="border: 0px; width: 100px; font-size: 15px"
-                />
-              </el-form-item>
-              <el-form-item label="联系人:" style="margin-left: 50px">
-                <span>{{ houseInfos.releaseName }}</span>
-              </el-form-item>
-            </el-form>
-            <el-form label-position="left" inline>
-              <el-form-item label="房屋类型:">
-                <input
-                  v-if="houseInfos.houseType == 0"
-                  style="width: 85px; border: 0px; font-size: 15px"
-                  value="楼梯房"
-                  readonly
-                />
-                <input
-                  v-if="houseInfos.houseType == 1"
-                  style="width: 85px; border: 0px; font-size: 15px"
-                  value="电梯房"
-                  readonly
-                />
-              </el-form-item>
-              <el-form-item label="发布时间:" style="margin-left: 60px">
-                <span>{{ houseInfos.releaseTime }}</span>
-              </el-form-item>
-            </el-form>
-            <el-form label-position="left" inline>
-              <el-form-item label="区域:">
-                <input
-                  style="width: 120px; border: 0px; font-size: 15px"
-                  :value="area"
-                />
-              </el-form-item>
-              <el-form-item label="楼层:" style="margin-left: 55px">
-                <span
-                  >{{ houseInfos.floor }}层/共{{
-                    houseInfos.totalFloor
-                  }}层</span
+      <el-row>
+        <el-col :span="12">
+          <div>
+            <img :src="houseInfos.img" alt="" class="houseImg" />
+            <div>
+              <p style="border-left: 5px solid #ed2553">&nbsp;独立设施</p>
+              <el-row>
+                <el-col :span="4">
+                  <div style="float: left; text-align: center">
+                    <p class="iconfont icon-chuang"></p>
+                    <span>床</span>
+                  </div>
+                </el-col>
+                <el-col :span="4">
+                  <div style="float: left; text-align: center">
+                    <p class="iconfont icon-duwei"></p>
+                    <span>卫生间</span>
+                  </div>
+                </el-col>
+                <el-col :span="4">
+                  <div style="float: left; text-align: center">
+                    <p class="iconfont icon-matong"></p>
+                    <span>坐式马桶</span>
+                  </div>
+                </el-col>
+                <el-col :span="4">
+                  <div style="float: left; text-align: center">
+                    <p class="iconfont icon-reshuiqi"></p>
+                    <span>热水器</span>
+                  </div>
+                </el-col>
+                <el-col :span="4">
+                  <div style="float: left; text-align: center">
+                    <p class="iconfont icon-shafa"></p>
+                    <span>沙发</span>
+                  </div>
+                </el-col>
+                <el-col :span="4">
+                  <div style="float: left; text-align: center">
+                    <p class="iconfont icon-bingxiang"></p>
+                    <span>冰箱</span>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+          </div></el-col
+        >
+        <el-col :span="12"
+          ><div>
+            <div class="simple-infos">
+              <h2>{{ houseInfos.community }}</h2>
+              <p>{{ houseInfos.hall }}室户房型</p>
+              <div style="float: left">
+                <el-tag type="success" v-show="houseInfos.toilet == 1"
+                  >独卫</el-tag
                 >
-              </el-form-item>
-            </el-form>
-          </div>
-          <div style="margin-top: 30px">
-            <el-row>
-              <el-col :span="12" style="text-align: center">
-                <el-button type="danger" plain @click="pay">支付房源</el-button>
-              </el-col>
-              <el-col :span="12" style="text-align: center">
-                <el-button type="danger" plain @click="addInventory">收藏房源</el-button>
-              </el-col>
-            </el-row>
-          </div>
-        </div>
-      </div>
+                <el-tag type="info" v-show="houseInfos.balcony == 1"
+                  >带阳台</el-tag
+                >
+                <el-tag type="warning" v-show="houseInfos.houseType == 1"
+                  >电梯房</el-tag
+                >
+                <el-tag type="info" v-show="houseInfos.monthPay == 1"
+                  >月付</el-tag
+                >
+                <el-tag type="danger" v-show="houseInfos.hardback == 1"
+                  >精装修</el-tag
+                >
+                <el-tag v-show="houseInfos.homeAppliances == 1"
+                  >家电齐全</el-tag
+                >
+              </div>
+              <div style="margin-left: 300px">
+                <el-rate
+                  v-model="houseInfos.score"
+                  score-template="{value}"
+                  disabled
+                  show-score
+                  text-color="#ff9900"
+                  style="line-height: 0"
+                >
+                </el-rate>
+              </div>
+              <div class="house-text">
+                <ul>
+                  <li>
+                    <span style="color: red; font-size: 25px">{{
+                      houseInfos.quote
+                    }}</span>
+                    <span>元起/月</span>
+                  </li>
+                  <li class="cent">
+                    <span style="font-size: 25px">{{ houseInfos.area }}</span>
+                    <span>M²</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="house-text-detail">
+                <el-form label-position="left" inline>
+                  <el-form-item label="门牌号:">
+                    <input
+                      :value="houseInfos.houseNumber"
+                      readonly
+                      style="border: 0px; width: 100px; font-size: 15px"
+                    />
+                  </el-form-item>
+                  <el-form-item label="住房类型:" style="margin-left: 60px">
+                    <span>{{ rentalTypeConvert(houseInfos.rentalType) }}</span>
+                  </el-form-item>
+                </el-form>
+                <el-form label-position="left" inline>
+                  <el-form-item label="联系电话:">
+                    <input
+                      :value="houseInfos.releasePhone"
+                      readonly
+                      style="border: 0px; width: 100px; font-size: 15px"
+                    />
+                  </el-form-item>
+                  <el-form-item label="联系人:" style="margin-left: 50px">
+                    <span>{{ houseInfos.releaseName }}</span>
+                  </el-form-item>
+                </el-form>
+                <el-form label-position="left" inline>
+                  <el-form-item label="房屋类型:">
+                    <input
+                      v-if="houseInfos.houseType == 0"
+                      style="width: 85px; border: 0px; font-size: 15px"
+                      value="楼梯房"
+                      readonly
+                    />
+                    <input
+                      v-if="houseInfos.houseType == 1"
+                      style="width: 85px; border: 0px; font-size: 15px"
+                      value="电梯房"
+                      readonly
+                    />
+                  </el-form-item>
+                  <el-form-item label="发布时间:" style="margin-left: 60px">
+                    <span>{{ houseInfos.releaseTime }}</span>
+                  </el-form-item>
+                </el-form>
+                <el-form label-position="left" inline>
+                  <el-form-item label="区域:">
+                    <input
+                      style="width: 120px; border: 0px; font-size: 15px"
+                      :value="area"
+                    />
+                  </el-form-item>
+                  <el-form-item label="楼层:" style="margin-left: 55px">
+                    <span
+                      >{{ houseInfos.floor }}层/共{{
+                        houseInfos.totalFloor
+                      }}层</span
+                    >
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div style="margin-top: 30px">
+                <el-row>
+                  <el-col :span="12" style="text-align: center">
+                    <el-button type="danger" plain @click="pay"
+                      >支付房源</el-button
+                    >
+                  </el-col>
+                  <el-col :span="12" style="text-align: center">
+                    <el-button type="danger" plain @click="addInventory"
+                      >收藏房源</el-button
+                    >
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+          </div></el-col
+        >
+      </el-row>
     </div>
-    <div style="margin-top: 50px; float: left">
+    <div style="margin-top: 50px">
       <el-tabs type="border-card">
         <div style="width: 100%">
           <div style="float: left">
@@ -210,6 +228,95 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+
+    <div style="margin-top: 20px">
+      <span style="border-left: 3px solid #ed2553; padding-left: 10px"
+        >评论</span
+      >
+      <div style="width: 700px; padding-bottom: 20px">
+        <div v-for="item in 2" :key="item">
+          <el-row>
+            <el-col :span="3">
+              <img src="../../assets/img/3.jpg" alt="" class="head-img" />
+            </el-col>
+            <el-col :span="21" style="border-bottom: 1px solid #e2e2e2">
+              <div>
+                <div style="margin-top: 20px; color: #6d757a; font-size: 13px">
+                  熊劲松
+                </div>
+                <div>
+                  啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦
+                  啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦
+                </div>
+                <div
+                  style="
+                    color: #aaa;
+                    padding: 10px 10px 10px 0;
+                    font-size: 13px;
+                  "
+                >
+                  <span>2021-04-03 01:30</span>
+                  <span
+                    style="margin-left: 20px; cursor: pointer"
+                    @click="comment"
+                    >回复</span
+                  >
+                </div>
+              </div>
+              <!-- 评论回复 -->
+              <div v-for="item in 2" :key="item">
+                <el-row>
+                  <el-col :span="2">
+                    <img
+                      src="../../assets/img/3.jpg"
+                      alt=""
+                      class="head-img-small"
+                    />
+                  </el-col>
+                  <el-col :span="22">
+                    <div
+                      style="margin-top: 5px; color: #6d757a; font-size: 13px"
+                    >
+                      熊劲松
+                    </div>
+                    <div>啦啦啦啦啦啦啦啦啦啦啦啦啦</div>
+                    <div
+                      style="
+                        color: #aaa;
+                        padding: 10px 10px 10px 0;
+                        font-size: 13px;
+                      "
+                    >
+                      <span>2021-04-03 01:30</span>
+                      <span
+                        style="margin-left: 20px; cursor: pointer"
+                        @click="comment"
+                        >回复</span
+                      >
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+    </div>
+    <el-dialog title="评论" :visible.sync="commentVisble" width="30%" center>
+      <el-input
+        type="textarea"
+        :autosize="{ minRows: 2, maxRows: 4 }"
+        :placeholder="placeText"
+        v-model="commentContent"
+      >
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="commentVisble = false">取 消</el-button>
+        <el-button type="primary" @click="commentVisble = false"
+          >发 布</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -220,10 +327,14 @@ var weather = "";
 var humidity = "";
 var temperature = "";
 var map = "";
+var longitude, dimensionality;
 export default {
   data() {
     return {
       houseInfos: {},
+      commentVisble: false,
+      placeText: "@熊劲松",
+      commentContent: "",
     };
   },
   computed: {
@@ -250,31 +361,30 @@ export default {
       return type;
     },
     refresh() {
-      map.setZoomAndCenter(16, [106.53, 29.49]);
+      map.setZoomAndCenter(16, [this.houseInfos.longitude, this.houseInfos.dimensionality]);
     },
-    pay(){
-      if(this.$store.state.user.length == 0){
+    pay() {
+      if (this.$store.state.user.length == 0) {
         this.$message.error("未登录!现跳转到登录界面!");
         setTimeout(() => {
-            this.$router.push("/login");
-          }, 3000);
+          this.$router.push("/login");
+        }, 3000);
         return;
       }
       this.$router.push({
-        path:'/inventoryUnDone',
-        query:{
-          id:this.houseInfos.houseId
-        }
+        path: "/inventoryUnDone",
+        query: {
+          id: this.houseInfos.houseId,
+        },
       });
-
     },
     //加入收藏
-    addInventory(){
-      if(this.$store.state.user.length == 0){
+    addInventory() {
+      if (this.$store.state.user.length == 0) {
         this.$message.error("未登录!现跳转到登录界面!");
         setTimeout(() => {
-            this.$router.push("/login");
-          }, 3000);
+          this.$router.push("/login");
+        }, 3000);
         return;
       }
       // if(localStorage.getItem("uToken") == null){
@@ -285,17 +395,20 @@ export default {
       //   return;
       // }
       request({
-        url:'/collection',
-        method:"post",
-        data:{
-          userId:localStorage.getItem("id"),
-          houseId:this.houseInfos.houseId
-        }
-      }).then(res=>{
-        this.$message.success(res.data.msg)
+        url: "/collection",
+        method: "post",
+        data: {
+          userId: localStorage.getItem("id"),
+          houseId: this.houseInfos.houseId,
+        },
+      }).then((res) => {
+        this.$message.success(res.data.msg);
         console.log(res.data);
-      })
-    }
+      });
+    },
+    comment() {
+      this.commentVisble = true;
+    },
   },
   created() {
     request({
@@ -305,6 +418,23 @@ export default {
       },
     }).then((res) => {
       this.houseInfos = res.data.data;
+      let options = [this.houseInfos.longitude, this.houseInfos.dimensionality];
+      map = new AMap.Map("demo", {
+        zoom: 16,
+        center: options,
+      });
+      AMap.plugin(["AMap.ToolBar", "AMap.Scale"], function () {
+        var toolbar = new AMap.ToolBar();
+        map.addControl(toolbar);
+        var scale = new AMap.Scale();
+        map.addControl(scale);
+      });
+      var marker = new AMap.Marker({
+        position: new AMap.LngLat(this.houseInfos.longitude, this.houseInfos.dimensionality),
+        title: this.houseInfos.community,
+        offset: new AMap.Pixel(-13, -30),
+      });
+      map.add(marker);
     });
     AMap.plugin("AMap.Weather", function () {
       var Aweather = new AMap.Weather();
@@ -321,24 +451,6 @@ export default {
       });
     });
   },
-  mounted() {
-    map = new AMap.Map("demo", {
-      zoom: 16,
-      center: [106.53, 29.49],
-    });
-    AMap.plugin(["AMap.ToolBar", "AMap.Scale"], function () {
-      var toolbar = new AMap.ToolBar();
-      map.addControl(toolbar);
-      var scale = new AMap.Scale();
-      map.addControl(scale);
-    });
-    var marker = new AMap.Marker({
-      position: new AMap.LngLat(106.53, 29.49),
-      title: "重庆",
-      offset: new AMap.Pixel(-13, -30),
-    });
-    map.add(marker);
-  },
 };
 </script>
 
@@ -350,7 +462,7 @@ export default {
   margin: 0 auto;
 }
 .houseImg {
-  width: 700px;
+  width: 100%;
   height: 400px;
 }
 .simple-infos {
@@ -380,5 +492,21 @@ export default {
 ul li {
   list-style-type: none;
   display: inline;
+}
+.head-img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  margin-top: 15px;
+}
+.head-img-small {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  margin-top: 5px;
 }
 </style>
