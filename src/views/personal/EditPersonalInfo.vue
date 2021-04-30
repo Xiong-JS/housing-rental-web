@@ -137,7 +137,7 @@
                   <i class="iconfont icon-success"></i
                   ><span class="title-list">零钱</span>
                   <strong>{{ user.userWallet }}</strong>
-                  <span class="edit">充值</span>
+                  <span class="edit" @click="recharge">充值</span>
                 </div>
               </div>
             </el-tab-pane>
@@ -145,6 +145,20 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      title="充值"
+      :visible.sync="rechargeVisble"
+      width="30%"
+      center
+    >
+      <el-input-number v-model="wallet" placeholder="请输入充值金额"></el-input-number>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="rechargeVisble = false">取 消</el-button>
+        <el-button type="primary" @click="confirmRecharge"
+          >充 值</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -191,6 +205,8 @@ export default {
         userPassword: [{ validator: validatePass, trigger: "blur" }],
         checkPassword: [{ validator: validatePass2, trigger: "blur" }],
       },
+      rechargeVisble : false,
+      wallet:0
     };
   },
   methods: {
@@ -272,6 +288,24 @@ export default {
       this.editUser.userPassword = "";
       this.editPasswordVisble = false;
     },
+    recharge(){
+      this.rechargeVisble = true
+      this.wallet = 0
+    },
+    confirmRecharge(){
+      request({
+        url:'/user/user-recharge',
+        method:'post',
+        data:{
+          userWallet:this.wallet,
+          id:localStorage.getItem('id')
+        }
+      }).then(res=>{
+        this.rechargeVisble = false
+        this.$message.success("充值成功!")
+        this.getUserInfo(this.$route.query.id);
+      })
+    }
   },
   created() {
     this.getUserInfo(this.$route.query.id);

@@ -28,9 +28,13 @@
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>租赁情况</el-breadcrumb-item>
       </el-breadcrumb>
-      <el-tabs type="border-card">
+      <el-tabs type="border-card" @tab-click="statusClick">
         <el-tab-pane label="进行中">
-          <div v-for="item in 2" :key="item" style="margin-top: 20px">
+          <div
+            v-for="item in rentalSituationVos"
+            :key="item.houseId"
+            style="margin-top: 20px"
+          >
             <el-row class="rental-situation-status">
               <el-col :span="20">
                 <div>房源信息</div>
@@ -52,46 +56,64 @@
                     height: 102px;
                   "
                 >
-                  <div @click="houseDetail(1)">
+                  <div @click="houseDetail(item.houseId)">
                     <el-row>
                       <el-col :span="5">
                         <img
-                          src="../../assets/img/3.jpg"
+                          :src="item.img"
                           alt=""
                           style="padding: 10px; width: 120px; height: 70px"
                         />
                       </el-col>
                       <el-col :span="19" style="padding-top: 30px">
-                        重庆 - 南岸 - 南坪东路 - 碧家国际社区（南滨路店）15-2
-                        共30层
+                        {{ item.country }} - {{ item.netherlands }} -
+                        {{ item.detailNetherlands }} - {{ item.community
+                        }}{{ item.houseNumber }} 共{{ item.totalFloor }}层
                       </el-col>
                     </el-row>
                   </div>
                 </el-col>
                 <el-col :span="4" style="text-align: center">
                   <div>
-                    <button class="quit-rental">退租</button>
+                    <button
+                      class="quit-rental"
+                      @click="surrender(item.houseId, item.rentalSituationId,item.inventoryId)"
+                    >
+                      退租
+                    </button>
                   </div>
                   <div>
-                    <button class="continue-rental">续租</button>
+                    <button class="continue-rental" @click="continueRental(item.houseId)">续租</button>
                   </div>
                 </el-col>
               </el-row>
             </div>
           </div>
+          <div
+            style="margin-top: 20px; text-align: center"
+            v-show="rentalSituationVos.length == 0"
+          >
+            <span style="color: #666; font-size: 13px">暂无数据</span>
+          </div>
           <div style="float: right">
             <el-pagination
+              @current-change="handleCurrentChange"
               background
               layout="prev, pager, next"
-              :total="1000"
+              :current-page.sync="currentPage"
+              :total="total"
               style="margin-top: 20px"
-              :page-size="100"
+              :page-size="pageSize"
             >
             </el-pagination>
           </div>
         </el-tab-pane>
         <el-tab-pane label="已完成">
-          <div v-for="item in 2" :key="item" style="margin-top: 20px">
+          <div
+            v-for="item in rentalSituationVos"
+            :key="item.houseId"
+            style="margin-top: 20px"
+          >
             <el-row class="rental-situation-status">
               <el-col :span="20">
                 <div>房源信息</div>
@@ -113,32 +135,33 @@
                     height: 102px;
                   "
                 >
-                  <div @click="houseDetail(1)">
+                  <div @click="houseDetail(item.houseId)">
                     <el-row>
                       <el-col :span="5">
                         <img
-                          src="../../assets/img/3.jpg"
+                          :src="item.img"
                           alt=""
                           style="padding: 10px; width: 120px; height: 70px"
                         />
                       </el-col>
                       <el-col :span="19" style="padding-top: 30px">
-                        重庆 - 南岸 - 南坪东路 - 碧家国际社区（南滨路店）15-2
-                        共30层
+                        {{ item.country }} - {{ item.netherlands }} -
+                        {{ item.detailNetherlands }} - {{ item.community
+                        }}{{ item.houseNumber }} 共{{ item.totalFloor }}层
                       </el-col>
                     </el-row>
                   </div>
                 </el-col>
                 <el-col :span="4" style="text-align: center">
                   <div style="color: #ed2553; margin-top: 30px">
-                    <span style="cursor: pointer"
+                    <span style="cursor: pointer" @click="rentalRightNow(item.houseId)"
                       ><i class="iconfont icon-rightnow-buy"></i> 立即租赁</span
                     >
                   </div>
                   <div style="margin-top: 10px">
                     <span
                       style="cursor: pointer; color: rgb(253, 168, 30)"
-                      @click="comment"
+                      @click="comment(item.houseId)"
                     >
                       <i class="iconfont icon-comment"></i>
                       评价</span
@@ -148,13 +171,21 @@
               </el-row>
             </div>
           </div>
+          <div
+            style="margin-top: 20px; text-align: center"
+            v-show="rentalSituationVos.length == 0"
+          >
+            <span style="color: #666; font-size: 13px">暂无数据</span>
+          </div>
           <div style="float: right">
             <el-pagination
               background
+              @current-change="handleCurrentChange"
               layout="prev, pager, next"
-              :total="1000"
+              :current-page.sync="currentPage"
+              :total="total"
               style="margin-top: 20px"
-              :page-size="100"
+              :page-size="pageSize"
             >
             </el-pagination>
           </div>
@@ -195,7 +226,7 @@
               :autosize="{ minRows: 2, maxRows: 4 }"
               placeholder="可从多角度评论，方便给想租赁的用户更好的帮助"
               v-model="commentText"
-              style="margin-top:10px"
+              style="margin-top: 10px"
             >
             </el-input>
             <span slot="footer" class="dialog-footer">
@@ -212,6 +243,7 @@
 </template>
 
 <script>
+import request from "../../network/request";
 export default {
   data() {
     return {
@@ -219,7 +251,12 @@ export default {
       commentVisible: false,
       experienceScore: null,
       serviceScore: null,
-      commentText:''
+      commentText: "",
+      rentalSituationVos: [],
+      total: 0,
+      currentPage: 1,
+      pageSize: 2,
+      state: 0,
     };
   },
   methods: {
@@ -234,9 +271,85 @@ export default {
         },
       });
     },
-    comment() {
+    comment(houseId) {
       this.commentVisible = true;
+      
     },
+    rentalRightNow(houseId){
+       this.$router.push({
+        path: "/inventoryUnDone",
+        query: {
+          id: houseId,
+        },
+      });
+    },
+    getRentalSituation(state, page) {
+      request({
+        url: "/rental_situation",
+        params: {
+          id: localStorage.getItem("id"),
+          state: state,
+          page: page,
+          pageSize: this.pageSize,
+        },
+      }).then((res) => {
+        this.rentalSituationVos = res.data.data;
+        this.currentPage = res.data.currentPage;
+        this.total = res.data.total;
+        console.log(this.rentalSituationVos);
+      });
+    },
+    handleCurrentChange(val) {
+      this.getRentalSituation(this.state, val);
+    },
+    statusClick(val) {
+      if (val.index == 0) {
+        this.state = 1;
+        console.log("-----");
+        this.getRentalSituation(this.state, 1);
+      } else {
+        this.state = 0;
+        this.getRentalSituation(this.state, 1);
+      }
+    },
+    surrender(houseId, rentalSituationId,inventoryId) {
+      this.$confirm(
+        "用户退租时入住不满整月的费用要按整月计算, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      )
+        .then(() => {
+          request({
+            url: "/rental_situation/surrender",
+            method: "post",
+            data: {
+              userId: localStorage.getItem("id"),
+              houseId: houseId,
+              rentalSituationId: rentalSituationId,
+              inventoryId:inventoryId
+            },
+          }).then((res) => {
+            this.$message.success("退租成功");
+            this.getRentalSituation(1, 1);
+          });
+        })
+        .catch(() => {});
+    },
+    continueRental(houseId){
+      this.$router.push({
+        path: "/inventoryUnDone",
+        query: {
+          id: houseId,
+        },
+      });
+    }
+  },
+  created() {
+    this.getRentalSituation(1, 1);
   },
 };
 </script>
