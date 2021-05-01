@@ -8,7 +8,9 @@
           <el-breadcrumb-item :to="{ path: '/inventory' }"
             >订单中心</el-breadcrumb-item
           >
-          <el-breadcrumb-item>订单：169825768332</el-breadcrumb-item>
+          <el-breadcrumb-item
+            >订单：{{ inventoryInfos.inventoryId }}</el-breadcrumb-item
+          >
         </el-breadcrumb>
       </div>
       <div class="inventory-state">
@@ -18,10 +20,34 @@
             style="border-right: 2px solid #f5f5f5; height: 300px"
           >
             <div style="text-align: center">
-              <div style="margin-top: 20px">订单号：169825768332</div>
-              <h3>已取消</h3>
+              <div style="margin-top: 20px">
+                订单号：{{ inventoryInfos.inventoryId }}
+              </div>
+              <h3
+                v-show="inventoryInfos.state == 2 || inventoryInfos.state == 3"
+              >
+                已取消
+              </h3>
+              <h3 v-show="inventoryInfos.state == 0">代付款</h3>
+              <h3 v-show="inventoryInfos.state == 1">已完成</h3>
+              <div v-show="inventoryInfos.state == 0">
+                {{ minutes }}:{{ seconds }}后取消该订单
+              </div>
               <div>
-                <button class="pay-button">立即购买</button>
+                <button
+                  class="pay-button"
+                  v-show="inventoryInfos.state != 0"
+                  @click="rightNowRental"
+                >
+                  立即购买
+                </button>
+                <button
+                  class="pay-button"
+                  v-show="inventoryInfos.state == 0"
+                  @click="cancelIndent"
+                >
+                  点击取消
+                </button>
               </div>
             </div>
           </el-col>
@@ -53,10 +79,16 @@
                   </div>
                 </el-col>
                 <el-col :span="9">
-                  <div class="inventory-process"></div>
+                  <div
+                    class="inventory-process"
+                    v-show="inventoryInfos.state != 0"
+                  ></div>
                 </el-col>
                 <el-col :span="2"
-                  ><div style="text-align: center">
+                  ><div
+                    style="text-align: center"
+                    v-show="inventoryInfos.state != 0"
+                  >
                     <i class="iconfont icon-inventory-finished"></i>
                     <div
                       style="color: #666666; font-size: 14px; margin-top: 20px"
@@ -83,14 +115,18 @@
                   <span>支付方式:</span>
                   <span style="margin-left: 50px">在线支付</span>
                 </div>
-                <div style="margin-top: 10px">
+                <div v-show="inventoryInfos.state == 2 || inventoryInfos.state == 3">
+                  <div style="margin-top: 10px">
                   <span>取消时间:</span>
                   <span style="margin-left: 50px">2021-04-24 15:53:44</span>
                 </div>
                 <div style="margin-top: 10px">
                   <span>取消原因:</span>
-                  <span style="margin-left: 50px">过期未付款</span>
+                  <span style="margin-left: 50px" v-show="inventoryInfos.state == 2">过期未付款</span>
+                  <span style="margin-left: 50px" v-show="inventoryInfos.state == 3">用户自己取消</span>
                 </div>
+                </div>
+                
               </div>
             </div>
           </el-col>
@@ -100,7 +136,8 @@
                 <div style="font-size: 14px">支付信息</div>
                 <div style="margin-top: 10px">
                   <span>付款类型:</span>
-                  <span style="margin-left: 50px">零钱支付</span>
+                  <span style="margin-left: 50px" v-show="inventoryInfos.state == 1">零钱支付</span>
+                  <span style="margin-left: 50px" v-show="inventoryInfos.state != 1">无</span>
                 </div>
               </div>
             </div>
@@ -153,11 +190,12 @@
                   <div style="border-right: 2px solid #f5f5f5">
                     <el-row>
                       <el-col :span="6">
-                        <img src="../../assets/img/3.jpg" alt="" />
+                        <img :src="inventoryInfos.img" alt="" />
                       </el-col>
                       <el-col :span="12" style="padding-top: 10px">
-                        重庆 - 南岸 - 南坪东路 - 碧家国际社区（南滨路店）15-2
-                        共20层
+                        {{ inventoryInfos.country }} - {{ inventoryInfos.netherlands }} -
+                    {{ inventoryInfos.detailNetherlands }} - {{ inventoryInfos.community }}
+                    {{ inventoryInfos.houseNumber }} 共{{ inventoryInfos.totalFloor }}层
                       </el-col>
                     </el-row>
                   </div>
@@ -165,25 +203,25 @@
                 <el-col :span="3">
                   <div style="border-right: 2px solid #f5f5f5; height: 83px">
                     <div style="text-align: center; padding-top: 30px">
-                      10022313448212
+                      {{inventoryInfos.houseId}}
                     </div>
                   </div>
                 </el-col>
                 <el-col :span="3">
                   <div style="text-align: center; padding-top: 30px">
-                    ￥2800
+                    ￥{{inventoryInfos.quote}}
                   </div>
                 </el-col>
                 <el-col :span="3">
-                  <div style="text-align: center; padding-top: 30px">2个月</div>
+                  <div style="text-align: center; padding-top: 30px">{{inventoryInfos.rentalTime}}个月</div>
                 </el-col>
                 <el-col :span="3">
                   <div style="text-align: center">
                     <div
                       style="color: #ed2553; cursor: pointer; margin-top: 30px"
-                      @click="rightNowBuy"
+                      @click="rightNowRental"
                     >
-                      <i class="iconfont icon-rightnow-buy"></i> 立即购买
+                      <i class="iconfont icon-rightnow-buy"></i> 立即租赁
                     </div>
                   </div>
                 </el-col>
@@ -201,26 +239,26 @@
                 <div>
                   <el-row>
                     <el-col :span="12"
-                      ><span style="float: right">商品总额:</span></el-col
+                      ><span style="float: right">房价总额:</span></el-col
                     >
                     <el-col :span="12"
-                      ><span style="float: right">￥1800</span></el-col
+                      ><span style="float: right">￥{{inventoryInfos.quote}}</span></el-col
                     >
                   </el-row>
                 </div>
                 <div style="margin-top: 10px">
                   <el-row>
                     <el-col :span="12"
-                      ><span style="float: right">运费:</span></el-col
+                      ><span style="float: right">押金:</span></el-col
                     >
                     <el-col :span="12"
-                      ><span style="float: right">+￥100</span></el-col
+                      ><span style="float: right">+￥{{inventoryInfos.cashPledge}}</span></el-col
                     >
                   </el-row>
                 </div>
                 <div style="margin-top: 10px; color: #ed2553">
                   <el-row>
-                    <el-col :span="12" style="vertical-align: middle;"
+                    <el-col :span="12" style="vertical-align: middle"
                       ><span style="float: right">应付款:</span></el-col
                     >
                     <el-col :span="12"
@@ -230,7 +268,7 @@
                           font-size: 20px;
                           font-weight: bolder;
                         "
-                        >￥1800</span
+                        >￥{{inventoryInfos.totalMoney}}</span
                       ></el-col
                     >
                   </el-row>
@@ -246,9 +284,78 @@
 
 <script>
 import InventoryNavgationBar from "../../components/InventoryNavgationBar.vue";
+import request from "../../network/request";
 export default {
   data() {
-    return {};
+    return {
+      inventoryInfos: {},
+      minutes: "",
+      seconds: "",
+    };
+  },
+  methods: {
+    rightNowRental() {
+      this.$router.push({
+        path: "/inventoryUnDone",
+        query: {
+          id: inventoryInfos.houseId,
+        },
+      });
+    },
+    getInventoryById() {
+      request({
+        url: "/indent/indent-inventoryId",
+        params: {
+          inventoryId: this.inventoryInfos.inventoryId,
+        },
+      }).then((res) => {
+        this.inventoryInfos = res.data.data;
+      });
+    },
+    cancelIndent() {
+      {
+        this.$confirm("该操作将导致订单取消, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }).then(() => {
+          request({
+            url: "/indent/indent-cancel",
+            method: "post",
+            data: {
+              inventoryId: inventoryInfos.inventoryId,
+              houseId: inventoryInfos.houseId,
+            },
+          }).then((res) => {
+            if (res.data.code == 200) this.$message.success("取消成功");
+          });
+        });
+      }
+    },
+  },
+  created() {
+    this.inventoryInfos = this.$route.query.inventoryInfos;
+    let times = this.inventoryInfos.countTime;
+    setInterval(() => {
+      times -= 1;
+      this.minutes = parseInt(times / 60);
+      this.seconds = parseInt(times % 60);
+      //倒计时结束
+      if (this.minutes == 0 && this.seconds == 0) {
+        this.inventoryDoingVisble = false;
+        this.inventoryOutTimeVisble = true;
+      } else if (this.seconds == 0) {
+        this.seconds == "00";
+      } else if (this.minutes == 0) {
+        this.minutes = "00";
+      }
+      if (this.minutes < 10 && this.minutes != 0) {
+        this.minutes = "0" + this.minutes;
+      }
+      if (this.seconds < 10 && this.seconds != 0) {
+        this.seconds = "0" + this.seconds;
+      }
+    }, 1000);
   },
   components: { InventoryNavgationBar },
 };

@@ -77,13 +77,24 @@
                   <div>
                     <button
                       class="quit-rental"
-                      @click="surrender(item.houseId, item.rentalSituationId,item.inventoryId)"
+                      @click="
+                        surrender(
+                          item.houseId,
+                          item.rentalSituationId,
+                          item.inventoryId
+                        )
+                      "
                     >
                       退租
                     </button>
                   </div>
                   <div>
-                    <button class="continue-rental" @click="continueRental(item.houseId)">续租</button>
+                    <button
+                      class="continue-rental"
+                      @click="continueRental(item.houseId)"
+                    >
+                      续租
+                    </button>
                   </div>
                 </el-col>
               </el-row>
@@ -154,7 +165,9 @@
                 </el-col>
                 <el-col :span="4" style="text-align: center">
                   <div style="color: #ed2553; margin-top: 30px">
-                    <span style="cursor: pointer" @click="rentalRightNow(item.houseId)"
+                    <span
+                      style="cursor: pointer"
+                      @click="rentalRightNow(item.houseId)"
                       ><i class="iconfont icon-rightnow-buy"></i> 立即租赁</span
                     >
                   </div>
@@ -231,7 +244,7 @@
             </el-input>
             <span slot="footer" class="dialog-footer">
               <el-button @click="commentVisible = false">取 消</el-button>
-              <el-button type="primary" @click="commentVisible = false"
+              <el-button type="primary" @click="confirmComment"
                 >确 定</el-button
               >
             </span>
@@ -257,6 +270,7 @@ export default {
       currentPage: 1,
       pageSize: 2,
       state: 0,
+      hosueId: "",
     };
   },
   methods: {
@@ -273,10 +287,33 @@ export default {
     },
     comment(houseId) {
       this.commentVisible = true;
-      
+      this.houseId = houseId;
+      this.experienceScore = null;
+      this.serviceScore = null;
+      this.commentText = "";
     },
-    rentalRightNow(houseId){
-       this.$router.push({
+    confirmComment() {
+      this.commentVisible = false;
+      request({
+        url: "/comment",
+        method: "post",
+        data: {
+          userId: localStorage.getItem("id"),
+          houseId: this.houseId,
+          experienceScore: this.experienceScore,
+          serviceScore: this.serviceScore,
+          content: this.commentText,
+        },
+      }).then((res) => {
+        console.log();
+        if (res.data.code == "200") {
+          this.$message.success("评价成功!");
+          this.commentVisible = false;
+        }
+      });
+    },
+    rentalRightNow(houseId) {
+      this.$router.push({
         path: "/inventoryUnDone",
         query: {
           id: houseId,
@@ -305,14 +342,13 @@ export default {
     statusClick(val) {
       if (val.index == 0) {
         this.state = 1;
-        console.log("-----");
         this.getRentalSituation(this.state, 1);
       } else {
         this.state = 0;
         this.getRentalSituation(this.state, 1);
       }
     },
-    surrender(houseId, rentalSituationId,inventoryId) {
+    surrender(houseId, rentalSituationId, inventoryId) {
       this.$confirm(
         "用户退租时入住不满整月的费用要按整月计算, 是否继续?",
         "提示",
@@ -330,7 +366,8 @@ export default {
               userId: localStorage.getItem("id"),
               houseId: houseId,
               rentalSituationId: rentalSituationId,
-              inventoryId:inventoryId
+              inventoryId: inventoryId,
+              state:3
             },
           }).then((res) => {
             this.$message.success("退租成功");
@@ -339,14 +376,14 @@ export default {
         })
         .catch(() => {});
     },
-    continueRental(houseId){
+    continueRental(houseId) {
       this.$router.push({
         path: "/inventoryUnDone",
         query: {
           id: houseId,
         },
       });
-    }
+    },
   },
   created() {
     this.getRentalSituation(1, 1);

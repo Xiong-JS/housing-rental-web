@@ -5,7 +5,7 @@
       <div class="inventory-title">我的订单</div>
       <div style="background-color: #f5f5f5; height: 100%">
         <div class="inventory-info-list">
-          <el-tabs type="border-card">
+          <el-tabs type="border-card" @tab-click="stateClick">
             <el-tab-pane label="全部订单">
               <div class="inventory-status-bar">
                 <el-row>
@@ -48,16 +48,16 @@
                           }}<i class="el-icon-arrow-down el-icon--right"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
-                          <el-dropdown-item command="0"
+                          <el-dropdown-item command="4"
                             >全部状态</el-dropdown-item
                           >
-                          <el-dropdown-item command="1"
+                          <el-dropdown-item command="0"
                             >等待付款</el-dropdown-item
                           >
-                          <el-dropdown-item command="2"
+                          <el-dropdown-item command="1"
                             >已完成</el-dropdown-item
                           >
-                          <el-dropdown-item command="3"
+                          <el-dropdown-item command="2"
                             >已取消</el-dropdown-item
                           >
                         </el-dropdown-menu>
@@ -69,13 +69,27 @@
                   >
                 </el-row>
               </div>
-              <inventory-card :datas="inventoryAllDatas"></inventory-card>
+              <inventory-card :datas="inventoryInfosVo"></inventory-card>
+              <div style="float: right">
+                <el-pagination
+                  @current-change="handleCurrentChange"
+                  :current-page.sync="currentPage"
+                  :page-size="2"
+                  layout="total, prev, pager, next"
+                  :total="total"
+                  background
+                  style="margin-top: 10px"
+                >
+                </el-pagination>
+              </div>
             </el-tab-pane>
             <el-tab-pane label="待付款">
               <div class="inventory-status-bar">
                 <el-row>
                   <el-col :span="4"
-                    ><span style="margin-left: 20px" class="status-bar-text">日期</span></el-col
+                    ><span style="margin-left: 20px" class="status-bar-text"
+                      >日期</span
+                    ></el-col
                   >
                   <el-col :span="8" style="text-align: center"
                     ><span class="status-bar-text">订单详情</span></el-col
@@ -95,8 +109,20 @@
                 </el-row>
               </div>
               <inventory-card
-                :datas="inventoryUnFinishedDatas"
+                :datas="inventoryInfosVo"
               ></inventory-card>
+              <div style="float: right">
+                <el-pagination
+                  @current-change="handleCurrentChange"
+                  :current-page.sync="currentPage"
+                  :page-size="2"
+                  layout="total, prev, pager, next"
+                  :total="total"
+                  background
+                  style="margin-top: 10px"
+                >
+                </el-pagination>
+              </div>
             </el-tab-pane>
             <el-tab-pane label="已完成">
               <div class="inventory-status-bar">
@@ -140,7 +166,7 @@
                           }}<i class="el-icon-arrow-down el-icon--right"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
-                          <el-dropdown-item command="0"
+                          <el-dropdown-item command="4"
                             >全部状态</el-dropdown-item
                           >
                           <el-dropdown-item command="1"
@@ -158,7 +184,19 @@
                   >
                 </el-row>
               </div>
-              <inventory-card :datas="invnetoryFinishedDatas"></inventory-card>
+              <inventory-card :datas="inventoryInfosVo"></inventory-card>
+              <div style="float: right">
+                <el-pagination
+                  @current-change="handleCurrentChange"
+                  :current-page.sync="currentPage"
+                  :page-size="2"
+                  layout="total, prev, pager, next"
+                  :total="total"
+                  background
+                  style="margin-top: 10px"
+                >
+                </el-pagination>
+              </div>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -168,66 +206,135 @@
 </template>
 
 <script>
-import InventoryNavgationBar from '../../components/InventoryNavgationBar.vue';
+import InventoryNavgationBar from "../../components/InventoryNavgationBar.vue";
 import InventoryCard from "./InventoryCard.vue";
+import request from "../../network/request";
 export default {
   data() {
     return {
       userName: localStorage.getItem("name"),
       allDateCommandText: "全部",
-      finishedDateCommandText:'全部',
+      finishedDateCommandText: "全部",
       allStateCommandText: "全部状态",
-      finishedStateCommandText:'全部状态',
+      finishedStateCommandText: "全部状态",
       deleteVisble: "",
-      inventoryAllDatas: [1, 2],
-      inventoryUnFinishedDatas: [1],
-      invnetoryFinishedDatas: [1],
+      inventoryInfosVo: [],
+      dateStatus: 0,
+      indentStatus: 4,
+      state: 4,
+      total: 0,
+      currentPage: 0,
     };
   },
   methods: {
     allInventoryDateCommand(command) {
       if (command == 0) {
+        this.dateStatus = 0
         this.allDateCommandText = "全部";
+        this.getInventoryInfosVo(1);
       } else if (command == 1) {
+        this.dateStatus = 1
         this.allDateCommandText = "近三个月";
+        this.getInventoryInfosVo(1)
       } else if (command == 2) {
+        this.dateStatus = 2
         this.allDateCommandText = "近一年";
+        this.getInventoryInfosVo(1)
       }
     },
-    finishedInventoryDateCommand(command){
+    finishedInventoryDateCommand(command) {
       if (command == 0) {
         this.finishedDateCommandText = "全部";
+        this.dateStatus = 0
+        this.getInventoryInfosVo(1);
       } else if (command == 1) {
         this.finishedDateCommandText = "近三个月";
+        this.dateStatus = 1
+        this.getInventoryInfosVo(1);
       } else if (command == 2) {
         this.finishedDateCommandText = "近一年";
+        this.dateStatus = 2
+        this.getInventoryInfosVo(1);
       }
     },
 
     allInventoryStateCommand(command) {
-      if (command == 0) {
+      this.indentStatus = command
+      if (command == 4) {
         this.allStateCommandText = "全部状态";
-      } else if (command == 1) {
+        this.getInventoryInfosVo(1)
+      } else if (command == 0) {
         this.allStateCommandText = "等待付款";
-      } else if (command == 2) {
+        this.getInventoryInfosVo(1)
+      } else if (command == 1) {
         this.allStateCommandText = "已完成";
+        this.getInventoryInfosVo(1)
       } else {
         this.allStateCommandText = "已取消";
+        this.getInventoryInfosVo(1)
       }
     },
-    finishedInventoryStateCommand(command){
-      if (command == 0) {
+    finishedInventoryStateCommand(command) {
+      this.indentStatus = command
+      if (command == 4) {
         this.finishedStateCommandText = "全部状态";
+        this.getInventoryInfosVo(1)
       } else if (command == 1) {
         this.finishedStateCommandText = "已完成";
+        this.getInventoryInfosVo(1)
       } else {
         this.finishedStateCommandText = "已取消";
+        this.getInventoryInfosVo(1)
       }
+    },
+    getInventoryInfosVo(page) {
+      request({
+        url: "/indent/getInventoryInfos",
+        params: {
+          dateStatus: this.dateStatus,
+          indentStatus: this.indentStatus,
+          state: this.state,
+          page: page,
+          pageSize: 2,
+        },
+      }).then((res) => {
+        this.inventoryInfosVo = res.data.data;
+        this.total = res.data.total;
+        this.currentPage = res.data.currentPage;
+      });
+    },
+    stateClick(val) {
+      if (val.index == 0) {
+        this.state = 4;
+        this.allDateCommandText = "全部";
+        this.allStateCommandText = "全部状态";
+        this.indentStatus = 4;
+        this.dateStatus = 0;
+        this.getInventoryInfosVo(1);
+      } else if (val.index == 1) {
+        this.state = 0;
+        this.indentStatus = 4;
+        this.dateStatus = 0;
+        this.getInventoryInfosVo(1);
+      } else {
+        this.state = 1;
+        this.finishedDateCommandText = "全部";
+        this.finishedStateCommandText = "全部状态";
+        this.indentStatus = 4;
+        this.dateStatus = 0;
+        this.getInventoryInfosVo(1);
+      }
+    },
+    handleCurrentChange(val){
+      this.getInventoryInfosVo(val)
     }
   },
   components: {
     InventoryCard,
     InventoryNavgationBar,
+  },
+  created() {
+    this.getInventoryInfosVo(1);
   },
 };
 </script>
@@ -245,7 +352,6 @@ export default {
   margin: 0 auto;
   width: 1200px;
 }
-
 
 .inventory-title {
   margin-top: 20px;

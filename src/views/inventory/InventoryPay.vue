@@ -181,7 +181,6 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.query.inventoryId);
     request({
       url: "/indent",
       params: {

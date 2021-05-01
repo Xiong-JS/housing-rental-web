@@ -2,22 +2,24 @@
   <div>
     <div
       v-for="item in datas"
-      :key="item"
-      @mouseover="deleteVisble = item"
+      :key="item.inventoryId"
+      @mouseover="deleteVisble = item.inventoryId"
       @mouseleave="deleteVisble = -1"
     >
       <div class="inventory-info-detail">
         <div style="background-color: #f5f5f5">
           <div style="padding: 10px 0 10px 10px">
-            <span>2021-04-24 15:23:42</span>
+            <span>{{ item.createTime }}</span>
             <span style="margin-left: 20px">订单号:</span>
-            <span class="inventory-number" @click="inventoryDetail(item)"
-              >169825768332</span
+            <span
+              class="inventory-number"
+              @click="inventoryDetail(item)"
+              >{{ item.inventoryId }}</span
             >
             <span
               style="float: right; margin-right: 20px; cursor: pointer"
-              v-show="deleteVisble == item"
-              @click="deleteInventory(item)"
+              v-show="deleteVisble == item.inventoryId"
+              @click="deleteInventory(item.inventoryId)"
               ><i class="el-icon-delete" title="删除"></i
             ></span>
           </div>
@@ -28,16 +30,18 @@
               <div style="border-right: 2px solid #f5f5f5; height: 83px">
                 <el-row>
                   <el-col :span="6">
-                    <img src="../../assets/img/3.jpg" alt="" />
+                    <img :src="item.img" alt="" />
                   </el-col>
                   <el-col :span="12" style="padding-top: 10px">
-                    重庆 - 南岸 - 南坪东路 - 碧家国际社区（南滨路店）
+                    {{ item.country }} - {{ item.netherlands }} -
+                    {{ item.detailNetherlands }} - {{ item.community }}
+                    {{ item.houseNumber }} 共{{ item.totalFloor }}层
                   </el-col>
                   <el-col
                     :span="6"
                     style="text-align: center; padding-top: 10px"
                   >
-                    2个月
+                    {{ item.rentalTime }}个月
                   </el-col>
                 </el-row>
               </div>
@@ -45,7 +49,7 @@
             <el-col :span="3">
               <div style="border-right: 2px solid #f5f5f5; height: 83px">
                 <div style="text-align: center; padding-top: 30px">
-                  熊劲松<i class="iconfont icon-people"></i>
+                  {{ item.rentalName }}<i class="iconfont icon-people"></i>
                 </div>
               </div>
             </el-col>
@@ -58,7 +62,9 @@
                   height: 83px;
                 "
               >
-                <div style="padding-top: 15px; margin-bottom: 10px">￥7600</div>
+                <div style="padding-top: 15px; margin-bottom: 10px">
+                  ￥{{ item.totalMoney }}
+                </div>
                 <div class="part-line-1"></div>
                 <div style="margin-top: 10px">在线支付</div>
               </div>
@@ -71,7 +77,13 @@
                   text-align: center;
                 "
               >
-                <div style="padding-top: 15px; margin-bottom: 10px">已取消</div>
+                <div style="padding-top: 15px; margin-bottom: 10px">
+                  <span v-show="item.state == 2 || item.state == 3"
+                    >已取消</span
+                  >
+                  <span v-show="item.state == 1">已完成</span>
+                  <span v-show="item.state == 0">代付款</span>
+                </div>
                 <div @click="inventoryDetail(item)" class="inventory-detail">
                   订单详情
                 </div>
@@ -80,18 +92,22 @@
             <el-col :span="3">
               <div style="text-align: center">
                 <div
-                  style="color: #ed2553; margin-top: 15px"
-                  @click="rightNowRental"
+                  style="color: #ed2553; margin-top: 30px"
+                  v-show="item.state != 0"
                 >
-                  <span style="cursor: pointer"
+                  <span
+                    style="cursor: pointer"
+                    @click="rightNowRental(item.houseId)"
                     ><i class="iconfont icon-rightnow-buy"></i> 立即租赁</span
                   >
                 </div>
                 <div
-                  style="color: #666666; margin-top: 10px"
-                  @click="chancelInventory"
+                  style="color: #666666; margin-top: 30px"
+                  v-show="item.state == 0"
                 >
-                  <span style="cursor: pointer"
+                  <span
+                    style="cursor: pointer"
+                    @click="chancelIndent(item.inventoryId, item.houseId)"
                     ><i class="iconfont icon-chancel"></i> 点击取消</span
                   >
                 </div>
@@ -101,27 +117,17 @@
         </div>
       </div>
     </div>
-    <div style="float: right">
-      <el-pagination
-        @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-size="100"
-        layout="total, prev, pager, next"
-        :total="1000"
-        background
-        style="margin-top: 10px"
-      >
-      </el-pagination>
-    </div>
   </div>
 </template>
 
 <script>
+import request from "../../network/request";
 export default {
   data() {
     return {
       deleteVisble: -1,
-      currentPage: 1,
+      minutes: 0,
+      seconds: 0,
     };
   },
   methods: {
@@ -136,13 +142,32 @@ export default {
     deleteInventory(val) {
       console.log(val);
     },
-    rightNowRental() {
-      window.alert("立即购买");
+    rightNowRental(houseId) {
+      this.$router.push({
+        path: "/inventoryUnDone",
+        query: {
+          id: houseId,
+        },
+      });
     },
-    chancelInventory() {
-      window.alert("取消");
+    chancelIndent(inventoryId, houseId) {
+      this.$confirm("该操作将导致订单取消, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(() => {
+        request({
+          url: "/indent/indent-cancel",
+          method: "post",
+          data: {
+            inventoryId: inventoryId,
+            houseId: houseId,
+          },
+        }).then((res) => {
+          if (res.data.code == 200) this.$message.success("取消成功");
+        });
+      });
     },
-    handleCurrentChange(val) {},
   },
   props: {
     datas: {
@@ -151,6 +176,9 @@ export default {
         return [1, 2];
       },
     },
+  },
+  created() {
+    setInterval(() => {}, 1000);
   },
 };
 </script>
