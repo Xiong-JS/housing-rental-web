@@ -132,7 +132,7 @@ export default {
       minutes: "",
       seconds: "",
       radioType: "1",
-      inventoryDoingVisble: false,
+      inventoryDoingVisble: true,
       isShow: "展开",
       inventoryDetailVisble: false,
       inventoryOutTimeVisble: false,

@@ -69,7 +69,11 @@
                   >
                 </el-row>
               </div>
-              <inventory-card :datas="inventoryInfosVo"></inventory-card>
+              <inventory-card
+                :datas="inventoryInfosVo"
+                v-if="inventoryInfosVo.length != 0"
+              ></inventory-card>
+              <div v-else style="text-align:center;color:#666;font-size:13px">暂无数据</div>
               <div style="float: right">
                 <el-pagination
                   @current-change="handleCurrentChange"
@@ -110,7 +114,9 @@
               </div>
               <inventory-card
                 :datas="inventoryInfosVo"
+                v-if="inventoryInfosVo.length != 0"
               ></inventory-card>
+              <div v-else style="text-align:center;color:#666;font-size:13px">暂无数据</div>
               <div style="float: right">
                 <el-pagination
                   @current-change="handleCurrentChange"
@@ -184,7 +190,11 @@
                   >
                 </el-row>
               </div>
-              <inventory-card :datas="inventoryInfosVo"></inventory-card>
+              <inventory-card
+                :datas="inventoryInfosVo"
+                v-if="inventoryInfosVo.length != 0"
+              ></inventory-card>
+              <div v-else style="text-align:center;color:#666;font-size:13px">暂无数据</div>
               <div style="float: right">
                 <el-pagination
                   @current-change="handleCurrentChange"
@@ -229,62 +239,62 @@ export default {
   methods: {
     allInventoryDateCommand(command) {
       if (command == 0) {
-        this.dateStatus = 0
+        this.dateStatus = 0;
         this.allDateCommandText = "全部";
         this.getInventoryInfosVo(1);
       } else if (command == 1) {
-        this.dateStatus = 1
+        this.dateStatus = 1;
         this.allDateCommandText = "近三个月";
-        this.getInventoryInfosVo(1)
+        this.getInventoryInfosVo(1);
       } else if (command == 2) {
-        this.dateStatus = 2
+        this.dateStatus = 2;
         this.allDateCommandText = "近一年";
-        this.getInventoryInfosVo(1)
+        this.getInventoryInfosVo(1);
       }
     },
     finishedInventoryDateCommand(command) {
       if (command == 0) {
         this.finishedDateCommandText = "全部";
-        this.dateStatus = 0
+        this.dateStatus = 0;
         this.getInventoryInfosVo(1);
       } else if (command == 1) {
         this.finishedDateCommandText = "近三个月";
-        this.dateStatus = 1
+        this.dateStatus = 1;
         this.getInventoryInfosVo(1);
       } else if (command == 2) {
         this.finishedDateCommandText = "近一年";
-        this.dateStatus = 2
+        this.dateStatus = 2;
         this.getInventoryInfosVo(1);
       }
     },
 
     allInventoryStateCommand(command) {
-      this.indentStatus = command
+      this.indentStatus = command;
       if (command == 4) {
         this.allStateCommandText = "全部状态";
-        this.getInventoryInfosVo(1)
+        this.getInventoryInfosVo(1);
       } else if (command == 0) {
         this.allStateCommandText = "等待付款";
-        this.getInventoryInfosVo(1)
+        this.getInventoryInfosVo(1);
       } else if (command == 1) {
         this.allStateCommandText = "已完成";
-        this.getInventoryInfosVo(1)
+        this.getInventoryInfosVo(1);
       } else {
         this.allStateCommandText = "已取消";
-        this.getInventoryInfosVo(1)
+        this.getInventoryInfosVo(1);
       }
     },
     finishedInventoryStateCommand(command) {
-      this.indentStatus = command
+      this.indentStatus = command;
       if (command == 4) {
         this.finishedStateCommandText = "全部状态";
-        this.getInventoryInfosVo(1)
+        this.getInventoryInfosVo(1);
       } else if (command == 1) {
         this.finishedStateCommandText = "已完成";
-        this.getInventoryInfosVo(1)
+        this.getInventoryInfosVo(1);
       } else {
         this.finishedStateCommandText = "已取消";
-        this.getInventoryInfosVo(1)
+        this.getInventoryInfosVo(1);
       }
     },
     getInventoryInfosVo(page) {
@@ -325,9 +335,9 @@ export default {
         this.getInventoryInfosVo(1);
       }
     },
-    handleCurrentChange(val){
-      this.getInventoryInfosVo(val)
-    }
+    handleCurrentChange(val) {
+      this.getInventoryInfosVo(val);
+    },
   },
   components: {
     InventoryCard,

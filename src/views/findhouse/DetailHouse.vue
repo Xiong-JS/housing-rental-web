@@ -234,19 +234,18 @@
         >评论</span
       >
       <div style="width: 700px; padding-bottom: 20px">
-        <div v-for="item in 2" :key="item">
+        <div v-for="item in comments" :key="item">
           <el-row>
             <el-col :span="3">
-              <img src="../../assets/img/3.jpg" alt="" class="head-img" />
+              <img :src="item.commentMainVo.userImg" alt="" class="head-img" />
             </el-col>
             <el-col :span="21" style="border-bottom: 1px solid #e2e2e2">
               <div>
                 <div style="margin-top: 20px; color: #6d757a; font-size: 13px">
-                  熊劲松
+                  {{ item.commentMainVo.userName }}
                 </div>
                 <div>
-                  啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦
-                  啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦
+                  {{ item.commentMainVo.content }}
                 </div>
                 <div
                   style="
@@ -255,31 +254,33 @@
                     font-size: 13px;
                   "
                 >
-                  <span>2021-04-03 01:30</span>
+                  <span>{{ item.commentMainVo.createTime }}</span>
                   <span
                     style="margin-left: 20px; cursor: pointer"
-                    @click="comment"
+                    @click="comment(item.commentMainVo.userName,
+                            item.commentMainVo.userId,
+                            item.commentMainVo.id)"
                     >回复</span
                   >
                 </div>
               </div>
               <!-- 评论回复 -->
-              <div v-for="item in 2" :key="item">
+              <div v-for="item in item.commentDeputyVos" :key="item">
                 <el-row>
                   <el-col :span="2">
-                    <img
-                      src="../../assets/img/3.jpg"
-                      alt=""
-                      class="head-img-small"
-                    />
+                    <img :src="item.userImg" alt="" class="head-img-small" />
                   </el-col>
                   <el-col :span="22">
                     <div
                       style="margin-top: 5px; color: #6d757a; font-size: 13px"
                     >
-                      熊劲松
+                      {{ item.userName }}
+                      <span style="margin-left: 10px">回复:</span
+                      ><span style="margin-left: 10px">{{
+                        item.replyName
+                      }}</span>
                     </div>
-                    <div>啦啦啦啦啦啦啦啦啦啦啦啦啦</div>
+                    <div>{{ item.content }}</div>
                     <div
                       style="
                         color: #aaa;
@@ -287,10 +288,16 @@
                         font-size: 13px;
                       "
                     >
-                      <span>2021-04-03 01:30</span>
+                      <span>{{ item.createTime }}</span>
                       <span
                         style="margin-left: 20px; cursor: pointer"
-                        @click="comment"
+                        @click="
+                          comment(
+                            item.userName,
+                            item.userId,
+                            item.mainId,
+                          )
+                        "
                         >回复</span
                       >
                     </div>
@@ -312,9 +319,7 @@
       </el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="commentVisble = false">取 消</el-button>
-        <el-button type="primary" @click="commentVisble = false"
-          >发 布</el-button
-        >
+        <el-button type="primary" @click="releaseComment">发 布</el-button>
       </span>
     </el-dialog>
   </div>
@@ -327,14 +332,17 @@ var weather = "";
 var humidity = "";
 var temperature = "";
 var map = "";
-var longitude, dimensionality;
 export default {
   data() {
     return {
       houseInfos: {},
       commentVisble: false,
-      placeText: "@熊劲松",
+      placeText: "",
       commentContent: "",
+      comments: [],
+      replyId: "",
+      mainId: "",
+      index: "",
     };
   },
   computed: {
@@ -361,7 +369,10 @@ export default {
       return type;
     },
     refresh() {
-      map.setZoomAndCenter(16, [this.houseInfos.longitude, this.houseInfos.dimensionality]);
+      map.setZoomAndCenter(16, [
+        this.houseInfos.longitude,
+        this.houseInfos.dimensionality,
+      ]);
     },
     pay() {
       if (this.$store.state.user.length == 0) {
@@ -406,8 +417,35 @@ export default {
         console.log(res.data);
       });
     },
-    comment() {
+    comment(userName, userId, mainId, index) {
       this.commentVisble = true;
+      this.placeText = "@" + userName;
+      this.commentContent = "";
+      this.replyId = userId;
+      this.mainId = mainId;
+      this.index = index;
+    },
+    releaseComment() {
+      this.commentVisble = false;
+      request({
+        url: "/comment/comment-deputy",
+        method: "post",
+        data: {
+          mainId: this.mainId,
+          userId: localStorage.getItem("id"),
+          content: this.commentContent,
+          replyId: this.replyId,
+        },
+      }).then((res) => {
+        request({
+          url: "/comment",
+          params: {
+            houseId: this.houseInfos.houseId,
+          },
+        }).then((res) => {
+          this.comments = res.data.data;
+        });
+      });
     },
   },
   created() {
@@ -430,11 +468,23 @@ export default {
         map.addControl(scale);
       });
       var marker = new AMap.Marker({
-        position: new AMap.LngLat(this.houseInfos.longitude, this.houseInfos.dimensionality),
+        position: new AMap.LngLat(
+          this.houseInfos.longitude,
+          this.houseInfos.dimensionality
+        ),
         title: this.houseInfos.community,
         offset: new AMap.Pixel(-13, -30),
       });
       map.add(marker);
+      request({
+        url: "/comment",
+        params: {
+          houseId: this.houseInfos.houseId,
+        },
+      }).then((res) => {
+        this.comments = res.data.data;
+        console.log(this.comments);
+      });
     });
     AMap.plugin("AMap.Weather", function () {
       var Aweather = new AMap.Weather();

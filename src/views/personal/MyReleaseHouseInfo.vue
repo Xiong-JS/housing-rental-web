@@ -29,6 +29,160 @@
         <el-breadcrumb-item>我的房源</el-breadcrumb-item>
       </el-breadcrumb>
       <el-tabs type="border-card" @tab-click="handTabClick">
+        <el-tab-pane label="审核中">
+          <div
+            class="my-releaseHouse-list"
+            v-for="item in houseInfos"
+            :key="item.houseId"
+            @mouseover="soldOutVisble = item.houseId"
+            @mouseleave="soldOutVisble = -1"
+          >
+            <div style="margin-top: 20px">
+              <div>
+                <div class="my-releaseHouse-status">
+                  <el-row>
+                    <el-col :span="9" style="text-align: center">
+                      <span>房源信息</span>
+                    </el-col>
+                    <el-col :span="2" style="text-align: center">
+                      <span>类型</span>
+                    </el-col>
+                    <el-col :span="2" style="text-align: center">
+                      <span>发布人</span>
+                    </el-col>
+                    <el-col :span="2" style="text-align: center">
+                      <span>价格</span>
+                    </el-col>
+                    <el-col :span="3" style="text-align: center">
+                      <span>时间</span>
+                    </el-col>
+                    <el-col :span="3" style="text-align: center">
+                      <span>状态</span>
+                    </el-col>
+                    <el-col :span="3" style="text-align: center">
+                      <span>操作</span>
+                    </el-col>
+                  </el-row>
+                </div>
+                <div class="my-releaseHouse-info">
+                  <el-row>
+                    <el-col :span="9" style="border-right: 1px solid #f5f5f5">
+                      <div>
+                        <el-row>
+                          <el-col :span="6">
+                            <img :src="item.img" alt="" />
+                          </el-col>
+                          <el-col :span="18" style="padding-top: 10px">
+                            <div>
+                              {{ item.country }} - {{ item.netherlands }} -
+                              {{ item.detailNetherlands }} -
+                              {{ item.community }} {{ item.houseNumber }} 共{{
+                                item.totalFloor
+                              }}层
+                            </div>
+                            <div style="margin-top: 10px">
+                              <span v-show="item.toilet == 1" style="padding:2px">独卫</span>
+                              <span v-show="item.balcony == 1" style="padding:2px">带阳台</span>
+                              <span v-show="item.houseType == 1" style="padding:2px">电梯房</span>
+                              <span v-show="item.monthPay == 1" style="padding:2px">月付</span>
+                              <span v-show="item.hardback == 1" style="padding:2px">精装修</span>
+                              <span v-show="item.homeAppliances == 1" style="padding:2px"
+                                >家电齐全</span
+                              >
+                            </div>
+                            <div style="margin-top: 10px">
+                              {{ item.room }}室{{ item.hall }}厅{{
+                                item.toilet
+                              }}卫
+                            </div>
+                          </el-col>
+                        </el-row>
+                      </div>
+                    </el-col>
+                    <el-col
+                      :span="2"
+                      style="
+                        text-align: center;
+                        padding-top: 30px;
+                        border-right: 1px solid #f5f5f5;
+                        height: 81px;
+                      "
+                    >
+                      <span v-show="item.rentalType == 2">整租</span>
+                      <span v-show="item.rentalType == 1">合租</span>
+                    </el-col>
+                    <el-col
+                      :span="2"
+                      style="
+                        text-align: center;
+                        height: 81px;
+                        border-right: 1px solid #f5f5f5;
+                        padding-top: 30px;
+                      "
+                    >
+                      <span>{{ item.releaseName }}</span>
+                    </el-col>
+                    <el-col
+                      :span="2"
+                      style="
+                        text-align: center;
+                        height: 81px;
+                        padding-top: 20px;
+                        border-right: 1px solid #f5f5f5;
+                      "
+                    >
+                      <div>租金:￥{{ item.quote }}/月</div>
+                      <div style="margin-top: 5px">
+                        押金:￥{{ item.cashPledge }}
+                      </div>
+                    </el-col>
+                    <el-col
+                      :span="3"
+                      style="
+                        text-align: center;
+                        height: 81px;
+                        padding-top: 20px;
+                        border-right: 1px solid #f5f5f5;
+                      "
+                    >
+                      <span>无</span>
+                    </el-col>
+                    <el-col :span="3" style="text-align: center">
+                      <div style="margin-top: 30px">
+                        <span v-show="item.auditState == 0">审核中</span>
+                        <span v-show="item.auditState == 1">未通过</span>
+                      </div>
+                    </el-col>
+                    <el-col :span="3" style="text-align: center">
+                      <div style="margin-top: 30px">
+                        <span
+                          @click="submit(item.houseId)"
+                          v-show="item.auditState == 1"
+                          >提交房产证</span
+                        >
+                        <span @click="look(item.certificateImg)" style="cursor:pointer"
+                          >查看房产证</span
+                        >
+                      </div>
+                    </el-col>
+                  </el-row>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="float: right">
+            <el-pagination
+              @current-change="handleCurrentChange"
+              :current-page.sync="currentPage"
+              :page-size="2"
+              layout="total, prev, pager, next"
+              :total="total"
+              background
+              style="margin-top: 10px"
+            >
+            </el-pagination>
+          </div>
+        </el-tab-pane>
         <el-tab-pane label="已上架">
           <el-row style="font-size: 13px; color: #666">
             <el-col :span="12">
@@ -41,11 +195,12 @@
                     v-model="charaters"
                     size="small"
                     :max="3"
+                    @change="charatersChange"
                     fill="#ed2553"
-                    ><el-checkbox-button label="1">月付</el-checkbox-button
-                    ><el-checkbox-button label="2">家电齐全</el-checkbox-button
-                    ><el-checkbox-button label="3">精装修</el-checkbox-button
-                    ><el-checkbox-button label="4">有阳台</el-checkbox-button>
+                    ><el-checkbox-button label="月付">月付</el-checkbox-button
+                    ><el-checkbox-button label="家电齐全">家电齐全</el-checkbox-button
+                    ><el-checkbox-button label="精装修">精装修</el-checkbox-button
+                    ><el-checkbox-button label="带阳台">有阳台</el-checkbox-button>
                   </el-checkbox-group></el-col
                 >
               </el-row>
@@ -56,31 +211,32 @@
                   ><div style="margin-top: 5px">室：</div></el-col
                 >
                 <el-col :span="22"
-                  ><el-checkbox-group
-                    v-model="room"
-                    size="small"
-                    fill="#ed2553"
-                  >
-                    <el-checkbox-button label="1">1室</el-checkbox-button
-                    ><el-checkbox-button label="2">2室</el-checkbox-button
-                    ><el-checkbox-button label="3">3室</el-checkbox-button>
-                  </el-checkbox-group></el-col
+                  ><el-radio-group v-model="room" size="small" fill="#ed2553" @change="roomChange">
+                    <el-radio-button label="0">不限</el-radio-button>
+                    <el-radio-button label="1">1室</el-radio-button
+                    ><el-radio-button label="2">2室</el-radio-button
+                    ><el-radio-button label="3">3室</el-radio-button>
+                  </el-radio-group></el-col
                 >
               </el-row>
             </el-col>
           </el-row>
           <div
             class="my-releaseHouse-list"
-            v-for="item in 2"
-            :key="item"
-            @mouseover="soldOutVisble = item"
+            v-for="item in houseInfos"
+            :key="item.houseId"
+            @mouseover="soldOutVisble = item.houseId"
             @mouseleave="soldOutVisble = -1"
           >
             <div style="margin-top: 20px">
               <div>
                 <el-row>
                   <el-col>
-                    <div style="float: right" v-show="soldOutVisble == item">
+                    <div
+                      style="float: right"
+                      v-show="soldOutVisble == item.houseId"
+                      @click="downRental(item.houseId)"
+                    >
                       <i
                         class="iconfont icon-sold-out"
                         title="下架"
@@ -117,16 +273,31 @@
                       <div>
                         <el-row>
                           <el-col :span="6">
-                            <img src="../../assets/img/3.jpg" alt="" />
+                            <img :src="item.img" alt="" />
                           </el-col>
                           <el-col :span="18" style="padding-top: 10px">
                             <div>
-                              重庆 - 南岸 - 南坪东路 - 碧家国际社区（南滨路店）
+                              {{ item.country }} - {{ item.netherlands }} -
+                              {{ item.detailNetherlands }} -
+                              {{ item.community }} {{ item.houseNumber }} 共{{
+                                item.totalFloor
+                              }}层
                             </div>
                             <div style="margin-top: 10px">
-                              月付，家电齐全，精装修，有阳台，电梯房
+                              <span v-show="item.toilet == 1" style="padding:2px">独卫</span>
+                              <span v-show="item.balcony == 1" style="padding:2px">带阳台</span>
+                              <span v-show="item.houseType == 1" style="padding:2px">电梯房</span>
+                              <span v-show="item.monthPay == 1" style="padding:2px">月付</span>
+                              <span v-show="item.hardback == 1" style="padding:2px">精装修</span>
+                              <span v-show="item.homeAppliances == 1" style="padding:2px"
+                                >家电齐全</span
+                              >
                             </div>
-                            <div style="margin-top: 10px">1室1厅1卫</div>
+                            <div style="margin-top: 10px">
+                              {{ item.room }}室{{ item.hall }}厅{{
+                                item.toilet
+                              }}卫
+                            </div>
                           </el-col>
                         </el-row>
                       </div>
@@ -140,7 +311,8 @@
                         height: 81px;
                       "
                     >
-                      <span>整租</span>
+                      <span v-show="item.rentalType == 2">整租</span>
+                      <span v-show="item.rentalType == 1">合租</span>
                     </el-col>
                     <el-col
                       :span="3"
@@ -151,7 +323,7 @@
                         padding-top: 30px;
                       "
                     >
-                      <span>熊劲松</span>
+                      <span>{{ item.releaseName }}</span>
                     </el-col>
                     <el-col
                       :span="3"
@@ -162,22 +334,21 @@
                         border-right: 1px solid #f5f5f5;
                       "
                     >
-                      <div>租金:￥2800/月</div>
-                      <div style="margin-top: 5px">押金:￥100</div>
-                    </el-col>
-                    <el-col
-                      :span="3"
-                      style="
-                        text-align: center;
-                        height: 81px;
-                        padding-top: 20px;
-                        border-right: 1px solid #f5f5f5;
-                      "
-                    >
-                      <div>上架时间:2021-04-24 15:23:42</div>
+                      <div>租金:￥{{ item.quote }}/月</div>
                       <div style="margin-top: 5px">
-                        下架时间:2021-04-24 15:23:42
+                        押金:￥{{ item.cashPledge }}
                       </div>
+                    </el-col>
+                    <el-col
+                      :span="3"
+                      style="
+                        text-align: center;
+                        height: 81px;
+                        padding-top: 20px;
+                        border-right: 1px solid #f5f5f5;
+                      "
+                    >
+                      <div>上架时间:{{ item.releaseTime }}</div>
                     </el-col>
                     <el-col :span="3" style="text-align: center">
                       <div style="margin-top: 30px">
@@ -193,9 +364,9 @@
             <el-pagination
               @current-change="handleCurrentChange"
               :current-page.sync="currentPage"
-              :page-size="100"
+              :page-size="2"
               layout="total, prev, pager, next"
-              :total="1000"
+              :total="total"
               background
               style="margin-top: 10px"
             >
@@ -205,13 +376,28 @@
         <el-tab-pane label="已下架">
           <div
             class="my-releaseHouse-list"
-            v-for="item in 2"
-            :key="item"
-            @mouseover="soldOutVisble = item"
+            v-for="item in houseInfos"
+            :key="item.hosueId"
+            @mouseover="soldOutVisble = item.houseId"
             @mouseleave="soldOutVisble = -1"
           >
             <div style="margin-top: 20px">
               <div>
+                <el-row>
+                  <el-col>
+                    <div
+                      style="float: right"
+                      v-show="soldOutVisble == item.houseId"
+                      @click="upRental(item.rentalState,item.houseId)"
+                    >
+                      <i
+                        class="iconfont icon-upline"
+                        title="上架"
+                        style="cursor: pointer"
+                      ></i>
+                    </div>
+                  </el-col>
+                </el-row>
                 <div class="my-releaseHouse-status">
                   <el-row>
                     <el-col :span="9" style="text-align: center">
@@ -240,16 +426,31 @@
                       <div>
                         <el-row>
                           <el-col :span="6">
-                            <img src="../../assets/img/3.jpg" alt="" />
+                            <img :src="item.img" alt="" />
                           </el-col>
                           <el-col :span="18" style="padding-top: 10px">
                             <div>
-                              重庆 - 南岸 - 南坪东路 - 碧家国际社区（南滨路店）
+                              {{ item.country }} - {{ item.netherlands }} -
+                              {{ item.detailNetherlands }} -
+                              {{ item.community }} {{ item.houseNumber }} 共{{
+                                item.totalFloor
+                              }}层
                             </div>
                             <div style="margin-top: 10px">
-                              月付，家电齐全，精装修，有阳台，电梯房
+                              <span v-show="item.toilet == 1" style="padding:2px">独卫</span>
+                              <span v-show="item.balcony == 1" style="padding:2px">带阳台,</span>
+                              <span v-show="item.houseType == 1" style="padding:2px">电梯房,</span>
+                              <span v-show="item.monthPay == 1" style="padding:2px">月付,</span>
+                              <span v-show="item.hardback == 1" style="padding:2px">精装修</span>
+                              <span v-show="item.homeAppliances == 1" style="padding:2px"
+                                >家电齐全</span
+                              >
                             </div>
-                            <div style="margin-top: 10px">1室1厅1卫</div>
+                            <div style="margin-top: 10px">
+                              {{ item.room }}室{{ item.hall }}厅{{
+                                item.toilet
+                              }}卫
+                            </div>
                           </el-col>
                         </el-row>
                       </div>
@@ -263,7 +464,8 @@
                         height: 81px;
                       "
                     >
-                      <span>整租</span>
+                      <span v-show="item.rentalType == 2">整租</span>
+                      <span v-show="item.rentalType == 1">合租</span>
                     </el-col>
                     <el-col
                       :span="3"
@@ -274,7 +476,7 @@
                         padding-top: 30px;
                       "
                     >
-                      <span>熊劲松</span>
+                      <span>{{ item.releaseName }}</span>
                     </el-col>
                     <el-col
                       :span="3"
@@ -285,21 +487,23 @@
                         border-right: 1px solid #f5f5f5;
                       "
                     >
-                      <div>租金:￥2800/月</div>
-                      <div style="margin-top: 5px">押金:￥100</div>
-                    </el-col>
-                    <el-col
-                      :span="3"
-                      style="
-                        text-align: center;
-                        height: 81px;
-                        padding-top: 20px;
-                        border-right: 1px solid #f5f5f5;
-                      "
-                    >
-                      <div>上架时间:2021-04-24 15:23:42</div>
+                      <div>租金:￥{{ item.quote }}/月</div>
                       <div style="margin-top: 5px">
-                        下架时间:2021-04-24 15:23:42
+                        押金:￥{{ item.cashPledge }}
+                      </div>
+                    </el-col>
+                    <el-col
+                      :span="3"
+                      style="
+                        text-align: center;
+                        height: 81px;
+                        padding-top: 20px;
+                        border-right: 1px solid #f5f5f5;
+                      "
+                    >
+                      <div>上架时间:{{ item.releaseTime }}</div>
+                      <div style="margin-top: 5px">
+                        下架时间:{{ item.downTime }}
                       </div>
                     </el-col>
                     <el-col :span="3" style="text-align: center">
@@ -316,9 +520,9 @@
             <el-pagination
               @current-change="handleCurrentChange"
               :current-page.sync="currentPage"
-              :page-size="100"
+              :page-size="2"
               layout="total, prev, pager, next"
-              :total="1000"
+              :total="total"
               background
               style="margin-top: 10px"
             >
@@ -327,28 +531,174 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+    <el-dialog
+      title="上传房产证"
+      :visible.sync="certificateVisble"
+      width="30%"
+      center
+    >
+      <el-upload
+        class="avatar-uploader"
+        :action="uploadUrl"
+        :show-file-list="false"
+        :on-success="handleCertificateAvatarSuccess"
+        :before-upload="beforeAvatarUpload"
+        :headers="headers"
+        :data="imgData"
+      >
+        <img
+          v-if="certificateImg"
+          :src="certificateImg"
+          class="avatar"
+          style="width: 100px; height: 100px"
+        />
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="certificateVisble = false">取 消</el-button>
+        <el-button type="primary" @click="up">上 传</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="房产证" :visible.sync="lookVisble" width="30%" center>
+      <img
+        v-if="certificateImg"
+        :src="certificateImg"
+        class="avatar"
+        style="width: 100px; height: 100px"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import request from "../../network/request";
 export default {
   data() {
     return {
       userName: localStorage.getItem("name"),
       charaters: [],
-      room: [],
+      room: 0,
       soldOutVisble: -1,
       currentPage: 1,
+      total: 0,
+      houseInfos: [],
+      certificateVisble: false,
+      lookVisble: false,
+      imgData: {
+        path: "",
+      },
+      uploadUrl: "http://localhost:8080/imgUpload",
+      headers: { "u-token": localStorage.getItem("uToken") },
+      houseId: "",
+      certificateImg: "",
+      tabState: 0,
     };
   },
   methods: {
     homeClick() {
       this.$router.push("/");
     },
-    handleCurrentChange(val) {},
-    handTabClick(val) {
-      console.log(val.index);
+    handleCurrentChange(val) {
+      this.getHouseInfos(val);
     },
+    handTabClick(val) {
+      this.tabState = val.index;
+      this.charaters = [];
+      this.room = 0;
+      this.getHouseInfos(1)
+    },
+    submit(houseId) {
+      this.certificateVisble = true;
+      this.imgData.path = "bishe/certificate";
+      this.houseId = houseId;
+    },
+    look(certificateImg) {
+      this.certificateImg = certificateImg;
+      this.lookVisble = true;
+    },
+    up() {
+      request({
+        url: "/house/certificateImg",
+        method: "post",
+        data: {
+          certificateImg: this.certificateImg,
+          houseId: this.houseId,
+        },
+      }).then((res) => {
+        this.$message.success("提交成功!");
+        this.getHouseInfos(1);
+      });
+    },
+    charatersChange(val){
+      this.getHouseInfos(1)
+    },
+    roomChange(val){
+      this.getHouseInfos(1)
+    },
+    handleCertificateAvatarSuccess(res, file) {
+      if (res.msg == "NoUser" || res.code == "000004") {
+        this.$message.error("未登录,请登录!");
+      } else {
+        this.certificateImg = res.data;
+        this.$message.success("上传成功");
+      }
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 1;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    },
+    getHouseInfos(val) {
+      request({
+        url: "/house/releaseHouseInfos",
+        params: {
+          tabState: this.tabState,
+          characters: this.charaters.toString(),
+          room: this.room,
+          page: val,
+          pageSize: 2,
+        },
+      }).then((res) => {
+        this.houseInfos = res.data.data;
+        this.total = res.data.total;
+        this.currentPage = res.data.currentPage;
+        console.log(res);
+      });
+    },
+    downRental(houseId) {
+      request({
+        url: "/house/downRental",
+        method: "post",
+        data: {
+          houseId: houseId,
+          state: 0,
+        },
+      }).then((res) => {
+        this.$message.success("下架成功!");
+        this.getHouseInfos(1);
+      });
+    },
+    upRental(rentalState,houseId) {
+
+      if(rentalState == 1){
+        this.$message.error('该房源正在出租中不可上架')
+        return
+      }
+      this.certificateVisble = true;
+      this.certificateImg = "";
+      this.houseId = houseId
+    },
+  },
+  created() {
+    this.getHouseInfos(1);
+    console.log(this.total);
   },
 };
 </script>
@@ -409,5 +759,28 @@ export default {
   width: 60px;
   height: 60px;
   padding: 10px 0 10px 20px;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

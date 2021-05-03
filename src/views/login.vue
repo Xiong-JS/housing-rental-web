@@ -14,7 +14,7 @@
           <input type="password" name="pass" id="pass" v-model="password" />
           <span class="spin"></span>
         </div>
-        <div class="button login" @click="loginBtn">
+        <div class="button user-login" @click="loginBtn" style="text-align: center">
           <button>
             <span>登录</span>
             <i class="fa fa-check"></i>
@@ -88,16 +88,15 @@ export default {
               message: res.data.result.msg,
               type: "success",
             });
-            localStorage.setItem("id",res.data.result.data[0].id)
-            localStorage.setItem("name",res.data.result.data[0].userName)
-            localStorage.setItem("img",res.data.result.data[0].userImg)
+            localStorage.setItem("id", res.data.result.data[0].id);
+            localStorage.setItem("name", res.data.result.data[0].userName);
+            localStorage.setItem("img", res.data.result.data[0].userImg);
             this.$store.commit(types.SETUSER, res.data.result.data);
             this.$store.commit(types.SETTOKEN, res.data.uToken);
             localStorage.setItem("uToken", res.data.uToken);
             setTimeout(() => {
               this.$router.go(-1);
             }, 1000);
-
           }
         });
       } else {
@@ -121,5 +120,16 @@ export default {
   height: 730px;
   background-image: url("../assets/img/3.jpg");
   filter: blur(10px);
+}
+.user-login {
+  background-color: transparent;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  font-weight: 900;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.2);
+}
+.user-login:hover{
+  color: #ed2553;
+  border: 3px solid #ed2553;
 }
 </style>

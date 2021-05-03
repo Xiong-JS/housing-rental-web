@@ -72,7 +72,7 @@
             ><span style="margin-left: 10px">租赁信息</span>
           </div>
           <div class="part-line-1"></div>
-          <div class="exit">
+          <div class="exit" @click="exit">
             <i class="iconfont icon-exit" style="margin-left: 10px"></i
             ><span style="margin-left: 10px">退出</span>
           </div>
@@ -149,6 +149,9 @@ export default {
         },
       });
     },
+    exit(){
+      this.$router.push('/login')
+    }
   },
   created() {
     // localStorage.removeItem("uToken")

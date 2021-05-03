@@ -41,13 +41,23 @@
                 >
                   立即购买
                 </button>
-                <button
+                <div v-show="inventoryInfos.state == 0">
+                  <button
                   class="pay-button"
-                  v-show="inventoryInfos.state == 0"
+                  style="margin-top: 10px"
                   @click="cancelIndent"
                 >
                   点击取消
                 </button>
+                <button
+                  class="pay-button"
+                  style="margin-top: 10px"
+                  @click="pay"
+                >
+                  点击支付
+                </button>
+                </div>
+                
               </div>
             </div>
           </el-col>
@@ -115,18 +125,29 @@
                   <span>支付方式:</span>
                   <span style="margin-left: 50px">在线支付</span>
                 </div>
-                <div v-show="inventoryInfos.state == 2 || inventoryInfos.state == 3">
+                <div
+                  v-show="
+                    inventoryInfos.state == 2 || inventoryInfos.state == 3
+                  "
+                >
                   <div style="margin-top: 10px">
-                  <span>取消时间:</span>
-                  <span style="margin-left: 50px">2021-04-24 15:53:44</span>
+                    <span>取消时间:</span>
+                    <span style="margin-left: 50px">2021-04-24 15:53:44</span>
+                  </div>
+                  <div style="margin-top: 10px">
+                    <span>取消原因:</span>
+                    <span
+                      style="margin-left: 50px"
+                      v-show="inventoryInfos.state == 2"
+                      >过期未付款</span
+                    >
+                    <span
+                      style="margin-left: 50px"
+                      v-show="inventoryInfos.state == 3"
+                      >用户自己取消</span
+                    >
+                  </div>
                 </div>
-                <div style="margin-top: 10px">
-                  <span>取消原因:</span>
-                  <span style="margin-left: 50px" v-show="inventoryInfos.state == 2">过期未付款</span>
-                  <span style="margin-left: 50px" v-show="inventoryInfos.state == 3">用户自己取消</span>
-                </div>
-                </div>
-                
               </div>
             </div>
           </el-col>
@@ -136,8 +157,16 @@
                 <div style="font-size: 14px">支付信息</div>
                 <div style="margin-top: 10px">
                   <span>付款类型:</span>
-                  <span style="margin-left: 50px" v-show="inventoryInfos.state == 1">零钱支付</span>
-                  <span style="margin-left: 50px" v-show="inventoryInfos.state != 1">无</span>
+                  <span
+                    style="margin-left: 50px"
+                    v-show="inventoryInfos.state == 1"
+                    >零钱支付</span
+                  >
+                  <span
+                    style="margin-left: 50px"
+                    v-show="inventoryInfos.state != 1"
+                    >无</span
+                  >
                 </div>
               </div>
             </div>
@@ -193,9 +222,13 @@
                         <img :src="inventoryInfos.img" alt="" />
                       </el-col>
                       <el-col :span="12" style="padding-top: 10px">
-                        {{ inventoryInfos.country }} - {{ inventoryInfos.netherlands }} -
-                    {{ inventoryInfos.detailNetherlands }} - {{ inventoryInfos.community }}
-                    {{ inventoryInfos.houseNumber }} 共{{ inventoryInfos.totalFloor }}层
+                        {{ inventoryInfos.country }} -
+                        {{ inventoryInfos.netherlands }} -
+                        {{ inventoryInfos.detailNetherlands }} -
+                        {{ inventoryInfos.community }}
+                        {{ inventoryInfos.houseNumber }} 共{{
+                          inventoryInfos.totalFloor
+                        }}层
                       </el-col>
                     </el-row>
                   </div>
@@ -203,17 +236,19 @@
                 <el-col :span="3">
                   <div style="border-right: 2px solid #f5f5f5; height: 83px">
                     <div style="text-align: center; padding-top: 30px">
-                      {{inventoryInfos.houseId}}
+                      {{ inventoryInfos.houseId }}
                     </div>
                   </div>
                 </el-col>
                 <el-col :span="3">
                   <div style="text-align: center; padding-top: 30px">
-                    ￥{{inventoryInfos.quote}}
+                    ￥{{ inventoryInfos.quote }}
                   </div>
                 </el-col>
                 <el-col :span="3">
-                  <div style="text-align: center; padding-top: 30px">{{inventoryInfos.rentalTime}}个月</div>
+                  <div style="text-align: center; padding-top: 30px">
+                    {{ inventoryInfos.rentalTime }}个月
+                  </div>
                 </el-col>
                 <el-col :span="3">
                   <div style="text-align: center">
@@ -242,7 +277,9 @@
                       ><span style="float: right">房价总额:</span></el-col
                     >
                     <el-col :span="12"
-                      ><span style="float: right">￥{{inventoryInfos.quote}}</span></el-col
+                      ><span style="float: right"
+                        >￥{{ inventoryInfos.quote }}</span
+                      ></el-col
                     >
                   </el-row>
                 </div>
@@ -252,7 +289,9 @@
                       ><span style="float: right">押金:</span></el-col
                     >
                     <el-col :span="12"
-                      ><span style="float: right">+￥{{inventoryInfos.cashPledge}}</span></el-col
+                      ><span style="float: right"
+                        >+￥{{ inventoryInfos.cashPledge }}</span
+                      ></el-col
                     >
                   </el-row>
                 </div>
@@ -268,7 +307,7 @@
                           font-size: 20px;
                           font-weight: bolder;
                         "
-                        >￥{{inventoryInfos.totalMoney}}</span
+                        >￥{{ inventoryInfos.totalMoney }}</span
                       ></el-col
                     >
                   </el-row>
@@ -298,7 +337,7 @@ export default {
       this.$router.push({
         path: "/inventoryUnDone",
         query: {
-          id: inventoryInfos.houseId,
+          id: this.inventoryInfos.houseId,
         },
       });
     },
@@ -323,18 +362,40 @@ export default {
             url: "/indent/indent-cancel",
             method: "post",
             data: {
-              inventoryId: inventoryInfos.inventoryId,
-              houseId: inventoryInfos.houseId,
+              inventoryId: this.inventoryInfos.inventoryId,
+              houseId: this.inventoryInfos.houseId,
+              state: 3
             },
           }).then((res) => {
             if (res.data.code == 200) this.$message.success("取消成功");
+           this.getInventoryById()
           });
         });
       }
     },
+    pay(){
+      if (
+        parseFloat(this.inventoryInfos.userWallet) <
+        parseFloat(this.inventoryInfos.totalMoney)
+      ) {
+        this.$message.error("余额不足!请前往个人中心充值");
+        return;
+      }
+      request({
+        url: "/indent/payment",
+        method: "post",
+        data: {
+          inventoryId: this.inventoryInfos.inventoryId,
+        },
+      }).then((res) => {
+        this.$message.success("支付成功!");
+        this.getInventoryById()
+      });
+    }
   },
   created() {
-    this.inventoryInfos = this.$route.query.inventoryInfos;
+    this.inventoryInfos = this.$route.query.inventory;
+    console.log(this.inventoryInfos);
     let times = this.inventoryInfos.countTime;
     setInterval(() => {
       times -= 1;
@@ -342,8 +403,7 @@ export default {
       this.seconds = parseInt(times % 60);
       //倒计时结束
       if (this.minutes == 0 && this.seconds == 0) {
-        this.inventoryDoingVisble = false;
-        this.inventoryOutTimeVisble = true;
+        this.getInventoryById()
       } else if (this.seconds == 0) {
         this.seconds == "00";
       } else if (this.minutes == 0) {

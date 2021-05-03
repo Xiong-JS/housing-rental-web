@@ -19,7 +19,7 @@
             <span
               style="float: right; margin-right: 20px; cursor: pointer"
               v-show="deleteVisble == item.inventoryId"
-              @click="deleteInventory(item.inventoryId)"
+              @click="deleteInventory(item.inventoryId,item.state)"
               ><i class="el-icon-delete" title="删除"></i
             ></span>
           </div>
@@ -139,8 +139,21 @@ export default {
         },
       });
     },
-    deleteInventory(val) {
-      console.log(val);
+    deleteInventory(inventoryId,state){
+      if(state == 0){
+        this.$messge.error('该订单处于未完成状态，不能删除!')
+        return
+      }
+      request({
+        url:'/indent/delete-indent',
+        method:'post',
+        data:{
+          inventoryId:inventoryId
+        }
+      }).then(res=>{
+        this.$emit('getInventoryInfosVo',1)
+        this.$message.success('已删除')
+      })
     },
     rightNowRental(houseId) {
       this.$router.push({
