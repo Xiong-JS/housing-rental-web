@@ -188,7 +188,7 @@ export default {
     return {
       user: {},
       uploadUrl: "http://localhost:8080/imgUpload",
-      headers: { "u-token": localStorage.getItem("uToken") },
+      headers: { "u-token": sessionStorage.getItem("uToken") },
       imgData: {
         path: "bishe/house",
       },
@@ -298,7 +298,7 @@ export default {
         method:'post',
         data:{
           userWallet:this.wallet,
-          id:localStorage.getItem('id')
+          id:sessionStorage.getItem('id')
         }
       }).then(res=>{
         this.rechargeVisble = false

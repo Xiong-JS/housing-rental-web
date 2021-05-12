@@ -98,14 +98,23 @@
           <el-input v-model="baseHouseInfo.houseNumber"></el-input>
         </el-form-item>
         <el-form-item>
-          <div style="text-align: center">
-            <el-radio v-model="baseHouseInfo.rentalType" label="2" border
-              >整租房源</el-radio
+          <el-row>
+            <el-col :span="8"
+              ><el-radio v-model="baseHouseInfo.rentalType" label="2" border
+                >整租房源</el-radio
+              ></el-col
             >
-            <el-radio v-model="baseHouseInfo.rentalType" label="1" border
-              >合租房源</el-radio
+            <el-col :span="8"
+              ><el-radio v-model="baseHouseInfo.rentalType" label="1" border
+                >合租房源</el-radio
+              ></el-col
             >
-          </div>
+            <el-col :span="8"
+              ><el-radio v-model="baseHouseInfo.rentalType" label="3" border
+                >公寓房源</el-radio
+              ></el-col
+            >
+          </el-row>
         </el-form-item>
 
         <el-form-item>
@@ -301,7 +310,9 @@
       </el-upload>
       <span slot="footer" class="dialog-footer">
         <el-button @click="certificateVisble = false">取 消</el-button>
-        <el-button type="primary" @click="upHouseInfos('houseInfo')">上 传</el-button>
+        <el-button type="primary" @click="upHouseInfos('houseInfo')"
+          >上 传</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -327,7 +338,7 @@ export default {
       detailNetherlands: [],
       communities: [],
       uploadUrl: "http://localhost:8080/imgUpload",
-      headers: { "u-token": localStorage.getItem("uToken") },
+      headers: { "u-token": sessionStorage.getItem("uToken") },
       certificateVisble: false,
       imgData: {
         path: "bishe/house",
@@ -419,13 +430,13 @@ export default {
   methods: {
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 1;
+      const isLt2M = file.size / 1024*30 < 1;
 
       if (!isJPG) {
         this.$message.error("上传头像图片只能是 JPG 格式!");
       }
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+        this.$message.error("上传头像图片大小不能超过 30MB!");
       }
       return isJPG && isLt2M;
     },
@@ -492,7 +503,7 @@ export default {
               characters: this.houseInfo.characters.toString(),
               img: this.houseInfo.img,
               userId: this.$store.state.user[0].id,
-              cashPledge:this.houseInfo.cashPledge,
+              cashPledge: this.houseInfo.cashPledge,
               certificateImg: this.houseInfo.certificateImg,
             },
           }).then((res) => {

@@ -16,7 +16,7 @@
             <el-radio :label="1">1500元以下</el-radio>
             <el-radio :label="2">1500-2000元</el-radio>
             <el-radio :label="3">2000-3000元</el-radio>
-            <el-radio :label="4">2000-3000元</el-radio>
+            <el-radio :label="4">3000-4000元</el-radio>
             <el-radio :label="5">4000-5000元</el-radio>
             <el-radio :label="6">5000元以上</el-radio>
           </el-radio-group>
@@ -133,8 +133,8 @@ export default {
       character: [],
       minCheck: 0,
       maxCheck: 4,
-      currentPage: 1,
-      total: 1000,
+      currentPage: this.$store.state.currentPage,
+      total: this.$store.state.total,
       pageSize: 10,
       netherlands: [],
       area:

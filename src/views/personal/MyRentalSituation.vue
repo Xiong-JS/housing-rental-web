@@ -91,7 +91,7 @@
                   <div>
                     <button
                       class="continue-rental"
-                      @click="continueRental(item.houseId)"
+                      @click="continueRental(item.houseId,item.rentalSituationId)"
                     >
                       续租
                     </button>
@@ -260,7 +260,7 @@ import request from "../../network/request";
 export default {
   data() {
     return {
-      userName: localStorage.getItem("name"),
+      userName: sessionStorage.getItem("name"),
       commentVisible: false,
       experienceScore: null,
       serviceScore: null,
@@ -271,6 +271,7 @@ export default {
       pageSize: 2,
       state: 0,
       hosueId: "",
+      houseInfos:{}
     };
   },
   methods: {
@@ -298,7 +299,7 @@ export default {
         url: "/comment",
         method: "post",
         data: {
-          userId: localStorage.getItem("id"),
+          userId: sessionStorage.getItem("id"),
           houseId: this.houseId,
           experienceScore: this.experienceScore,
           serviceScore: this.serviceScore,
@@ -312,7 +313,22 @@ export default {
         }
       });
     },
+    getHouseByHouseId(houseId) {
+      request({
+        url: "/house/by-houseId",
+        params: {
+          houseId: houseId,
+        },
+      }).then((res) => {
+        this.houseInfos = res.data.data;
+        if(this.houseInfos.houseId == 0 || this.houseInfos.indentState == 1){
+          this.$messge.error("该房源已停止租赁,请浏览其他房源!")
+          return
+        }
+      });
+    },
     rentalRightNow(houseId) {
+      this.getHouseByHouseId(houseId)
       this.$router.push({
         path: "/inventoryUnDone",
         query: {
@@ -324,7 +340,7 @@ export default {
       request({
         url: "/rental_situation",
         params: {
-          id: localStorage.getItem("id"),
+          id: sessionStorage.getItem("id"),
           state: state,
           page: page,
           pageSize: this.pageSize,
@@ -363,7 +379,7 @@ export default {
             url: "/rental_situation/surrender",
             method: "post",
             data: {
-              userId: localStorage.getItem("id"),
+              userId: sessionStorage.getItem("id"),
               houseId: houseId,
               rentalSituationId: rentalSituationId,
               inventoryId: inventoryId,
@@ -376,11 +392,13 @@ export default {
         })
         .catch(() => {});
     },
-    continueRental(houseId) {
+    continueRental(houseId,rentalSituationId) {
       this.$router.push({
         path: "/inventoryUnDone",
         query: {
           id: houseId,
+          continueState:1,
+          rentalSituationId:rentalSituationId
         },
       });
     },

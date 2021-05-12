@@ -12,6 +12,12 @@ export default{
   },
   [types.SETROUTERTYPE](state,payload){
     state.routerType = payload
+  },
+  [types.SETTOTAL](state,payload){
+    state.total = payload
+  },
+  [types.SETCURRENTPAGE](state,payload){
+    state.currentPage = payload
   }
 
 }

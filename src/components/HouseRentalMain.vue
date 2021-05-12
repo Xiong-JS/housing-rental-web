@@ -91,9 +91,9 @@ import * as types from "../store/mutations-type-string";
 export default {
   data() {
     return {
-      isLoginRegisterShow: this.$store.state.user.length == 0, //localStorage.getItem("uToken") == null,
-      userName: localStorage.getItem("name"),
-      img: localStorage.getItem("img"),
+      isLoginRegisterShow:sessionStorage.getItem("uToken") == null, 
+      userName: sessionStorage.getItem("name"),
+      img: sessionStorage.getItem("img"),
       visible: false,
       user: {},
     };
@@ -109,7 +109,7 @@ export default {
       request({
         url: "/user/user-id",
         params: {
-          id: localStorage.getItem("id"),
+          id: sessionStorage.getItem("id"),
         },
       }).then((res) => {
         this.user = res.data.data;
@@ -154,16 +154,6 @@ export default {
     }
   },
   created() {
-    // localStorage.removeItem("uToken")
-    // let uToken = null;
-    // let cookies = document.cookie;
-    // let cookieArr = cookies.split(";");
-    // uToken = cookieArr[0].split("=")[1];
-    // if(uToken != '' && uToken != null){
-    //   this.isLoginRegisterShow = false;
-    // }else{
-    //   this.isLoginRegisterShow = true;
-    // }
   },
 };
 </script>

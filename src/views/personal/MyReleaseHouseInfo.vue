@@ -575,7 +575,7 @@ import request from "../../network/request";
 export default {
   data() {
     return {
-      userName: localStorage.getItem("name"),
+      userName: sessionStorage.getItem("name"),
       charaters: [],
       room: 0,
       soldOutVisble: -1,
@@ -588,7 +588,7 @@ export default {
         path: "",
       },
       uploadUrl: "http://localhost:8080/imgUpload",
-      headers: { "u-token": localStorage.getItem("uToken") },
+      headers: { "u-token": sessionStorage.getItem("uToken") },
       houseId: "",
       certificateImg: "",
       tabState: 0,

@@ -43,21 +43,20 @@
                 </button>
                 <div v-show="inventoryInfos.state == 0">
                   <button
-                  class="pay-button"
-                  style="margin-top: 10px"
-                  @click="cancelIndent"
-                >
-                  点击取消
-                </button>
-                <button
-                  class="pay-button"
-                  style="margin-top: 10px"
-                  @click="pay"
-                >
-                  点击支付
-                </button>
+                    class="pay-button"
+                    style="margin-top: 10px"
+                    @click="cancelIndent"
+                  >
+                    点击取消
+                  </button>
+                  <button
+                    class="pay-button"
+                    style="margin-top: 10px"
+                    @click="pay"
+                  >
+                    点击支付
+                  </button>
                 </div>
-                
               </div>
             </div>
           </el-col>
@@ -131,8 +130,8 @@
                   "
                 >
                   <div style="margin-top: 10px">
-                    <span>取消时间:</span>
-                    <span style="margin-left: 50px">2021-04-24 15:53:44</span>
+                    <span>订单状态:</span>
+                    <span style="margin-left: 50px">已取消</span>
                   </div>
                   <div style="margin-top: 10px">
                     <span>取消原因:</span>
@@ -330,10 +329,26 @@ export default {
       inventoryInfos: {},
       minutes: "",
       seconds: "",
+      houseInfos:{}
     };
   },
   methods: {
+    getHouseByHouseId(houseId) {
+      request({
+        url: "/house/by-houseId",
+        params: {
+          houseId: houseId,
+        },
+      }).then((res) => {
+        this.houseInfos = res.data.data;
+        if(this.houseInfos.houseId == 0 || this.houseInfos.indentState == 1){
+          this.$messge.error("该房源已停止租赁,请浏览其他房源!")
+          return
+        }
+      });
+    },
     rightNowRental() {
+      this.getHouseByHouseId(this.inventoryInfos.houseId)
       this.$router.push({
         path: "/inventoryUnDone",
         query: {
@@ -341,14 +356,34 @@ export default {
         },
       });
     },
-    getInventoryById() {
+    getInventoryById(id) {
       request({
         url: "/indent/indent-inventoryId",
         params: {
-          inventoryId: this.inventoryInfos.inventoryId,
+          inventoryId: id,
         },
       }).then((res) => {
         this.inventoryInfos = res.data.data;
+        let times = this.inventoryInfos.countTime;
+        setInterval(() => {
+          times -= 1;
+          this.minutes = parseInt(times / 60);
+          this.seconds = parseInt(times % 60);
+          //倒计时结束
+          if (this.minutes == 0 && this.seconds == 0) {
+            this.getInventoryById(this.inventoryInfos.inventoryId);
+          } else if (this.seconds == 0) {
+            this.seconds == "00";
+          } else if (this.minutes == 0) {
+            this.minutes = "00";
+          }
+          if (this.minutes < 10 && this.minutes != 0) {
+            this.minutes = "0" + this.minutes;
+          }
+          if (this.seconds < 10 && this.seconds != 0) {
+            this.seconds = "0" + this.seconds;
+          }
+        }, 1000);
       });
     },
     cancelIndent() {
@@ -364,16 +399,16 @@ export default {
             data: {
               inventoryId: this.inventoryInfos.inventoryId,
               houseId: this.inventoryInfos.houseId,
-              state: 3
+              state: 3,
             },
           }).then((res) => {
             if (res.data.code == 200) this.$message.success("取消成功");
-           this.getInventoryById()
+            this.getInventoryById(this.inventoryInfos.inventoryId);
           });
         });
       }
     },
-    pay(){
+    pay() {
       if (
         parseFloat(this.inventoryInfos.userWallet) <
         parseFloat(this.inventoryInfos.totalMoney)
@@ -389,33 +424,13 @@ export default {
         },
       }).then((res) => {
         this.$message.success("支付成功!");
-        this.getInventoryById()
+        this.getInventoryById(this.inventoryInfos.inventoryId);
       });
-    }
+    },
   },
   created() {
-    this.inventoryInfos = this.$route.query.inventory;
+    this.getInventoryById(this.$route.query.inventoryId);
     console.log(this.inventoryInfos);
-    let times = this.inventoryInfos.countTime;
-    setInterval(() => {
-      times -= 1;
-      this.minutes = parseInt(times / 60);
-      this.seconds = parseInt(times % 60);
-      //倒计时结束
-      if (this.minutes == 0 && this.seconds == 0) {
-        this.getInventoryById()
-      } else if (this.seconds == 0) {
-        this.seconds == "00";
-      } else if (this.minutes == 0) {
-        this.minutes = "00";
-      }
-      if (this.minutes < 10 && this.minutes != 0) {
-        this.minutes = "0" + this.minutes;
-      }
-      if (this.seconds < 10 && this.seconds != 0) {
-        this.seconds = "0" + this.seconds;
-      }
-    }, 1000);
   },
   components: { InventoryNavgationBar },
 };

@@ -27,21 +27,41 @@
       <div class="settle-accounts-list">
         <h3>租赁人信息</h3>
         <div style="margin-left: 20px; padding: 10px 0 10px 0">
-          <span class="rental-user-name"
-            ><i class="iconfont icon-done" style="margin-right: 10px"></i
-            >{{ user.userName }}</span
-          >
-          <div
-            class="div-line rental-user-info"
-            @mouseover="retalInfoVisble = true"
-            @mouseleave="retalInfoVisble = false"
-          >
-            <span>{{ user.userName }}</span
-            ><span style="margin-left: 20px">{{ user.userPhone }}</span>
-            <div class="div-line edit-user-info">
-              <span v-show="retalInfoVisble" class="edit">修改</span>
-            </div>
-          </div>
+          <el-row>
+            <el-col :span="4"
+              ><span class="rental-user-name"
+                ><i class="iconfont icon-done" style="margin-right: 10px"></i
+                >{{ user.userName }}</span
+              ></el-col
+            >
+            <el-col :span="20" class="rental-user-info"
+              ><div
+                @mouseover="retalInfoVisble = true"
+                @mouseleave="retalInfoVisble = false"
+              >
+                <el-row>
+                  <el-col :span="2"
+                    ><span>{{ user.userName }}</span></el-col
+                  >
+                  <el-col :span="20"
+                    ><span style="margin-left: 20px">{{
+                      user.userPhone
+                    }}</span></el-col
+                  >
+                  <el-col :span="2">
+                    <div class="edit-user-info">
+                      <span
+                        v-show="retalInfoVisble"
+                        class="edit"
+                        @click="editInfoVisble = true"
+                        >修改</span
+                      >
+                    </div></el-col
+                  >
+                </el-row>
+              </div></el-col
+            >
+          </el-row>
         </div>
         <div class="part-line-1" style="margin-top: 20px"></div>
         <h3>支付方式</h3>
@@ -131,9 +151,6 @@
                             style="font-size:13px;font-weight:boldercolor: #666;margin-top:20px"
                           >
                             特色:
-                            <span type="info" v-show="houseInfo.toilet == 1"
-                              >独卫,</span
-                            >
                             <span type="info" v-show="houseInfo.balcony == 1"
                               >带阳台,</span
                             >
@@ -230,6 +247,36 @@
       </div>
       <button class="submit-button" @click="submitInventory">提交订单</button>
     </div>
+    <el-dialog title="修改" :visible.sync="editInfoVisble" width="40%" center>
+      <span>
+        <el-form
+          :inline="true"
+          :model="inventory"
+          class="demo-form-inline"
+          :rules="rules"
+          ref="inventory"
+        >
+          <el-form-item label="姓名">
+            <el-input
+              v-model="inventory.rentalName"
+              placeholder="姓名"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="电话" prop="rentalPhone">
+            <el-input
+              v-model="inventory.rentalPhone"
+              placeholder="电话"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editInfoVisble = false">取 消</el-button>
+        <el-button type="primary" @click="confirmEdit('inventory')"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -237,14 +284,23 @@
 import request from "../../network/request";
 export default {
   data() {
+    let validatePhone = (rule, value, callback) => {
+      if (String(value) === "") {
+        callback(new Error("请输入电话号码"));
+      } else if (String(value).length != 11) {
+        callback(new Error("请输入正确的电话号码"));
+      } else {
+        callback();
+      }
+    };
     return {
       houseInfo: {},
       user: {},
       retalInfoVisble: false,
       inventory: {
         inventoryId: "",
-        rentalName: localStorage.getItem("name"),
-        userId: localStorage.getItem("id"),
+        rentalName: sessionStorage.getItem("name"),
+        userId: sessionStorage.getItem("id"),
         payType: "1",
         houseId: this.$route.query.id,
         rentalMoney: "",
@@ -252,6 +308,13 @@ export default {
         totalMoney: "",
         rentalPhone: "",
         rentalTime: "1",
+        continueState:0,
+      },
+      editInfoVisble: false,
+      rules: {
+        rentalPhone: [
+          { required: true, validator: validatePhone, trigger: "blur" },
+        ],
       },
     };
   },
@@ -283,7 +346,7 @@ export default {
       request({
         url: "/user/user-id",
         params: {
-          id: localStorage.getItem("id"),
+          id: sessionStorage.getItem("id"),
         },
       }).then((res) => {
         this.user = res.data.data;
@@ -296,7 +359,7 @@ export default {
       this.inventory.totalMoney =
         parseInt(this.houseInfo.quote) * parseInt(this.inventory.rentalTime) +
         parseInt(this.houseInfo.cashPledge);
-      this.inventory.inventoryId = this.random_No(5);
+      this.inventory.inventoryId = this.random_No(5); //生成订单号
       request({
         url: "/indent",
         method: "post",
@@ -317,6 +380,8 @@ export default {
           path: "/inventoryPay",
           query: {
             inventoryId: this.inventory.inventoryId,
+            continueState:this.continueState,
+            rentalSituationId:this.$route.query.rentalSituationId
           },
         });
       });
@@ -329,10 +394,25 @@ export default {
       random_no = new Date().getTime() + random_no;
       return random_no;
     },
+    confirmEdit(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.editInfoVisble = false;
+          this.user.userName = this.inventory.rentalName;
+          this.user.userPhone = this.inventory.rentalPhone;
+        } else {
+          this.$message.error("未填写正确");
+          return false;
+        }
+      });
+    },
   },
   created() {
     this.getUserInfo();
     this.getHouseInfoById(this.$route.query.id);
+    if(this.$route.query.continueState == 1){
+      this.continueState = 1;
+    }
   },
 };
 </script>
@@ -384,7 +464,6 @@ export default {
 .edit-user-info {
   font-size: 13px;
   color: #005ea7;
-  padding-left: 700px;
   margin-right: 10px;
 }
 .edit:hover {

@@ -91,14 +91,14 @@
                 >More>></router-link
               >
             </div>
-            <div style="margin-left: 100px">
+            <div style="margin-left: 145px">
               <el-col
-                :span="5"
-                v-for="item in $store.state.houseInfos"
+                :span="6"
+                v-for="item in togettherRental"
                 :key="item.houseId"
                 style="margin-left: 40px; float: left; margin-top: 20px"
               >
-                <el-card :body-style="{ padding: '0px', height: '330px' }">
+                <el-card :body-style="{ padding: '0px', height: '340px' }">
                   <div>
                     <router-link
                       :to="{
@@ -108,13 +108,17 @@
                     >
                       <img :src="item.img" class="home-img-card" />
                     </router-link>
-                    <div style="padding: 0px">
-                      <div>
+                    <div style="padding-left: 10px">
+                      <div style="padding-left:10px">
                         <h3 style="font-size: 18px" class="div-line txt">
                           {{ item.community }} {{ item.floor }}楼
                         </h3>
                         <span
-                          style="color: red; font-size: 20px;display: inline-block;"
+                          style="
+                            color: red;
+                            font-size: 20px;
+                            display: inline-block;
+                          "
                           class="div-line"
                           >{{ item.quote }}元</span
                         >
@@ -127,9 +131,6 @@
                         {{ item.area }}M²
                       </p>
                       <div>
-                        <el-tag type="info" v-show="item.toilet == 1"
-                          >独卫</el-tag
-                        >
                         <el-tag type="info" v-show="item.balcony == 1"
                           >带阳台</el-tag
                         >
@@ -171,6 +172,67 @@
                 >More>></router-link
               >
             </div>
+             <div style="margin-left: 145px">
+              <el-col
+                :span="6"
+                v-for="item in entireRental"
+                :key="item.houseId"
+                style="margin-left: 40px; float: left; margin-top: 20px"
+              >
+                <el-card :body-style="{ padding: '0px', height: '340px' }">
+                  <div>
+                    <router-link
+                      :to="{
+                        path: '/houseRentalMain/detailHouse',
+                        query: { houseId: item.houseId },
+                      }"
+                    >
+                      <img :src="item.img" class="home-img-card" />
+                    </router-link>
+                    <div style="padding-left: 10px">
+                      <div>
+                        <h3 style="font-size: 18px" class="div-line txt">
+                          {{ item.community }} {{ item.floor }}楼
+                        </h3>
+                        <span
+                          style="
+                            color: red;
+                            font-size: 20px;
+                            display: inline-block;
+                          "
+                          class="div-line"
+                          >{{ item.quote }}元</span
+                        >
+                      </div>
+
+                      <p style="font-size: 14px; color: #979798">
+                        {{ item.netherlands }}-{{ item.detailNetherlands }} |
+                        {{ rentalTypeConvert(item.rentalType) }} |
+                        {{ item.room }}室{{ item.hall }}厅{{ item.toilet }}卫 |
+                        {{ item.area }}M²
+                      </p>
+                      <div>
+                        <el-tag type="info" v-show="item.balcony == 1"
+                          >带阳台</el-tag
+                        >
+                        <el-tag type="info" v-show="item.houseType == 1"
+                          >电梯房</el-tag
+                        >
+                        <el-tag type="info" v-show="item.monthPay == 1"
+                          >月付</el-tag
+                        >
+                        <el-tag type="info" v-show="item.hardback == 1"
+                          >精装修</el-tag
+                        >
+                        <el-tag type="info" v-show="item.homeAppliances == 1"
+                          >家电齐全</el-tag
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </el-card>
+              </el-col>
+            </div>
           </div>
           <div class="list-index" style="padding-bottom: 10px">
             <div class="list-index-title list-index-blue">
@@ -190,6 +252,67 @@
                 class="more"
                 >More>></router-link
               >
+            </div>
+            <div style="margin-left: 145px">
+              <el-col
+                :span="6"
+                v-for="item in apartment"
+                :key="item.houseId"
+                style="margin-left: 40px; float: left; margin-top: 20px"
+              >
+                <el-card :body-style="{ padding: '0px', height: '340px' }">
+                  <div>
+                    <router-link
+                      :to="{
+                        path: '/houseRentalMain/detailHouse',
+                        query: { houseId: item.houseId },
+                      }"
+                    >
+                      <img :src="item.img" class="home-img-card" />
+                    </router-link>
+                    <div style="padding-left: 10px">
+                      <div>
+                        <h3 style="font-size: 18px" class="div-line txt">
+                          {{ item.community }} {{ item.floor }}楼
+                        </h3>
+                        <span
+                          style="
+                            color: red;
+                            font-size: 20px;
+                            display: inline-block;
+                          "
+                          class="div-line"
+                          >{{ item.quote }}元</span
+                        >
+                      </div>
+
+                      <p style="font-size: 14px; color: #979798">
+                        {{ item.netherlands }}-{{ item.detailNetherlands }} |
+                        {{ rentalTypeConvert(item.rentalType) }} |
+                        {{ item.room }}室{{ item.hall }}厅{{ item.toilet }}卫 |
+                        {{ item.area }}M²
+                      </p>
+                      <div>
+                        <el-tag type="info" v-show="item.balcony == 1"
+                          >带阳台</el-tag
+                        >
+                        <el-tag type="info" v-show="item.houseType == 1"
+                          >电梯房</el-tag
+                        >
+                        <el-tag type="info" v-show="item.monthPay == 1"
+                          >月付</el-tag
+                        >
+                        <el-tag type="info" v-show="item.hardback == 1"
+                          >精装修</el-tag
+                        >
+                        <el-tag type="info" v-show="item.homeAppliances == 1"
+                          >家电齐全</el-tag
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </el-card>
+              </el-col>
             </div>
           </div>
         </div>
@@ -242,6 +365,9 @@ export default {
         content: "",
         type: "0",
       },
+      entireRental: [],
+      togettherRental: [],
+      apartment: [],
     };
   },
   methods: {
@@ -257,11 +383,12 @@ export default {
           content,
           type,
           page: 1,
-          limit: 5,
+          limit: 10,
         },
       }).then((res) => {
         this.$store.commit(types.SETHOUSEINFOS, res.data.data);
-        console.log(res);
+        this.$store.commit(types.SETTOTAL, res.data.total);
+        this.$store.commit(types.SETCURRENTPAGE, res.data.currentPage);
       });
     },
     getHouseInfoByConditions(rentalType, netherlands) {
@@ -274,11 +401,13 @@ export default {
           room: 0,
           characters: "",
           page: 1,
-          limit: 4,
+          limit: 10,
         },
       }).then((res) => {
         console.log(res.data);
         this.$store.commit(types.SETHOUSEINFOS, res.data.data);
+        this.$store.commit(types.SETTOTAL, res.data.total);
+        this.$store.commit(types.SETCURRENTPAGE, res.data.currentPage);
         console.log(this.houseInfo);
       });
     },
@@ -307,11 +436,35 @@ export default {
         this.netherlands = res.data.data;
       });
     },
+    getEntireRental() {
+      request({
+        url:'/house/entire-house',
+      }).then(res=>{
+        this.entireRental = res.data.data
+      })
+    },
+    getTogettherRental() {
+      request({
+        url:'/house/together-house'
+      }).then(res=>{
+        this.togettherRental = res.data.data
+      })
+    },
+    getApartment() {
+      request({
+        url:'/house/apartment-house'
+      }).then(res=>{
+        this.apartment = res.data.data
+      })
+    },
   },
   created() {
-    console.log(console.log(localStorage.getItem("uToken")));
+    console.log(console.log(sessionStorage.getItem("uToken")));
     this.getNetherlands();
     this.getHouseInfoByConditions(0, 0);
+    this.getEntireRental();
+    this.getTogettherRental();
+    this.getApartment()
   },
 };
 </script>

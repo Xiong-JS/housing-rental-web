@@ -174,7 +174,7 @@ export default {
       request({
         url: "/collection",
         params: {
-          userId: localStorage.getItem("id"),
+          userId: sessionStorage.getItem("id"),
         },
       }).then((res) => {
         this.houseInfos = res.data.data;

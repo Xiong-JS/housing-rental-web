@@ -382,6 +382,10 @@ export default {
         }, 3000);
         return;
       }
+      if(this.houseInfos.state == 0 || this.houseInfos.indentState == 1){
+        this.$message.error("该房源已停止租赁,请浏览其他房源!");
+        return;
+      }
       this.$router.push({
         path: "/inventoryUnDone",
         query: {
@@ -391,25 +395,18 @@ export default {
     },
     //加入收藏
     addInventory() {
-      if (this.$store.state.user.length == 0) {
+      if (sessionStorage.getItem("uToken") == null) {
         this.$message.error("未登录!现跳转到登录界面!");
         setTimeout(() => {
           this.$router.push("/login");
         }, 3000);
         return;
       }
-      // if(localStorage.getItem("uToken") == null){
-      //   this.$message.error("未登录!现跳转到登录界面!");
-      //   setTimeout(() => {
-      //       this.$router.push("/login");
-      //     }, 3000);
-      //   return;
-      // }
       request({
         url: "/collection",
         method: "post",
         data: {
-          userId: localStorage.getItem("id"),
+          userId: sessionStorage.getItem("id"),
           houseId: this.houseInfos.houseId,
         },
       }).then((res) => {
@@ -432,7 +429,7 @@ export default {
         method: "post",
         data: {
           mainId: this.mainId,
-          userId: localStorage.getItem("id"),
+          userId: sessionStorage.getItem("id"),
           content: this.commentContent,
           replyId: this.replyId,
         },

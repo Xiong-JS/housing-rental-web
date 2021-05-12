@@ -13,7 +13,7 @@
             <span style="margin-left: 20px">订单号:</span>
             <span
               class="inventory-number"
-              @click="inventoryDetail(item)"
+              @click="inventoryDetail(item.inventoryId)"
               >{{ item.inventoryId }}</span
             >
             <span
@@ -84,7 +84,7 @@
                   <span v-show="item.state == 1">已完成</span>
                   <span v-show="item.state == 0">代付款</span>
                 </div>
-                <div @click="inventoryDetail(item)" class="inventory-detail">
+                <div @click="inventoryDetail(item.inventoryId)" class="inventory-detail">
                   订单详情
                 </div>
               </div>
@@ -126,8 +126,6 @@ export default {
   data() {
     return {
       deleteVisble: -1,
-      minutes: 0,
-      seconds: 0,
     };
   },
   methods: {
@@ -135,7 +133,7 @@ export default {
       this.$router.push({
         path: "/inventoryDone",
         query: {
-          inventory: val,
+          inventoryId: val,
         },
       });
     },
@@ -175,6 +173,7 @@ export default {
           data: {
             inventoryId: inventoryId,
             houseId: houseId,
+            state:3
           },
         }).then((res) => {
           if (res.data.code == 200) this.$message.success("取消成功");
@@ -189,9 +188,6 @@ export default {
         return [1, 2];
       },
     },
-  },
-  created() {
-    setInterval(() => {}, 1000);
   },
 };
 </script>

@@ -136,6 +136,7 @@ export default {
       isShow: "展开",
       inventoryDetailVisble: false,
       inventoryOutTimeVisble: false,
+      continueState:0
     };
   },
   methods: {
@@ -164,6 +165,8 @@ export default {
         method: "post",
         data: {
           inventoryId: this.inventoryVo.inventoryId,
+          continueState:this.continueState,
+          rentalSituationId:this.$route.query.rentalSituationId
         },
       }).then((res) => {
         this.$message.success("支付成功!");
@@ -175,12 +178,15 @@ export default {
        this.$router.push({
         path: "/myRentalSituation",
         query: {
-          id: localStorage.getItem('id'),
+          id: sessionStorage.getItem('id'),
         },
       });
     }
   },
   created() {
+    if(this.$route.query.continueState == 1){
+      this.continueState = 1
+    }
     request({
       url: "/indent",
       params: {
