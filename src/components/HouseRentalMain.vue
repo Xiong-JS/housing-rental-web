@@ -19,7 +19,7 @@
       <div v-else style="float: right; margin-right: 200px">
         <div class="personal-info">
           <img
-            :src="this.$store.state.user[0].userImg"
+            :src="img"
             alt=""
             class="head-img"
             v-popover:popover
@@ -30,9 +30,9 @@
             width="160"
             v-model="visible"
             trigger="hover"
-            @show="getUserInfo($store.state.user[0].id)"
+            @show="getUserInfo()"
           >
-            <div class="info-name">{{ $store.state.user[0].userName }}</div>
+            <div class="info-name">{{ user.userName }}</div>
             <div style="margin-top: 20px">
               <i class="iconfont icon-money"></i
               ><span
@@ -43,28 +43,28 @@
             <div class="part-line-1" style="margin-top: 10px"></div>
             <div
               class="personal-center"
-              @click="personalCenter1($store.state.user[0].id)"
+              @click="personalCenter1(userId)"
             >
               <i class="iconfont icon-people" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">个人中心</span>
             </div>
             <div
               class="inventory-center"
-              @click="inventoryInfo1($store.state.user[0].id)"
+              @click="inventoryInfo1(userId)"
             >
               <i class="iconfont icon-inventory" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">订单信息</span>
             </div>
             <div
               class="inventory-center"
-              @click="myHouseInfo1($store.state.user[0].id)"
+              @click="myHouseInfo1(userId)"
             >
               <i class="iconfont icon-house" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">我的房源</span>
             </div>
             <div
               class="inventory-center"
-              @click="myRentalInfo1($store.state.user[0].id)"
+              @click="myRentalInfo1(userId)"
             >
               <i class="iconfont icon-rental" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">租赁信息</span>
@@ -75,8 +75,6 @@
               ><span style="margin-left: 10px">退出</span>
             </div>
           </el-popover>
-          <!-- {{ userName }} -->
-          <!-- <span style="margin-left:10px;color:">{{ this.$store.state.user[0].userName }}</span>  -->
         </div>
       </div>
     </navigation-bar-normal>
@@ -91,11 +89,12 @@ import * as types from "../store/mutations-type-string";
 export default {
   data() {
     return {
-      isLoginRegisterShow:sessionStorage.getItem("uToken") == null, 
+      isLoginRegisterShow: sessionStorage.getItem("uToken") == null,
       userName: sessionStorage.getItem("name"),
       img: sessionStorage.getItem("img"),
       visible: false,
       user: {},
+      userId:sessionStorage.getItem('id')
     };
   },
   components: {
@@ -105,7 +104,7 @@ export default {
     findHouseClick() {
       this.$store.commit(types.SETROUTERTYPE, 0);
     },
-    getUserInfo(val) {
+    getUserInfo() {
       request({
         url: "/user/user-id",
         params: {
@@ -149,11 +148,19 @@ export default {
         },
       });
     },
-    exit(){
-      this.$router.push('/login')
-    }
+    exit() {
+      request({
+        url: "/exit",
+        params: {
+          tokenKey: sessionStorage.getItem("uToken").split(":")[0],
+        },
+      }).then((res) => {
+        if (res.data.code == 200) this.$router.push("/login");
+      });
+    },
   },
   created() {
+    console.log("12355"+sessionStorage.getItem("uToken"));
   },
 };
 </script>

@@ -32,8 +32,6 @@
                       <div>
                         <el-form
                           :model="editUser"
-                          :rules="rules"
-                          ref="editUser"
                           class="demo-ruleForm"
                           label-width="100px"
                         >
@@ -42,12 +40,13 @@
                             label="姓名"
                             style="width: 300px"
                           >
-                            <el-input v-model="editUser.userName"></el-input>
+                            <el-input
+                              v-model="editUser.userName"
+                              require
+                            ></el-input>
                           </el-form-item>
                           <el-form-item>
-                            <el-button
-                              type="primary"
-                              @click="confirmEditName('editUser')"
+                            <el-button type="primary" @click="confirmEditName()"
                               >确定</el-button
                             >
                             <el-button type="info" plain @click="quitName"
@@ -116,6 +115,8 @@
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload"
+                    :headers="headers"
+                    :data="imgData"
                     style="display: inline"
                   >
                     <img
@@ -145,18 +146,14 @@
         </div>
       </div>
     </div>
-    <el-dialog
-      title="充值"
-      :visible.sync="rechargeVisble"
-      width="30%"
-      center
-    >
-      <el-input-number v-model="wallet" placeholder="请输入充值金额"></el-input-number>
+    <el-dialog title="充值" :visible.sync="rechargeVisble" width="30%" center>
+      <el-input-number
+        v-model="wallet"
+        placeholder="请输入充值金额"
+      ></el-input-number>
       <span slot="footer" class="dialog-footer">
         <el-button @click="rechargeVisble = false">取 消</el-button>
-        <el-button type="primary" @click="confirmRecharge"
-          >充 值</el-button
-        >
+        <el-button type="primary" @click="confirmRecharge">充 值</el-button>
       </span>
     </el-dialog>
   </div>
@@ -205,8 +202,8 @@ export default {
         userPassword: [{ validator: validatePass, trigger: "blur" }],
         checkPassword: [{ validator: validatePass2, trigger: "blur" }],
       },
-      rechargeVisble : false,
-      wallet:0
+      rechargeVisble: false,
+      wallet: 0,
     };
   },
   methods: {
@@ -225,7 +222,8 @@ export default {
         this.$message.error("未登录,请登录!");
       } else {
         this.user.userImg = res.data;
-        this.editUser();
+        this.editUserInfo();
+        sessionStorage.setItem('img',this.user.userImg)
       }
     },
     beforeAvatarUpload(file) {
@@ -244,7 +242,7 @@ export default {
       request({
         url: "/user/userEdit",
         method: "post",
-        params: {
+        data: {
           id: this.user.id,
           userAccount: this.user.userAccount,
           userPassword: this.user.userPassword,
@@ -261,17 +259,15 @@ export default {
       this.editUser.userName = "";
       this.editNameVisble = false;
     },
-    confirmEditName(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          this.user.userName = this.editUser.userName;
-          this.editUserInfo();
-          this.editNameVisble = false;
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+    confirmEditName() {
+      if (this.editUser.userName == "") {
+        this.$message.error("姓名未填写!");
+        return;
+      }
+      this.user.userName = this.editUser.userName;
+      this.editUserInfo();
+      this.editNameVisble = false;
+      this.$message.error("提交成功!");
     },
     confirmEditPassword(formName) {
       this.$refs[formName].validate((valid) => {
@@ -279,6 +275,12 @@ export default {
           this.user.userPassword = this.editUser.userPassword;
           this.editUserInfo();
           this.editPasswordVisble = false;
+          this.$message.success("修改成功!");
+          sessionStorage.removeItem('id')
+          sessionStorage.removeItem('img')
+          sessionStorage.removeItem('uToken')
+          sessionStorage.removeItem('name')
+          this.$router.push("/login");
         } else {
           return false;
         }
@@ -288,24 +290,24 @@ export default {
       this.editUser.userPassword = "";
       this.editPasswordVisble = false;
     },
-    recharge(){
-      this.rechargeVisble = true
-      this.wallet = 0
+    recharge() {
+      this.rechargeVisble = true;
+      this.wallet = 0;
     },
-    confirmRecharge(){
+    confirmRecharge() {
       request({
-        url:'/user/user-recharge',
-        method:'post',
-        data:{
-          userWallet:this.wallet,
-          id:sessionStorage.getItem('id')
-        }
-      }).then(res=>{
-        this.rechargeVisble = false
-        this.$message.success("充值成功!")
+        url: "/user/user-recharge",
+        method: "post",
+        data: {
+          userWallet: this.wallet,
+          id: sessionStorage.getItem("id"),
+        },
+      }).then((res) => {
+        this.rechargeVisble = false;
+        this.$message.success("充值成功!");
         this.getUserInfo(this.$route.query.id);
-      })
-    }
+      });
+    },
   },
   created() {
     this.getUserInfo(this.$route.query.id);

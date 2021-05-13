@@ -155,13 +155,14 @@
                     </el-col>
                     <el-col :span="3" style="text-align: center">
                       <div style="margin-top: 30px">
-                        <span
+                        <div
+                        style="cursor:pointer;color:#ed2553"
                           @click="submit(item.houseId)"
                           v-show="item.auditState == 1"
-                          >提交房产证</span
+                          >提交房产证</div
                         >
-                        <span @click="look(item.certificateImg)" style="cursor:pointer"
-                          >查看房产证</span
+                        <div @click="look(item.certificateImg)" style="cursor:pointer;margin-top:10px"
+                          >查看房产证</div
                         >
                       </div>
                     </el-col>
@@ -388,7 +389,7 @@
                     <div
                       style="float: right"
                       v-show="soldOutVisble == item.houseId"
-                      @click="upRental(item.rentalState,item.houseId)"
+                      @click="upRental(item.houseId)"
                     >
                       <i
                         class="iconfont icon-upline"
@@ -645,15 +646,11 @@ export default {
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 1;
 
       if (!isJPG) {
         this.$message.error("上传头像图片只能是 JPG 格式!");
       }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
+      return isJPG;
     },
     getHouseInfos(val) {
       request({
@@ -685,12 +682,18 @@ export default {
         this.getHouseInfos(1);
       });
     },
-    upRental(rentalState,houseId) {
-
-      if(rentalState == 1){
-        this.$message.error('该房源正在出租中不可上架')
-        return
-      }
+    upRental(houseId) {
+      request({
+        url:'/rental_situation/rentalSituation-houseId',
+        params:{
+          houseId:houseId
+        }
+      }).then(res=>{
+        if(res.data.code == '000007'){
+           this.$message.error(this.data.msg)
+           return
+        }
+      })
       this.certificateVisble = true;
       this.certificateImg = "";
       this.houseId = houseId

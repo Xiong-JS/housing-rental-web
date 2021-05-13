@@ -80,8 +80,6 @@ export default {
             password: this.password,
           },
         }).then((res) => {
-          console.log(res);
-          console.log(res.data.result.code);
           if (res.data.result.code == "000002") {
             this.$message({
               showClose: true,
@@ -97,6 +95,8 @@ export default {
             setTimeout(() => {
               this.$router.go(-1);
             }, 1000);
+          }else{
+            this.$message.error( res.data.result.msg)
           }
         });
       } else {

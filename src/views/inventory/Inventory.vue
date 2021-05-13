@@ -793,7 +793,7 @@ export default {
           inventoryId: inventoryId,
         },
       }).then((res) => {
-        this.$emit("getInventoryInfosVo", 1);
+        this.getInventoryInfosVo(1)
         this.$message.success("已删除");
       });
     },
