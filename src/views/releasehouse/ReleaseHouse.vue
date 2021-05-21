@@ -430,15 +430,10 @@ export default {
   methods: {
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024*30 < 1;
-
       if (!isJPG) {
         this.$message.error("上传头像图片只能是 JPG 格式!");
       }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 30MB!");
-      }
-      return isJPG && isLt2M;
+      return isJPG;
     },
     handleImgAvatarSuccess(res, file) {
       if (res.msg == "NoUser" || res.code == "000004") {
@@ -502,7 +497,7 @@ export default {
               description: this.houseInfo.description,
               characters: this.houseInfo.characters.toString(),
               img: this.houseInfo.img,
-              userId: this.$store.state.user[0].id,
+              userId: sessionStorage.getItem('id'),
               cashPledge: this.houseInfo.cashPledge,
               certificateImg: this.houseInfo.certificateImg,
             },

@@ -111,8 +111,14 @@ export default {
           id: sessionStorage.getItem("id"),
         },
       }).then((res) => {
+        if (res.data.msg == "NoUser" || res.data.code == "000004") {
+          this.$message.error("未登录,请登录!");
+          setTimeout(() => {
+            this.$router.push("/login");
+          }, 1000);
+          
+        }
         this.user = res.data.data;
-        console.log(res.data.data);
       });
     },
     personalCenter(val) {

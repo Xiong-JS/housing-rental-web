@@ -45,7 +45,6 @@
             :min="minCheck"
             @change="characterChange"
           >
-            <el-checkbox label="独卫" name="chracter"></el-checkbox>
             <el-checkbox label="月付" name="chracter"></el-checkbox>
             <el-checkbox label="带阳台" name="chracter"></el-checkbox>
             <el-checkbox label="精装修" name="chracter"></el-checkbox>

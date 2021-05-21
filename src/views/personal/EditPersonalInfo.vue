@@ -218,7 +218,7 @@ export default {
       });
     },
     handleAvatarSuccess(res, file) {
-      if (res.msg == "NoUser" || res.code == "000004") {
+      if (res.data.msg == "NoUser" || res.data.code == "000004") {
         this.$message.error("未登录,请登录!");
       } else {
         this.user.userImg = res.data;
@@ -228,15 +228,10 @@ export default {
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
       if (!isJPG) {
         this.$message.error("上传头像图片只能是 JPG 格式!");
       }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
+      return isJPG;
     },
     editUserInfo() {
       request({
@@ -267,7 +262,7 @@ export default {
       this.user.userName = this.editUser.userName;
       this.editUserInfo();
       this.editNameVisble = false;
-      this.$message.error("提交成功!");
+      this.$message.success("提交成功!");
     },
     confirmEditPassword(formName) {
       this.$refs[formName].validate((valid) => {

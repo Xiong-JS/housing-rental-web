@@ -14,7 +14,11 @@
           <input type="password" name="pass" id="pass" v-model="password" />
           <span class="spin"></span>
         </div>
-        <div class="button user-login" @click="loginBtn" style="text-align: center">
+        <div
+          class="button user-login"
+          @click="loginBtn"
+          style="text-align: center"
+        >
           <button>
             <span>登录</span>
             <i class="fa fa-check"></i>
@@ -92,11 +96,17 @@ export default {
             this.$store.commit(types.SETUSER, res.data.result.data);
             this.$store.commit(types.SETTOKEN, res.data.uToken);
             sessionStorage.setItem("uToken", res.data.uToken);
-            setTimeout(() => {
-              this.$router.go(-1);
-            }, 1000);
-          }else{
-            this.$message.error( res.data.result.msg)
+            if (this.$route.query.type != "login") {
+              setTimeout(() => {
+                this.$router.go(-1);
+              }, 1000);
+            } else {
+              setTimeout(() => {
+                this.$router.push("/");
+              }, 1000);
+            }
+          } else {
+            this.$message.error(res.data.result.msg);
           }
         });
       } else {
@@ -128,7 +138,7 @@ export default {
   font-size: 18px;
   color: rgba(0, 0, 0, 0.2);
 }
-.user-login:hover{
+.user-login:hover {
   color: #ed2553;
   border: 3px solid #ed2553;
 }

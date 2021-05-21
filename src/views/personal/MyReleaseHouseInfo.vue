@@ -11,7 +11,7 @@
       <el-row>
         <el-col :span="12"
           ><div>
-            <img src="../../assets/logo2018.png" alt="" class="logo-img" /></div
+            <img src="../../assets/img/logo1.png" alt="" class="logo-img" /></div
         ></el-col>
         <el-col :span="12">
           <div class="nav-bar">
@@ -560,12 +560,12 @@
         <el-button type="primary" @click="up">上 传</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="房产证" :visible.sync="lookVisble" width="30%" center>
+    <el-dialog title="房产证" :visible.sync="lookVisble" width="30%">
       <img
         v-if="certificateImg"
         :src="certificateImg"
         class="avatar"
-        style="width: 100px; height: 100px"
+        style="width: 350px; height: 300px;margin-left:20px"
       />
     </el-dialog>
   </div>
@@ -637,7 +637,7 @@ export default {
       this.getHouseInfos(1)
     },
     handleCertificateAvatarSuccess(res, file) {
-      if (res.msg == "NoUser" || res.code == "000004") {
+      if (res.data.msg == "NoUser" || res.data.code == "000004") {
         this.$message.error("未登录,请登录!");
       } else {
         this.certificateImg = res.data;
@@ -661,6 +661,7 @@ export default {
           room: this.room,
           page: val,
           pageSize: 2,
+          userId:sessionStorage.getItem('id')
         },
       }).then((res) => {
         this.houseInfos = res.data.data;
@@ -720,8 +721,8 @@ export default {
   background-color: white;
 }
 .logo-img {
-  width: 120px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   vertical-align: middle;
 }
 .nav-bar {

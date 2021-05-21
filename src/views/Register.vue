@@ -19,8 +19,8 @@
         <input type="password" v-model="reregpass" id="reregpass" />
         <span class="spin"></span>
       </div>
-      <div class="button login" @click="registerBtn">
-        <button>
+      <div class="button login" >
+        <button @click="registerBtn">
           <span>注册</span>
         </button>
       </div>
@@ -78,28 +78,39 @@ export default {
         });
     },
     registerBtn() {
+      if(this.regpass != this.reregpass){
+        this.$message.error("两次输入密码不同!")
+        return
+      }
+      if(this.regpass == '' || this.reregpass == ''||this.userAccount == ''){
+        this.$message.error("用户名或密码不能为空")
+        return
+      }
       request({
-        url: "/user",
+        url: "/user/user-register",
         method: "post",
         data: {
           userAccount: this.regname,
           userPassword: this.reregpass,
         },
       }).then((res) => {
-        if (res.data.code == "000") {
+        if (res.data.code == "200") {
           this.$message.success("注册成功!现在跳转到登录界面!");
-          etTimeout(() => {
+          setTimeout(() => {
             this.login();
           }, 1000);
         } else {
           this.$message.error(res.data.msg);
         }
       });
-      console.log("register");
-      s;
     },
     login() {
-      this.$router.push("/login");
+      this.$router.push({
+        path:'/login',
+        query:{
+          type:'login'
+        }
+      });
     },
   },
 };

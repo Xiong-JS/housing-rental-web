@@ -18,12 +18,7 @@
       </div>
       <div v-else style="float: right; margin-right: 200px">
         <div class="personal-info">
-          <img
-            :src="img"
-            alt=""
-            class="head-img"
-            v-popover:popover
-          />
+          <img :src="img" alt="" class="head-img" v-popover:popover />
           <el-popover
             ref="popover"
             placement="bottom"
@@ -32,7 +27,7 @@
             trigger="hover"
             @show="getUserInfo()"
           >
-            <div class="info-name">{{ user.userName }}</div>
+            <div class="info-name">{{ userName }}</div>
             <div style="margin-top: 20px">
               <i class="iconfont icon-money"></i
               ><span
@@ -41,31 +36,19 @@
               >
             </div>
             <div class="part-line-1" style="margin-top: 10px"></div>
-            <div
-              class="personal-center"
-              @click="personalCenter1(userId)"
-            >
+            <div class="personal-center" @click="personalCenter1(userId)">
               <i class="iconfont icon-people" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">个人中心</span>
             </div>
-            <div
-              class="inventory-center"
-              @click="inventoryInfo1(userId)"
-            >
+            <div class="inventory-center" @click="inventoryInfo1(userId)">
               <i class="iconfont icon-inventory" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">订单信息</span>
             </div>
-            <div
-              class="inventory-center"
-              @click="myHouseInfo1(userId)"
-            >
+            <div class="inventory-center" @click="myHouseInfo1(userId)">
               <i class="iconfont icon-house" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">我的房源</span>
             </div>
-            <div
-              class="inventory-center"
-              @click="myRentalInfo1(userId)"
-            >
+            <div class="inventory-center" @click="myRentalInfo1(userId)">
               <i class="iconfont icon-rental" style="margin-left: 10px"></i
               ><span style="margin-left: 10px">租赁信息</span>
             </div>
@@ -94,7 +77,7 @@ export default {
       img: sessionStorage.getItem("img"),
       visible: false,
       user: {},
-      userId:sessionStorage.getItem('id')
+      userId: sessionStorage.getItem("id"),
     };
   },
   components: {
@@ -111,8 +94,13 @@ export default {
           id: sessionStorage.getItem("id"),
         },
       }).then((res) => {
+        if (res.data.msg == "NoUser" || res.data.code == "000004") {
+          this.$message.error("未登录,请登录!");
+          setTimeout(() => {
+            this.$router.push("/login");
+          }, 1000);
+        }
         this.user = res.data.data;
-        console.log(res.data.data);
       });
     },
     personalCenter1(val) {
@@ -155,13 +143,17 @@ export default {
           tokenKey: sessionStorage.getItem("uToken").split(":")[0],
         },
       }).then((res) => {
-        if (res.data.code == 200) this.$router.push("/login");
+        if (res.data.code == 200) {
+          sessionStorage.removeItem("uToken");
+          sessionStorage.removeItem("img");
+          sessionStorage.removeItem("name");
+          sessionStorage.removeItem("id");
+          this.$router.push("/login");
+        }
       });
     },
   },
-  created() {
-    console.log("12355"+sessionStorage.getItem("uToken"));
-  },
+  created() {},
 };
 </script>
 

@@ -741,6 +741,7 @@ export default {
           state: this.state,
           page: page,
           pageSize: 2,
+          userId:sessionStorage.getItem('id')
         },
       }).then((res) => {
         this.inventoryInfosVo = res.data.data;

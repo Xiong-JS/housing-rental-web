@@ -8,7 +8,7 @@
       :router="isRouter"
     >
       <div class="logo">
-        <img style="display: inline-block" src="../assets/logo2018.png" />
+        <img style="display: inline-block;height:80px;width:80px" src="../assets/img/logo.png" />
       </div>
       <slot></slot>
       

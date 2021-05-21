@@ -119,7 +119,7 @@ export default {
   data() {
     return {
       houseInfos: {},
-      isLogin: this.$store.state.user.length == 0,
+      isLogin: sessionStorage.getItem('uToken') == null,
       visible: false,
     };
   },

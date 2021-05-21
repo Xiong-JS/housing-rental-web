@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-carousel :interval="4000" type="card" height="350px">
+    <el-carousel :interval="4000" type="card" height="350px" >
       <el-carousel-item
         v-for="item in imgData"
         :key="item.id"

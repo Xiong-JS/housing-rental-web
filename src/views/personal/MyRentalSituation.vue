@@ -11,7 +11,7 @@
       <el-row>
         <el-col :span="12"
           ><div>
-            <img src="../../assets/logo2018.png" alt="" class="logo-img" /></div
+            <img src="../../assets/img/logo1.png" alt="" class="logo-img" /></div
         ></el-col>
         <el-col :span="12">
           <div class="nav-bar">
@@ -423,8 +423,8 @@ export default {
   background-color: white;
 }
 .logo-img {
-  width: 120px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   vertical-align: middle;
 }
 .nav-bar {

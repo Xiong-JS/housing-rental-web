@@ -375,7 +375,7 @@ export default {
       ]);
     },
     pay() {
-      if (this.$store.state.user.length == 0) {
+      if (sessionStorage.getItem('uToken') == null) {
         this.$message.error("未登录!现跳转到登录界面!");
         setTimeout(() => {
           this.$router.push("/login");
