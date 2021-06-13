@@ -7,284 +7,298 @@
     />
     <h1 class="title-release">填写您的基本信息，后台工作人员会尽快审核处理</h1>
 
-    <div class="processBar">
-      <el-steps :active="active" finish-status="success">
-        <el-step title="提交基本信息"></el-step>
-        <el-step title="提交详细信息"></el-step>
-      </el-steps>
-    </div>
-    <!-- 填写房屋基本信息 -->
-    <div v-show="active === 0" class="write-houseInfo">
-      <el-form
-        ref="baseHouseInfo"
-        :model="baseHouseInfo"
-        label-width="100px"
-        :rules="rules1"
-      >
-        <el-form-item label="姓名" prop="releaseName">
-          <el-input v-model="baseHouseInfo.releaseName"></el-input>
-        </el-form-item>
-        <el-form-item label="电话" prop="releasePhone">
-          <el-input v-model="baseHouseInfo.releasePhone"></el-input>
-        </el-form-item>
-        <el-form-item label="城市" prop="countryId">
-          <el-select
-            v-model="baseHouseInfo.countryId"
-            placeholder="请选择城市"
-            @change="countryChange"
-            @visible-change="getAllCountries"
-            style="width: 400px"
-          >
-            <el-option
-              v-for="item in countries"
-              :key="item.countryId"
-              :label="item.countryName"
-              :value="item.countryId"
+    <div v-if="loginVisble">
+      <div class="processBar">
+        <el-steps :active="active" finish-status="success">
+          <el-step title="提交基本信息"></el-step>
+          <el-step title="提交详细信息"></el-step>
+        </el-steps>
+      </div>
+      <!-- 填写房屋基本信息 -->
+      <div v-show="active === 0" class="write-houseInfo">
+        <el-form
+          ref="baseHouseInfo"
+          :model="baseHouseInfo"
+          label-width="100px"
+          :rules="rules1"
+        >
+          <el-form-item label="姓名" prop="releaseName">
+            <el-input v-model="baseHouseInfo.releaseName"></el-input>
+          </el-form-item>
+          <el-form-item label="电话" prop="releasePhone">
+            <el-input v-model="baseHouseInfo.releasePhone"></el-input>
+          </el-form-item>
+          <el-form-item label="城市" prop="countryId">
+            <el-select
+              v-model="baseHouseInfo.countryId"
+              placeholder="请选择城市"
+              @change="countryChange"
+              @visible-change="getAllCountries"
+              style="width: 400px"
             >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="地区" prop="netherlandsId">
-          <el-select
-            v-model="baseHouseInfo.netherlandsId"
-            clearable
-            placeholder="请选择地区"
-            @change="netherlandsChange"
-            style="width: 400px"
-          >
-            <el-option
-              v-for="item in netherlands"
-              :key="item.netherlandsId"
-              :label="item.netherlandsName"
-              :value="item.netherlandsId"
+              <el-option
+                v-for="item in countries"
+                :key="item.countryId"
+                :label="item.countryName"
+                :value="item.countryId"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="地区" prop="netherlandsId">
+            <el-select
+              v-model="baseHouseInfo.netherlandsId"
+              clearable
+              placeholder="请选择地区"
+              @change="netherlandsChange"
+              style="width: 400px"
             >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="详细地区" prop="detailNetherlandsId">
-          <el-select
-            v-model="baseHouseInfo.detailNetherlandsId"
-            clearable
-            placeholder="请选择详细地区"
-            @change="detailNetherlandsChange"
-            style="width: 400px"
-          >
-            <el-option
-              v-for="item in detailNetherlands"
-              :key="item.detailNetherlandsId"
-              :label="item.detailNetherlandsName"
-              :value="item.detailNetherlandsId"
+              <el-option
+                v-for="item in netherlands"
+                :key="item.netherlandsId"
+                :label="item.netherlandsName"
+                :value="item.netherlandsId"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="详细地区" prop="detailNetherlandsId">
+            <el-select
+              v-model="baseHouseInfo.detailNetherlandsId"
+              clearable
+              placeholder="请选择详细地区"
+              @change="detailNetherlandsChange"
+              style="width: 400px"
             >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="小区" prop="communityId">
-          <el-select
-            v-model="baseHouseInfo.communityId"
-            clearable
-            placeholder="请选择小区"
-            style="width: 400px"
-          >
-            <el-option
-              v-for="item in communities"
-              :key="item.communityId"
-              :label="item.communityName"
-              :value="item.communityId"
+              <el-option
+                v-for="item in detailNetherlands"
+                :key="item.detailNetherlandsId"
+                :label="item.detailNetherlandsName"
+                :value="item.detailNetherlandsId"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="小区" prop="communityId">
+            <el-select
+              v-model="baseHouseInfo.communityId"
+              clearable
+              placeholder="请选择小区"
+              style="width: 400px"
             >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="具体门牌号" prop="houseNumber">
-          <el-input v-model="baseHouseInfo.houseNumber"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-row>
-            <el-col :span="8"
-              ><el-radio v-model="baseHouseInfo.rentalType" label="2" border
-                >整租房源</el-radio
-              ></el-col
-            >
-            <el-col :span="8"
-              ><el-radio v-model="baseHouseInfo.rentalType" label="1" border
-                >合租房源</el-radio
-              ></el-col
-            >
-            <el-col :span="8"
-              ><el-radio v-model="baseHouseInfo.rentalType" label="3" border
-                >公寓房源</el-radio
-              ></el-col
-            >
-          </el-row>
-        </el-form-item>
+              <el-option
+                v-for="item in communities"
+                :key="item.communityId"
+                :label="item.communityName"
+                :value="item.communityId"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="具体门牌号" prop="houseNumber">
+            <el-input v-model="baseHouseInfo.houseNumber"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-row>
+              <el-col :span="8"
+                ><el-radio v-model="baseHouseInfo.rentalType" label="2" border
+                  >整租房源</el-radio
+                ></el-col
+              >
+              <el-col :span="8"
+                ><el-radio v-model="baseHouseInfo.rentalType" label="1" border
+                  >合租房源</el-radio
+                ></el-col
+              >
+              <el-col :span="8"
+                ><el-radio v-model="baseHouseInfo.rentalType" label="3" border
+                  >公寓房源</el-radio
+                ></el-col
+              >
+            </el-row>
+          </el-form-item>
 
-        <el-form-item>
-          <div style="text-align: center">
-            <el-button
-              type="danger"
-              style="width: 200px; margin-top: 20px"
-              @click="BaseNext('baseHouseInfo')"
-              >下一步</el-button
+          <el-form-item>
+            <div style="text-align: center">
+              <el-button
+                type="danger"
+                style="width: 200px; margin-top: 20px"
+                @click="BaseNext('baseHouseInfo')"
+                >下一步</el-button
+              >
+            </div>
+          </el-form-item>
+        </el-form>
+      </div>
+      <!-- 填写房屋详细信息 -->
+      <div v-show="active === 1" class="write-houseInfo">
+        <el-form
+          ref="houseInfo"
+          :model="houseInfo"
+          label-width="100px"
+          :rules="rules2"
+        >
+          <el-form-item label="报价" prop="quote">
+            <el-input
+              controls-position="right"
+              v-model="houseInfo.quote"
+              auto-complete="off"
+              style="width: 400px"
+              :min="0"
             >
-          </div>
-        </el-form-item>
-      </el-form>
+              <template slot="append">元/月</template></el-input
+            >
+          </el-form-item>
+          <el-form-item label="押金" prop="cashPledge">
+            <el-input
+              controls-position="right"
+              v-model="houseInfo.cashPledge"
+              auto-complete="off"
+              style="width: 400px"
+              :min="0"
+            >
+              <template slot="append">元</template></el-input
+            >
+          </el-form-item>
+          <el-form-item label="整租面积" prop="area">
+            <el-input v-model="houseInfo.area" auto-complete="off" :min="0"
+              ><template slot="append">M²</template></el-input
+            >
+          </el-form-item>
+          <el-form-item label="室" prop="room">
+            <el-input-number
+              :min="0"
+              v-model="houseInfo.room"
+              auto-complete="off"
+            ></el-input-number>
+          </el-form-item>
+          <el-form-item label="厅" prop="hall">
+            <el-input-number
+              :min="0"
+              v-model="houseInfo.hall"
+              auto-complete="off"
+            ></el-input-number>
+          </el-form-item>
+          <el-form-item label="卫" prop="toilet">
+            <el-input-number
+              :min="0"
+              v-model="houseInfo.toilet"
+              auto-complete="off"
+            ></el-input-number>
+          </el-form-item>
+          <el-form-item label="楼层" prop="floor">
+            <el-input-number
+              :min="0"
+              v-model="houseInfo.floor"
+              auto-complete="off"
+            ></el-input-number>
+          </el-form-item>
+          <el-form-item label="总楼层" prop="totalFloor">
+            <el-input-number
+              :min="0"
+              v-model="houseInfo.totalFloor"
+              auto-complete="off"
+            ></el-input-number>
+          </el-form-item>
+          <el-form-item label="房子类型" prop="houseType">
+            <el-select
+              v-model="houseInfo.houseType"
+              clearable
+              placeholder="请选择房子类型"
+              style="width: 400px"
+            >
+              <el-option label="楼梯房" value="0"></el-option>
+              <el-option label="电梯房" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="特色">
+            <el-checkbox-group v-model="houseInfo.characters">
+              <el-checkbox label="月付" name="character"></el-checkbox>
+              <el-checkbox label="精装修" name="character"></el-checkbox>
+              <el-checkbox label="带阳台" name="character"></el-checkbox>
+              <el-checkbox label="家电齐全" name="character"></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item label="房屋图片">
+            <el-upload
+              class="avatar-uploader"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :on-success="handleImgAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+              :headers="headers"
+              :data="imgData"
+            >
+              <img
+                v-if="houseInfo.img"
+                :src="houseInfo.img"
+                class="avatar"
+                style="width: 100px; height: 100px"
+              />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="描述">
+            <el-input
+              type="textarea"
+              :rows="2"
+              placeholder="请输入内容"
+              v-model="houseInfo.description"
+            >
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <el-form :inline="true" style="text-align: center">
+          <el-form-item>
+            <div>
+              <el-button type="primary" style="width: 100px" @click="pre"
+                >上一步</el-button
+              >
+              <el-button
+                type="info"
+                style="width: 100px"
+                @click="quit('baseHouseInfo', 'houseInfo')"
+              >
+                取消
+              </el-button>
+              <el-button
+                type="danger"
+                style="width: 100px"
+                @click="submit('houseInfo')"
+                >提交</el-button
+              >
+            </div>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div v-show="active === 2">
+        <h1 class="title-release">提交成功,等待审核!</h1>
+        <el-form>
+          <el-form-item>
+            <div style="text-align: center">
+              <el-button
+                type="primary"
+                style="width: 200px; margin-top: 50px"
+                @click="quit('baseHouseInfo', 'houseInfo')"
+                >继续填写</el-button
+              >
+            </div>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
-    <!-- 填写房屋详细信息 -->
-    <div v-show="active === 1" class="write-houseInfo">
-      <el-form
-        ref="houseInfo"
-        :model="houseInfo"
-        label-width="100px"
-        :rules="rules2"
-      >
-        <el-form-item label="报价" prop="quote">
-          <el-input
-            controls-position="right"
-            v-model="houseInfo.quote"
-            auto-complete="off"
-            style="width: 400px"
-            :min="0"
-          >
-            <template slot="append">元/月</template></el-input
-          >
-        </el-form-item>
-        <el-form-item label="押金" prop="cashPledge">
-          <el-input
-            controls-position="right"
-            v-model="houseInfo.cashPledge"
-            auto-complete="off"
-            style="width: 400px"
-            :min="0"
-          >
-            <template slot="append">元</template></el-input
-          >
-        </el-form-item>
-        <el-form-item label="整租面积" prop="area">
-          <el-input v-model="houseInfo.area" auto-complete="off" :min="0"
-            ><template slot="append">M²</template></el-input
-          >
-        </el-form-item>
-        <el-form-item label="室" prop="room">
-          <el-input-number
-            :min="0"
-            v-model="houseInfo.room"
-            auto-complete="off"
-          ></el-input-number>
-        </el-form-item>
-        <el-form-item label="厅" prop="hall">
-          <el-input-number
-            :min="0"
-            v-model="houseInfo.hall"
-            auto-complete="off"
-          ></el-input-number>
-        </el-form-item>
-        <el-form-item label="卫" prop="toilet">
-          <el-input-number
-            :min="0"
-            v-model="houseInfo.toilet"
-            auto-complete="off"
-          ></el-input-number>
-        </el-form-item>
-        <el-form-item label="楼层" prop="floor">
-          <el-input-number
-            :min="0"
-            v-model="houseInfo.floor"
-            auto-complete="off"
-          ></el-input-number>
-        </el-form-item>
-        <el-form-item label="总楼层" prop="totalFloor">
-          <el-input-number
-            :min="0"
-            v-model="houseInfo.totalFloor"
-            auto-complete="off"
-          ></el-input-number>
-        </el-form-item>
-        <el-form-item label="房子类型" prop="houseType">
-          <el-select
-            v-model="houseInfo.houseType"
-            clearable
-            placeholder="请选择房子类型"
-            style="width: 400px"
-          >
-            <el-option label="楼梯房" value="0"></el-option>
-            <el-option label="电梯房" value="1"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="特色">
-          <el-checkbox-group v-model="houseInfo.characters">
-            <el-checkbox label="月付" name="character"></el-checkbox>
-            <el-checkbox label="精装房" name="character"></el-checkbox>
-            <el-checkbox label="有阳台" name="character"></el-checkbox>
-            <el-checkbox label="家电齐全" name="character"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="房屋图片">
-          <el-upload
-            class="avatar-uploader"
-            :action="uploadUrl"
-            :show-file-list="false"
-            :on-success="handleImgAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-            :headers="headers"
-            :data="imgData"
-          >
-            <img
-              v-if="houseInfo.img"
-              :src="houseInfo.img"
-              class="avatar"
-              style="width: 100px; height: 100px"
-            />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="描述">
-          <el-input
-            type="textarea"
-            :rows="2"
-            placeholder="请输入内容"
-            v-model="houseInfo.description"
-          >
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <el-form :inline="true" style="text-align: center">
-        <el-form-item>
-          <div>
-            <el-button type="primary" style="width: 100px" @click="pre"
-              >上一步</el-button
-            >
-            <el-button
-              type="info"
-              style="width: 100px"
-              @click="quit('baseHouseInfo', 'houseInfo')"
-            >
-              取消
-            </el-button>
-            <el-button
-              type="danger"
-              style="width: 100px"
-              @click="submit('houseInfo')"
-              >提交</el-button
-            >
-          </div>
-        </el-form-item>
-      </el-form>
+    <div v-else>
+      <div style="margin-top: 100px; text-align: center;padding-bottom:100px">
+        <el-button
+          type="danger"
+          plain
+          style="width: 300px; height: 60px;"
+          @click="login"
+          >请登录</el-button
+        >
+      </div>
     </div>
-    <div v-show="active === 2">
-      <h1 class="title-release">提交成功,等待审核!</h1>
-      <el-form>
-        <el-form-item>
-          <div style="text-align: center">
-            <el-button
-              type="primary"
-              style="width: 200px; margin-top: 50px"
-              @click="quit('baseHouseInfo', 'houseInfo')"
-              >继续填写</el-button
-            >
-          </div>
-        </el-form-item>
-      </el-form>
-    </div>
+
     <el-dialog
       title="上传房产证"
       :visible.sync="certificateVisble"
@@ -425,9 +439,28 @@ export default {
           },
         ],
       },
+      loginVisble: false,
     };
   },
   methods: {
+    login() {
+      this.$router.push("/login");
+    },
+    getUserInfo(val) {
+      request({
+        url: "/user/user-id",
+        params: {
+          id: val,
+        },
+      }).then((res) => {
+        if (res.data.msg == "NoUser" || res.data.code == "000004") {
+          this.loginVisble = false;
+          return;
+        }else{
+          this.loginVisble = true
+        }
+      });
+    },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
       if (!isJPG) {
@@ -497,7 +530,7 @@ export default {
               description: this.houseInfo.description,
               characters: this.houseInfo.characters.toString(),
               img: this.houseInfo.img,
-              userId: sessionStorage.getItem('id'),
+              userId: sessionStorage.getItem("id"),
               cashPledge: this.houseInfo.cashPledge,
               certificateImg: this.houseInfo.certificateImg,
             },
@@ -562,6 +595,9 @@ export default {
         this.communities = res.data.data;
       });
     },
+  },
+  created() {
+    this.getUserInfo(sessionStorage.getItem("id"));
   },
 };
 </script>

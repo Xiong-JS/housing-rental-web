@@ -134,7 +134,7 @@ export default {
       maxCheck: 4,
       currentPage: this.$store.state.currentPage,
       total: this.$store.state.total,
-      pageSize: 10,
+      pageSize: 5,
       netherlands: [],
       area:
         typeof this.$route.query.area === "undefined"
@@ -145,7 +145,7 @@ export default {
   computed: {},
   methods: {
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.getHouseInfoByConditions(val)
     },
     rentalTypeConvert(val) {
       let type = "合租";
@@ -164,25 +164,25 @@ export default {
     },
     quoteChange(val) {
       this.quote = val;
-      this.getHouseInfoByConditions();
+      this.getHouseInfoByConditions(1);
     },
     rentalTypeChange(val) {
       this.rentalType = val;
-      this.getHouseInfoByConditions();
+      this.getHouseInfoByConditions(1);
     },
     roomChange(val) {
       this.room = val;
-      this.getHouseInfoByConditions();
+      this.getHouseInfoByConditions(1);
     },
     characterChange(val) {
       this.character = val;
-      this.getHouseInfoByConditions();
+      this.getHouseInfoByConditions(1);
     },
     areaChange(val) {
       this.area = val;
-      this.getHouseInfoByConditions();
+      this.getHouseInfoByConditions(1);
     },
-    getHouseInfoByConditions() {
+    getHouseInfoByConditions(val) {
       request({
         url: "/house",
         params: {
@@ -191,8 +191,8 @@ export default {
           rentalType: this.rentalType,
           room: this.room,
           characters: this.character.toString(),
-          page: 1,
-          limit: 10,
+          page: val,
+          limit: 5,
         },
       }).then((res) => {
         console.log(res.data);
@@ -220,7 +220,7 @@ export default {
       this.$store.state.routerType == 0 ||
       this.$store.state.houseInfos.length == 0
     )
-      this.getHouseInfoByConditions();
+      this.getHouseInfoByConditions(1);
   },
 };
 </script>

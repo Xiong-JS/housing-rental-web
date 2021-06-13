@@ -18,6 +18,12 @@ export default{
   },
   [types.SETCURRENTPAGE](state,payload){
     state.currentPage = payload
+  },
+  [types.SETCONTINUESTATE](state,payload){
+    state.continueState = payload
+  },
+  [types.SETRENTALID](state,payload){
+    state.rentalId = payload
   }
 
 }

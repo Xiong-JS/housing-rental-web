@@ -323,13 +323,14 @@
 <script>
 import InventoryNavgationBar from "../../components/InventoryNavgationBar.vue";
 import request from "../../network/request";
+import * as types from "../../store/mutations-type-string";
 export default {
   data() {
     return {
       inventoryInfos: {},
       minutes: "",
       seconds: "",
-      houseInfos:{}
+      houseInfos: {},
     };
   },
   methods: {
@@ -341,14 +342,14 @@ export default {
         },
       }).then((res) => {
         this.houseInfos = res.data.data;
-        if(this.houseInfos.houseId == 0 || this.houseInfos.indentState == 1){
-          this.$messge.error("该房源已停止租赁,请浏览其他房源!")
-          return
+        if (this.houseInfos.houseId == 0 || this.houseInfos.indentState == 1) {
+          this.$messge.error("该房源已停止租赁,请浏览其他房源!");
+          return;
         }
       });
     },
     rightNowRental() {
-      this.getHouseByHouseId(this.inventoryInfos.houseId)
+      this.getHouseByHouseId(this.inventoryInfos.houseId);
       this.$router.push({
         path: "/inventoryUnDone",
         query: {
@@ -404,6 +405,8 @@ export default {
           }).then((res) => {
             if (res.data.code == 200) this.$message.success("取消成功");
             this.getInventoryById(this.inventoryInfos.inventoryId);
+            this.$store.commit(types.SETCONTINUESTATE, 0);
+            this.$store.commit(types.SETRENTALID, 0);
           });
         });
       }
@@ -416,15 +419,34 @@ export default {
         this.$message.error("余额不足!请前往个人中心充值");
         return;
       }
+      console.log("continueState" + this.$store.state.continueState);
+      console.log("rentalId" + this.$store.state.rentalId);
       request({
-        url: "/indent/payment",
-        method: "post",
-        data: {
-          inventoryId: this.inventoryInfos.inventoryId,
+        url: "/house/by-houseId",
+        params: {
+          houseId: this.inventoryInfos.houseId,
         },
       }).then((res) => {
-        this.$message.success("支付成功!");
-        this.getInventoryById(this.inventoryInfos.inventoryId);
+        if (res.data.data.state == 0 && this.$store.state.continueState != 1) {
+          this.$message.error("该房源已下架!不可支付");
+          return;
+        }
+        request({
+          url: "/indent/payment",
+          method: "post",
+          data: {
+            inventoryId: this.inventoryInfos.inventoryId,
+            continueState: this.$store.state.continueState,
+            rentalSituationId: this.$store.state.rentalId,
+          },
+        }).then((res) => {
+          this.$message.success("支付成功!");
+          this.$store.commit(types.SETCONTINUESTATE, 0);
+          this.$store.commit(types.SETRENTALID, 0);
+          console.log("continueState" + this.$store.state.continueState);
+          console.log("rentalId" + this.$store.state.rentalId);
+          this.getInventoryById(this.inventoryInfos.inventoryId);
+        });
       });
     },
   },

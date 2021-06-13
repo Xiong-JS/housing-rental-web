@@ -136,7 +136,7 @@ export default {
       isShow: "展开",
       inventoryDetailVisble: false,
       inventoryOutTimeVisble: false,
-      continueState:0
+      continueState: 0,
     };
   },
   methods: {
@@ -153,39 +153,50 @@ export default {
       }
     },
     payInventory() {
-      if (
-        parseFloat(this.inventoryVo.userWallet) <
-        parseFloat(this.inventoryVo.totalMoney)
-      ) {
-        this.$message.error("余额不足!请前往个人中心充值");
-        return;
-      }
       request({
-        url: "/indent/payment",
-        method: "post",
-        data: {
-          inventoryId: this.inventoryVo.inventoryId,
-          continueState:this.continueState,
-          rentalSituationId:this.$route.query.rentalSituationId
+        url: "/house/by-houseId",
+        params: {
+          houseId: this.$route.query.houseId,
         },
       }).then((res) => {
-        this.$message.success("支付成功!");
-        this.inventoryDoingVisble = false;
-        this.inventoryOutTimeVisble = false;
+        if (res.data.data.state == 0 && this.continueState != 1 ) {
+          this.$message.error("该房源已下架!不可支付");
+          return;
+        }
+        if (
+          parseFloat(this.inventoryVo.userWallet) <
+          parseFloat(this.inventoryVo.totalMoney)
+        ) {
+          this.$message.error("余额不足!请前往个人中心充值");
+          return;
+        }
+        request({
+          url: "/indent/payment",
+          method: "post",
+          data: {
+            inventoryId: this.inventoryVo.inventoryId,
+            continueState: this.continueState,
+            rentalSituationId: this.$route.query.rentalSituationId,
+          },
+        }).then((res) => {
+          this.$message.success("支付成功!");
+          this.inventoryDoingVisble = false;
+          this.inventoryOutTimeVisble = false;
+        });
       });
     },
-    rentalInfo(){
-       this.$router.push({
+    rentalInfo() {
+      this.$router.push({
         path: "/myRentalSituation",
         query: {
-          id: sessionStorage.getItem('id'),
+          id: sessionStorage.getItem("id"),
         },
       });
-    }
+    },
   },
   created() {
-    if(this.$route.query.continueState == 1){
-      this.continueState = 1
+    if (this.$route.query.continueState == 1) {
+      this.continueState = 1;
     }
     request({
       url: "/indent",

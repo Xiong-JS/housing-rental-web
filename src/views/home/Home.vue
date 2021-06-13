@@ -401,7 +401,7 @@ export default {
           room: 0,
           characters: "",
           page: 1,
-          limit: 10,
+          limit: 5,
         },
       }).then((res) => {
         console.log(res.data);

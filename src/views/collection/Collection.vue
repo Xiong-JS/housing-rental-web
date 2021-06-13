@@ -124,6 +124,19 @@ export default {
     };
   },
   methods: {
+     getUserInfo(val) {
+      request({
+        url: "/user/user-id",
+        params: {
+          id: val,
+        },
+      }).then((res) => {
+         if (res.data.msg == "NoUser" || res.data.code == "000004") {
+           this.isLogin = true
+           return
+         }
+      });
+    },
     rentalTypeConvert(val) {
       let type = "合租";
       switch (val) {
@@ -183,6 +196,7 @@ export default {
   },
   created() {
     this.getCollection();
+    this.getUserInfo(sessionStorage.getItem('id'))
   },
 };
 </script>

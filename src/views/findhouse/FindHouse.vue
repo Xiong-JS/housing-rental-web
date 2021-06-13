@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="margin-top: 10px; text-align: center">
+    <!-- <div style="margin-top: 10px; text-align: center">
       <el-form
         :inline="true"
         :model="searchForm"
@@ -19,7 +19,7 @@
           >
         </el-form-item>
       </el-form>
-    </div>
+    </div> -->
     <div class="part-line-2"></div>
     <div class="main">
       <div class="nav-classify">

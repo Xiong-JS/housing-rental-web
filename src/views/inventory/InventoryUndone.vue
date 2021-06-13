@@ -7,7 +7,7 @@
     ></i>
     <div style="margin-top: 20px">
       <div style="float: left">
-        <img src="../../assets/logo2018.png" alt="" class="logo-img" />
+        <img src="../../assets/img/logo.png" alt="" class="logo-img" />
         <span class="settle-accounts-title">结算页</span>
       </div>
       <div style="float: right">
@@ -49,15 +49,15 @@
                     }}</span></el-col
                   >
                   <el-col :span="2">
-                    <div class="edit-user-info">
+                    <!-- <div class="edit-user-info">
                       <span
                         v-show="retalInfoVisble"
                         class="edit"
                         @click="editInfoVisble = true"
                         >修改</span
                       >
-                    </div></el-col
-                  >
+                    </div> -->
+                    </el-col>
                 </el-row>
               </div></el-col
             >
@@ -282,6 +282,7 @@
 
 <script>
 import request from "../../network/request";
+import * as types from "../../store/mutations-type-string";
 export default {
   data() {
     let validatePhone = (rule, value, callback) => {
@@ -308,7 +309,7 @@ export default {
         totalMoney: "",
         rentalPhone: "",
         rentalTime: "1",
-        continueState:0,
+        continueState: 0,
       },
       editInfoVisble: false,
       rules: {
@@ -354,6 +355,10 @@ export default {
       });
     },
     submitInventory() {
+      if(this.continueState == 1){
+        this.$store.commit(types.SETCONTINUESTATE, 1);
+      this.$store.commit(types.SETRENTALID, this.$route.query.rentalSituationId);
+      }
       this.inventory.cashPledge = this.houseInfo.cashPledge;
       this.inventory.rentalMoney = this.houseInfo.quote;
       this.inventory.totalMoney =
@@ -380,8 +385,9 @@ export default {
           path: "/inventoryPay",
           query: {
             inventoryId: this.inventory.inventoryId,
-            continueState:this.continueState,
-            rentalSituationId:this.$route.query.rentalSituationId
+            continueState: this.continueState,
+            rentalSituationId: this.$route.query.rentalSituationId,
+            houseId:this.inventory.houseId,
           },
         });
       });
@@ -410,7 +416,7 @@ export default {
   created() {
     this.getUserInfo();
     this.getHouseInfoById(this.$route.query.id);
-    if(this.$route.query.continueState == 1){
+    if (this.$route.query.continueState == 1) {
       this.continueState = 1;
     }
   },
@@ -435,8 +441,8 @@ export default {
   font-size: 14px;
 }
 .logo-img {
-  width: 100px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   vertical-align: middle;
 }
 .settle-accounts-back {

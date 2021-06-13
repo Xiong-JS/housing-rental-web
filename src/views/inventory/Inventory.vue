@@ -652,6 +652,7 @@
 import InventoryNavgationBar from "../../components/InventoryNavgationBar.vue";
 import InventoryCard from "./InventoryCard.vue";
 import request from "../../network/request";
+import * as types from "../../store/mutations-type-string";
 export default {
   data() {
     return {
@@ -668,7 +669,7 @@ export default {
       total: 0,
       currentPage: 0,
       deleteVisble: -1,
-      houseInfos:{}
+      houseInfos: {},
     };
   },
   methods: {
@@ -741,7 +742,7 @@ export default {
           state: this.state,
           page: page,
           pageSize: 2,
-          userId:sessionStorage.getItem('id')
+          userId: sessionStorage.getItem("id"),
         },
       }).then((res) => {
         this.inventoryInfosVo = res.data.data;
@@ -784,7 +785,7 @@ export default {
     },
     deleteInventory(inventoryId, state) {
       if (state == 0) {
-        this.$messge.error("该订单处于未完成状态，不能删除!");
+        this.$message.error("该订单处于未完成状态，不能删除!");
         return;
       }
       request({
@@ -794,7 +795,7 @@ export default {
           inventoryId: inventoryId,
         },
       }).then((res) => {
-        this.getInventoryInfosVo(1)
+        this.getInventoryInfosVo(1);
         this.$message.success("已删除");
       });
     },
@@ -806,14 +807,14 @@ export default {
         },
       }).then((res) => {
         this.houseInfos = res.data.data;
-        if(this.houseInfos.houseId == 0 || this.houseInfos.indentState == 1){
-          this.$messge.error("该房源已停止租赁,请浏览其他房源!")
-          return
+        if (this.houseInfos.houseId == 0 || this.houseInfos.indentState == 1) {
+          this.$message.error("该房源已停止租赁,请浏览其他房源!");
+          return;
         }
       });
     },
     rightNowRental(houseId) {
-      this.getHouseByHouseId(houseId)
+      this.getHouseByHouseId(houseId);
       this.$router.push({
         path: "/inventoryUnDone",
         query: {
@@ -838,6 +839,8 @@ export default {
         }).then((res) => {
           if (res.data.code == 200) this.$message.success("取消成功");
           this.getInventoryInfosVo(1);
+          this.$store.commit(types.SETCONTINUESTATE, 0);
+          this.$store.commit(types.SETRENTALID, 0);
         });
       });
     },

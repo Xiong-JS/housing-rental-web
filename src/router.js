@@ -34,40 +34,80 @@ export default new Router({
         redirect: 'home'
       }, {
         path: 'home',
-        component: Home
+        component: Home,
+        meta: {
+          hidden: true,
+          title: "首页"
+        },
       }]
     }, {
       path: '/login',
-      component: Login
+      component: Login,
+      meta: {
+        hidden: true,
+        title: "登录"
+      },
     }, {
       path: '/register',
-      component: Rgister
+      component: Rgister,
+      meta: {
+        hidden: true,
+        title: "注册"
+      },
     },
     {
       path: '/personCenter',
-      component: PersonCenter
+      component: PersonCenter,
+      meta: {
+        hidden: true,
+        title: "个人中心"
+      },
     }, {
       path: '/inventory',
-      component: Inventory
+      component: Inventory,
+      meta: {
+        hidden: true,
+        title: "我的订单"
+      },
     },
     {
       path: '/inventoryPay',
-      component: InventoryPay
+      component: InventoryPay,
+      meta: {
+        hidden: true,
+        title: "支付订单"
+      },
     },
     {
       path: '/inventoryUnDone',
-      component: InventoryUnDone
+      component: InventoryUnDone,
+      meta: {
+        hidden: true,
+        title: "订单"
+      },
     }, {
       path: '/inventoryDone',
-      component: InventoryDone
+      component: InventoryDone,
+      meta: {
+        hidden: true,
+        title: "订单"
+      },
     },
     {
-      path:'/myReleaseHouseInfo',
-      component:MyReleaseHouseInfo
+      path: '/myReleaseHouseInfo',
+      component: MyReleaseHouseInfo,
+      meta: {
+        hidden: true,
+        title: "我的房源"
+      },
     },
     {
-      path:'/myRentalSituation',
-      component:MyRentalSituation
+      path: '/myRentalSituation',
+      component: MyRentalSituation,
+      meta: {
+        hidden: true,
+        title: "我的租赁"
+      },
     },
     {
       path: '/houseRentalMain',
@@ -84,7 +124,9 @@ export default new Router({
             component: FindHouseByZone,
             meta: {
               keepAlive: true,
-              rootPath: '/houseRentalMain/findHouse'
+              rootPath: '/houseRentalMain/findHouse',
+              hidden: true,
+              title: "寻找房源"
             }
           }
         ]
@@ -93,21 +135,27 @@ export default new Router({
         component: ReleaseHouse,
         meta: {
           keepAlive: true,
-          rootPath: '/houseRentalMain/releaseHouse'
+          rootPath: '/houseRentalMain/releaseHouse',
+          hidden: true,
+          title: "发布房源"
         }
       }, {
         path: 'collection',
         component: Collection,
         meta: {
           keepAlive: true,
-          rootPath: '/houseRentalMain/collection'
+          rootPath: '/houseRentalMain/collection',
+          hidden: true,
+          title: "房源收藏"
         }
       }, {
         path: 'detailHouse',
         component: DetailHouse,
         meta: {
           keepAlive: true,
-          rootPath: '/houseRentalMain/detailHouse'
+          rootPath: '/houseRentalMain/detailHouse',
+          hidden: true,
+          title: "房源详情"
         }
       }]
     }

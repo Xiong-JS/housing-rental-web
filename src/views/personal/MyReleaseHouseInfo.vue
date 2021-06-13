@@ -11,7 +11,11 @@
       <el-row>
         <el-col :span="12"
           ><div>
-            <img src="../../assets/img/logo1.png" alt="" class="logo-img" /></div
+            <img
+              src="../../assets/img/logo1.png"
+              alt=""
+              class="logo-img"
+            /></div
         ></el-col>
         <el-col :span="12">
           <div class="nav-bar">
@@ -81,12 +85,34 @@
                               }}层
                             </div>
                             <div style="margin-top: 10px">
-                              <span v-show="item.toilet == 1" style="padding:2px">独卫</span>
-                              <span v-show="item.balcony == 1" style="padding:2px">带阳台</span>
-                              <span v-show="item.houseType == 1" style="padding:2px">电梯房</span>
-                              <span v-show="item.monthPay == 1" style="padding:2px">月付</span>
-                              <span v-show="item.hardback == 1" style="padding:2px">精装修</span>
-                              <span v-show="item.homeAppliances == 1" style="padding:2px"
+                              <span
+                                v-show="item.toilet == 1"
+                                style="padding: 2px"
+                                >独卫</span
+                              >
+                              <span
+                                v-show="item.balcony == 1"
+                                style="padding: 2px"
+                                >带阳台</span
+                              >
+                              <span
+                                v-show="item.houseType == 1"
+                                style="padding: 2px"
+                                >电梯房</span
+                              >
+                              <span
+                                v-show="item.monthPay == 1"
+                                style="padding: 2px"
+                                >月付</span
+                              >
+                              <span
+                                v-show="item.hardback == 1"
+                                style="padding: 2px"
+                                >精装修</span
+                              >
+                              <span
+                                v-show="item.homeAppliances == 1"
+                                style="padding: 2px"
                                 >家电齐全</span
                               >
                             </div>
@@ -156,14 +182,18 @@
                     <el-col :span="3" style="text-align: center">
                       <div style="margin-top: 30px">
                         <div
-                        style="cursor:pointer;color:#ed2553"
+                          style="cursor: pointer; color: #ed2553"
                           @click="submit(item.houseId)"
                           v-show="item.auditState == 1"
-                          >提交房产证</div
                         >
-                        <div @click="look(item.certificateImg)" style="cursor:pointer;margin-top:10px"
-                          >查看房产证</div
+                          提交房产证
+                        </div>
+                        <div
+                          @click="look(item.certificateImg)"
+                          style="cursor: pointer; margin-top: 10px"
                         >
+                          查看房产证
+                        </div>
                       </div>
                     </el-col>
                   </el-row>
@@ -199,9 +229,13 @@
                     @change="charatersChange"
                     fill="#ed2553"
                     ><el-checkbox-button label="月付">月付</el-checkbox-button
-                    ><el-checkbox-button label="家电齐全">家电齐全</el-checkbox-button
-                    ><el-checkbox-button label="精装修">精装修</el-checkbox-button
-                    ><el-checkbox-button label="带阳台">有阳台</el-checkbox-button>
+                    ><el-checkbox-button label="家电齐全"
+                      >家电齐全</el-checkbox-button
+                    ><el-checkbox-button label="精装修"
+                      >精装修</el-checkbox-button
+                    ><el-checkbox-button label="带阳台"
+                      >有阳台</el-checkbox-button
+                    >
                   </el-checkbox-group></el-col
                 >
               </el-row>
@@ -212,7 +246,12 @@
                   ><div style="margin-top: 5px">室：</div></el-col
                 >
                 <el-col :span="22"
-                  ><el-radio-group v-model="room" size="small" fill="#ed2553" @change="roomChange">
+                  ><el-radio-group
+                    v-model="room"
+                    size="small"
+                    fill="#ed2553"
+                    @change="roomChange"
+                  >
                     <el-radio-button label="0">不限</el-radio-button>
                     <el-radio-button label="1">1室</el-radio-button
                     ><el-radio-button label="2">2室</el-radio-button
@@ -285,12 +324,34 @@
                               }}层
                             </div>
                             <div style="margin-top: 10px">
-                              <span v-show="item.toilet == 1" style="padding:2px">独卫</span>
-                              <span v-show="item.balcony == 1" style="padding:2px">带阳台</span>
-                              <span v-show="item.houseType == 1" style="padding:2px">电梯房</span>
-                              <span v-show="item.monthPay == 1" style="padding:2px">月付</span>
-                              <span v-show="item.hardback == 1" style="padding:2px">精装修</span>
-                              <span v-show="item.homeAppliances == 1" style="padding:2px"
+                              <span
+                                v-show="item.toilet == 1"
+                                style="padding: 2px"
+                                >独卫</span
+                              >
+                              <span
+                                v-show="item.balcony == 1"
+                                style="padding: 2px"
+                                >带阳台</span
+                              >
+                              <span
+                                v-show="item.houseType == 1"
+                                style="padding: 2px"
+                                >电梯房</span
+                              >
+                              <span
+                                v-show="item.monthPay == 1"
+                                style="padding: 2px"
+                                >月付</span
+                              >
+                              <span
+                                v-show="item.hardback == 1"
+                                style="padding: 2px"
+                                >精装修</span
+                              >
+                              <span
+                                v-show="item.homeAppliances == 1"
+                                style="padding: 2px"
                                 >家电齐全</span
                               >
                             </div>
@@ -438,12 +499,34 @@
                               }}层
                             </div>
                             <div style="margin-top: 10px">
-                              <span v-show="item.toilet == 1" style="padding:2px">独卫</span>
-                              <span v-show="item.balcony == 1" style="padding:2px">带阳台,</span>
-                              <span v-show="item.houseType == 1" style="padding:2px">电梯房,</span>
-                              <span v-show="item.monthPay == 1" style="padding:2px">月付,</span>
-                              <span v-show="item.hardback == 1" style="padding:2px">精装修</span>
-                              <span v-show="item.homeAppliances == 1" style="padding:2px"
+                              <span
+                                v-show="item.toilet == 1"
+                                style="padding: 2px"
+                                >独卫</span
+                              >
+                              <span
+                                v-show="item.balcony == 1"
+                                style="padding: 2px"
+                                >带阳台,</span
+                              >
+                              <span
+                                v-show="item.houseType == 1"
+                                style="padding: 2px"
+                                >电梯房,</span
+                              >
+                              <span
+                                v-show="item.monthPay == 1"
+                                style="padding: 2px"
+                                >月付,</span
+                              >
+                              <span
+                                v-show="item.hardback == 1"
+                                style="padding: 2px"
+                                >精装修</span
+                              >
+                              <span
+                                v-show="item.homeAppliances == 1"
+                                style="padding: 2px"
                                 >家电齐全</span
                               >
                             </div>
@@ -565,7 +648,7 @@
         v-if="certificateImg"
         :src="certificateImg"
         class="avatar"
-        style="width: 350px; height: 300px;margin-left:20px"
+        style="width: 350px; height: 300px; margin-left: 20px"
       />
     </el-dialog>
   </div>
@@ -586,7 +669,7 @@ export default {
       certificateVisble: false,
       lookVisble: false,
       imgData: {
-        path: "",
+        path: "bishe/certificate",
       },
       uploadUrl: "http://localhost:8080/imgUpload",
       headers: { "u-token": sessionStorage.getItem("uToken") },
@@ -606,7 +689,7 @@ export default {
       this.tabState = val.index;
       this.charaters = [];
       this.room = 0;
-      this.getHouseInfos(1)
+      this.getHouseInfos(1);
     },
     submit(houseId) {
       this.certificateVisble = true;
@@ -628,13 +711,14 @@ export default {
       }).then((res) => {
         this.$message.success("提交成功!");
         this.getHouseInfos(1);
+        this.certificateVisble = false
       });
     },
-    charatersChange(val){
-      this.getHouseInfos(1)
+    charatersChange(val) {
+      this.getHouseInfos(1);
     },
-    roomChange(val){
-      this.getHouseInfos(1)
+    roomChange(val) {
+      this.getHouseInfos(1);
     },
     handleCertificateAvatarSuccess(res, file) {
       if (res.data.msg == "NoUser" || res.data.code == "000004") {
@@ -661,7 +745,7 @@ export default {
           room: this.room,
           page: val,
           pageSize: 2,
-          userId:sessionStorage.getItem('id')
+          userId: sessionStorage.getItem("id"),
         },
       }).then((res) => {
         this.houseInfos = res.data.data;
@@ -685,19 +769,20 @@ export default {
     },
     upRental(houseId) {
       request({
-        url:'/rental_situation/rentalSituation-houseId',
-        params:{
-          houseId:houseId
+        url: "/rental_situation/rentalSituation-houseId",
+        params: {
+          houseId: houseId,
+        },
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.code == "000007") {
+          this.$message.error(res.data.msg);
+          return;
         }
-      }).then(res=>{
-        if(res.data.code == '000007'){
-           this.$message.error(this.data.msg)
-           return
-        }
-      })
-      this.certificateVisble = true;
-      this.certificateImg = "";
-      this.houseId = houseId
+        this.certificateVisble = true;
+        this.certificateImg = "";
+        this.houseId = houseId;
+      });
     },
   },
   created() {

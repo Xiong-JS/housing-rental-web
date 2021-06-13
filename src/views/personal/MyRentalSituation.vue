@@ -269,7 +269,7 @@ export default {
       total: 0,
       currentPage: 1,
       pageSize: 2,
-      state: 0,
+      state: 1,
       hosueId: "",
       houseInfos:{}
     };
@@ -357,11 +357,13 @@ export default {
     },
     statusClick(val) {
       if (val.index == 0) {
+        console.log('进行中');
         this.state = 1;
-        this.getRentalSituation(this.state, 1);
+        this.getRentalSituation(1, 1);
       } else {
+        console.log('已完成');
         this.state = 0;
-        this.getRentalSituation(this.state, 1);
+        this.getRentalSituation(0, 1);
       }
     },
     surrender(houseId, rentalSituationId, inventoryId) {

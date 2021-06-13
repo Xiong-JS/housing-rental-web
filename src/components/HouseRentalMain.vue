@@ -110,7 +110,6 @@ export default {
           id: val,
         },
       });
-      console.log(val);
     },
     inventoryInfo1(val) {
       this.$router.push({

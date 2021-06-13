@@ -12,7 +12,9 @@ const state = {
   houseInfos:[],
   routerType:0,//0-表示使用导航栏的index进行路游跳转，1-表示使用代码手动跳转
   total:0,
-  currentPage:0
+  currentPage:0,
+  continueState:0,
+  rentalId:0
 }
 
 export default new Vuex.Store({

@@ -61,6 +61,45 @@
                 <div class="part-line-1"></div>
                 <div class="line-format">
                   <i class="iconfont icon-success"></i
+                  ><span class="title-list">电话</span>
+                  <strong>{{ user.userPhone }}</strong>
+                  <span class="edit" @click="editPhoneVisble = true">修改</span>
+                  <div v-show="editPhoneVisble">
+                    <div style="margin-left: 150px">
+                      <div>
+                        <el-form
+                          :model="editUser"
+                          class="demo-ruleForm"
+                          label-width="100px"
+                        >
+                          <el-form-item
+                            prop="userPhone"
+                            label="电话号码"
+                            style="width: 300px"
+                          >
+                            <el-input
+                              v-model="editUser.userPhone"
+                              require
+                            ></el-input>
+                          </el-form-item>
+                          <el-form-item>
+                            <el-button
+                              type="primary"
+                              @click="confirmEditPhone()"
+                              >确定</el-button
+                            >
+                            <el-button type="info" plain @click="quitPhone"
+                              >取消</el-button
+                            >
+                          </el-form-item>
+                        </el-form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="part-line-1"></div>
+                <div class="line-format">
+                  <i class="iconfont icon-success"></i
                   ><span class="title-list">密码</span>
                   <strong>*********</strong>
                   <span class="edit" @click="editPasswordVisble = true"
@@ -163,6 +202,15 @@
 import request from "../../network/request";
 export default {
   data() {
+    let validatePhone = (rule, value, callback) => {
+      if (String(value) === "") {
+        callback(new Error("请输入电话号码"));
+      } else if (String(value).length != 11) {
+        callback(new Error("请输入正确的电话号码"));
+      } else {
+        callback();
+      }
+    };
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
@@ -191,16 +239,19 @@ export default {
       },
       editNameVisble: false,
       editPasswordVisble: false,
+      editPhoneVisble: false,
       editUser: {
         userImg: "",
         userName: "",
         userPassword: "",
         checkPassword: "",
+        userPhone: "",
       },
       rules: {
         userName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
         userPassword: [{ validator: validatePass, trigger: "blur" }],
         checkPassword: [{ validator: validatePass2, trigger: "blur" }],
+        userPhone: [{ validator: validatePhone, trigger: "blur" }],
       },
       rechargeVisble: false,
       wallet: 0,
@@ -223,7 +274,8 @@ export default {
       } else {
         this.user.userImg = res.data;
         this.editUserInfo();
-        sessionStorage.setItem('img',this.user.userImg)
+        this.$message.success('修改成功')
+        sessionStorage.setItem("img", this.user.userImg);
       }
     },
     beforeAvatarUpload(file) {
@@ -245,6 +297,7 @@ export default {
           userImg: this.user.userImg,
           userRegisterTime: this.user.userRegisterTime,
           userWallet: this.user.userWallet,
+          userPhone: this.user.userPhone,
         },
       }).then((res) => {
         this.user = res.data.data;
@@ -253,6 +306,20 @@ export default {
     quitName() {
       this.editUser.userName = "";
       this.editNameVisble = false;
+    },
+    quitPhone() {
+      this.editUser.userPhone = "";
+      this.editPhoneVisble = false;
+    },
+    confirmEditPhone() {
+      if (this.editUser.userPhone.length != 11) {
+        this.$message.error("电话号码输入错误");
+        return;
+      }
+      this.user.userPhone = this.editUser.userPhone;
+      this.editUserInfo();
+      this.editPhoneVisble = false;
+      this.$message.success("提交成功!");
     },
     confirmEditName() {
       if (this.editUser.userName == "") {
@@ -267,15 +334,30 @@ export default {
     confirmEditPassword(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.user.userPassword = this.editUser.userPassword;
-          this.editUserInfo();
-          this.editPasswordVisble = false;
-          this.$message.success("修改成功!");
-          sessionStorage.removeItem('id')
-          sessionStorage.removeItem('img')
-          sessionStorage.removeItem('uToken')
-          sessionStorage.removeItem('name')
-          this.$router.push("/login");
+          this.user.userPassword = this.editUser.checkPassword;
+          request({
+            url: "/user/userEdit",
+            method: "post",
+            data: {
+              id: this.user.id,
+              userAccount: this.user.userAccount,
+              userPassword: this.user.userPassword,
+              userName: this.user.userName,
+              userImg: this.user.userImg,
+              userRegisterTime: this.user.userRegisterTime,
+              userWallet: this.user.userWallet,
+              userPhone: this.user.userPhone,
+            },
+          }).then((res) => {
+            this.editPasswordVisble = false;
+            this.$message.success("修改成功!");
+            sessionStorage.removeItem("id");
+            sessionStorage.removeItem("img");
+            sessionStorage.removeItem("uToken");
+            sessionStorage.removeItem("name");
+            this.$router.push("/login");
+            this.user = res.data.data;
+          });
         } else {
           return false;
         }
